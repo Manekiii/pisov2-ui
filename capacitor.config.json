@@ -1,0 +1,8 @@
+{
+  "appId": "pisov2.fastlogistics.com.ph",
+  "appName": "pisov2",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}

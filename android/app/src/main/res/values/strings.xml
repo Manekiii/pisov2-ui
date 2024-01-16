@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">pisov2</string>
+    <string name="title_activity_main">pisov2</string>
+    <string name="package_name">pisov2.fastlogistics.com.ph</string>
+    <string name="custom_url_scheme">pisov2.fastlogistics.com.ph</string>
+</resources>
