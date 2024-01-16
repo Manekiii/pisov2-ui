@@ -1,6 +1,3 @@
-import type { serviceApi } from '~/services/piso-serviceapi'; import type {
-parse } from 'vue/compiler-sfc'; import type { parse } from 'vue/compiler-sfc';
-import type { serviceApi } from '~/services/piso-serviceapi';
 <template>
   <div class="modal-overlay">
     <div
@@ -108,27 +105,23 @@ const onSwitchSite = async () => {
 };
 
 const onSelectSite = async () => {
-  const siteSelected = JSON.parse(localStorage.getItem("_102")).sitecode;
-  if (!siteSelected) {
-    // Handle if siteSelected is null or empty
-  } else {
-    try {
-      // Construct the user object
-      const userObject = {
-        sitecode: branchSeleted.value.brancode,
-        sitename: branchSeleted.value.branname,
-      };
+  try {
+    console.log(branchSeleted);
+    // Construct the user object
+    const userObject = {
+      sitecode: branchSeleted.value.brancode,
+      sitename: branchSeleted.value.branname,
+    };
 
-      // Convert the user object to a JSON string
-      const userObjectString = JSON.stringify(userObject);
+    // Convert the user object to a JSON string
+    const userObjectString = JSON.stringify(userObject);
 
-      // Store the user object string in localStorage
-      localStorage.setItem("_102", userObjectString);
+    // Store the user object string in localStorage
+    localStorage.setItem("_102", userObjectString);
 
-      window.location.reload();
-    } catch (error) {
-      console.error("Error calling $onSelectSite:", error);
-    }
+    window.location.reload();
+  } catch (error) {
+    console.error("Error calling $onSelectSite:", error);
   }
 };
 

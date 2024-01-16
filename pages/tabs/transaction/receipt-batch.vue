@@ -6,7 +6,7 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <div class="p-4">
+      <ion-card class="p-4">
         <div class="grid gap-6 mb-6 md:grid-cols-2">
           <div>
             <label
@@ -15,22 +15,13 @@
               >Supplier</label
             >
             <select
+              v-model="trans.shipperId"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              v-selectize="{
-                placeholder: '--Select Supplier--',
-                options: supplierOptions,
-                config: {
-                  maxItems: 1,
-                  sortField: [
-                    { field: 'text', direction: 'asc' },
-                    { field: '$score' },
-                  ],
-                },
-                model: trans.shipperId,
-                change: ChangeSupplier,
-                required: true,
-              }"
-            ></select>
+            >
+              <option v-for="s in scope.supplierOptions" :value="s.value">
+                {{ s.text }}
+              </option>
+            </select>
           </div>
           <div>
             <label
@@ -38,13 +29,14 @@
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >Trucker</label
             >
-            <input
-              type="text"
-              id="trucker"
+            <select
+              v-model="trans.trucker"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Doe"
-              required
-            />
+            >
+              <option v-for="t in scope.truckersOptions" :value="t.value">
+                {{ t.text }}
+              </option>
+            </select>
           </div>
           <div>
             <label
@@ -55,6 +47,7 @@
             <input
               type="text"
               id="reference1"
+              v-model="trans.referenceno"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Flowbite"
               required
@@ -69,6 +62,42 @@
             <input
               type="text"
               id="reference2"
+              v-model="trans.orderno"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Flowbite"
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              for="transactiontype"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Transaction Type</label
+            >
+            <select
+              v-model="trans.transcode"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option
+                v-for="t in scope.transactiontypeOptions"
+                :value="t.value"
+              >
+                {{ t.text }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label
+              for="refdate"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Ref Date</label
+            >
+            <input
+              type="date"
+              id="refdate"
+              v-model="trans.referencedate"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Flowbite"
               required
@@ -76,130 +105,119 @@
           </div>
           <div>
             <label
-              for="phone"
+              for="remarks"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >Phone number</label
             >
+              Remarks
+            </label>
+            <textarea
+              id="renarks"
+              rows="4"
+              v-model="trans.remarks"
+              class="max-w-md block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Write your remarks here..."
+            ></textarea>
+          </div>
+
+          <div>
+            <label
+              for="reference3"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Reference 3
+            </label>
             <input
-              type="tel"
-              id="phone"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="123-45-678"
-              pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+              id="reference3"
+              type="text"
+              v-model="trans.documentno"
+              class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder=""
               required
             />
           </div>
+
           <div>
             <label
-              for="website"
+              for="reference4"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >Website URL</label
             >
+              Reference 4
+            </label>
             <input
-              type="url"
-              id="website"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="flowbite.com"
+              id="reference4"
+              type="text"
+              v-model="trans.invoiceno"
+              class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder=""
               required
             />
           </div>
+
           <div>
             <label
-              for="visitors"
+              for="orderDate"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >Unique visitors (per month)</label
             >
+              Order Date <span class="text-red-500">*</span>
+            </label>
             <input
-              type="number"
-              id="visitors"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              id="orderDate"
+              type="date"
+              v-model="trans.orderdate"
+              class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder=""
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              for="deliveryDate"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Delivery Date <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="deliveryDate"
+              type="date"
+              v-model="trans.deliverydate"
+              class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder=""
               required
             />
           </div>
         </div>
-        <div class="mb-6">
-          <label
-            for="email"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Email address</label
+
+        <div class="mt-3 flex justify-end">
+          <button
+            type="submit"
+            @click="onSave('P')"
+            class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
           >
-          <input
-            type="email"
-            id="email"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="john.doe@company.com"
-            required
-          />
-        </div>
-        <div class="mb-6">
-          <label
-            for="password"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Password</label
+            Save And Post
+          </button>
+          <button
+            type="submit"
+            @click="onSave('O')"
+            class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
           >
-          <input
-            type="password"
-            id="password"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="•••••••••"
-            required
-          />
+            Save
+          </button>
         </div>
-        <div class="mb-6">
-          <label
-            for="confirm_password"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Confirm password</label
-          >
-          <input
-            type="password"
-            id="confirm_password"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="•••••••••"
-            required
-          />
-        </div>
-        <div class="flex items-start mb-6">
-          <div class="flex items-center h-5">
-            <input
-              id="remember"
-              type="checkbox"
-              value=""
-              class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
-              required
-            />
-          </div>
-          <label
-            for="remember"
-            class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-            >I agree with the
-            <a href="#" class="text-blue-600 hover:underline dark:text-blue-500"
-              >terms and conditions</a
-            >.</label
-          >
-        </div>
-        <button
-          type="submit"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Submit
-        </button>
-      </div>
+      </ion-card>
     </ion-content>
   </IonPage>
 </template>
 
 <script setup>
 import { serviceApi } from "../../../services/piso-serviceapi";
+import Swal from "sweetalert2";
 
 const scope = reactive({});
 
 const supplierOptions = []; // Your options data here
 
-const trans = {
-  shipperId: null,
-};
+const trans = reactive({});
 
 const ChangeSupplier = () => {
   // Your change handler logic here
@@ -207,6 +225,8 @@ const ChangeSupplier = () => {
 
 async function getIncomingTransTyps() {
   try {
+    var sitecode = JSON.parse(localStorage.getItem("_102")).sitecode;
+
     // initialize module add/edit
     if (scope.trnscde === "") {
       scope.iconform = "glyphicons glyphicons-circle_plus";
@@ -287,11 +307,11 @@ async function getIncomingTransTyps() {
     }
   } catch (error) {
     console.error("Error:", error.message);
-    HttpErrorService.getStatus(error.response.status, error.response.data);
-    $rootScope.ShowPrompt(
-      "#modal-panel-prompt-error",
-      "onInit: " + JSON.stringify(error.message)
-    );
+    // HttpErrorService.getStatus(error.response.status, error.response.data);
+    // $rootScope.ShowPrompt(
+    //   "#modal-panel-prompt-error",
+    //   "onInit: " + JSON.stringify(error.message)
+    // );
   }
 }
 
@@ -326,6 +346,56 @@ async function onGetItemUpdate(id) {
     // Handle errors or show a message as needed
   }
 }
+
+const onSave = async (p) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Confirm!",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        trans.warehouseId = JSON.parse(localStorage.getItem("_102")).sitecode;
+        trans.created_by = JSON.parse(localStorage.getItem("_214")).fullname;
+        trans.status = p;
+        trans.transtype = "I";
+
+        // Save to API using Axios
+        const response = await serviceApi().post(
+          `/api/Pallet/post-multi-trans`,
+          trans,
+          {
+            headers: {
+              Token: JSON.parse(localStorage.getItem("_214")).token,
+            },
+          }
+        );
+
+        if (response.status == 200) {
+          if (p === "P") {
+            Swal.fire(
+              "Success!",
+              "Your data has been saved and posted.",
+              "success"
+            );
+          } else {
+            Swal.fire("Success!", "Your data has been saved.", "success");
+          }
+          clearTransFields();
+        } else {
+          Swal.fire("Error Encounter!", `${response.data}`, "error");
+          console.error(response.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  });
+};
 
 onMounted(() => {
   getIncomingTransTyps();
