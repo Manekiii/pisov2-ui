@@ -1,0 +1,38 @@
+{
+  "name": "pisov2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "ionic:build": "npm run generate",
+    "ionic:serve": "npm run dev"
+  },
+  "devDependencies": {
+    "@nuxtjs/ionic": "^0.13.0",
+    "@nuxtjs/tailwindcss": "^6.10.4",
+    "autoprefixer": "^10.4.16",
+    "nuxt": "^3.9.0",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1"
+  },
+  "dependencies": {
+    "@capacitor/android": "5.6.0",
+    "@capacitor/app": "5.0.6",
+    "@capacitor/cli": "5.6.0",
+    "@capacitor/core": "5.6.0",
+    "@capacitor/haptics": "5.0.6",
+    "@capacitor/keyboard": "5.0.7",
+    "@capacitor/status-bar": "5.0.6",
+    "@nuxtjs/axios": "^5.13.6",
+    "date-fns": "^3.2.0",
+    "flowbite": "^2.2.1",
+    "flowbite-datepicker": "^1.2.6",
+    "js-cookie": "^3.0.5",
+    "sweetalert2": "^11.10.3"
+  },
+  "version": "0.0.0"
+}

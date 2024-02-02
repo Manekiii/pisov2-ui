@@ -1,8 +1,11 @@
 <template>
-  <div class="modal-overlay">
-    <div
-      class="fixed top-0 left-0 right-0 z-50 w-full h-full p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full"
-    >
+  <div
+    tabindex="-1"
+    aria-hidden="true"
+    class="fixed top-0 left-0 right-0 z-50 w-full h-full p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full"
+  >
+    <div class="relative w-full max-w-2xl max-h-full">
+      <!-- Background overlay -->
       <div class="fixed inset-0 bg-gray-900 opacity-50"></div>
       <!-- Modal content -->
       <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -14,8 +17,8 @@
             Switch Site
           </h3>
           <button
-            type="button"
             @click="$emit('close-modal')"
+            type="button"
             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
           >
             <svg
@@ -35,37 +38,48 @@
           </button>
         </div>
         <!-- Modal body -->
-        <div class="p-6 space-y-6">
-          <div v-for="site in userSiteList" :key="site.branname">
-            <input
-              type="radio"
-              :value="site"
-              @click="getBranchCode(site)"
-              v-model="branchSeleted"
-              class="w-4 h-4 mr-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label @click="getBranchCode(site)" for="item">{{
-              site.branname
-            }}</label>
+        <div class="p-6 space-y-6 overflow-y-auto max-h-[60vh]">
+          <div
+            v-for="site in userSiteList"
+            :key="site.branname"
+            class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
+          >
+            <div class="flex items-center">
+              <div class="mr-2">
+                <!-- Checkbox -->
+                <input
+                  type="radio"
+                  :value="site"
+                  @click="getBranchCode(site)"
+                  v-model="branchSeleted"
+                  class="w-4 h-4 mr-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+              </div>
+              <div>
+                <div>
+                  <label @click="getBranchCode(site)" for="item">{{
+                    site.branname
+                  }}</label>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <!-- Modal footer -->
         <div
-          class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
+          class="flex justify-end items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
         >
           <button
-            data-modal-hide="defaultModal"
             type="button"
             @click="onSelectSite().then($emit('close-modal'))"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
           >
-            Proceed
+            Go
           </button>
           <button
-            data-modal-hide="defaultModal"
-            type="button"
             @click="$emit('close-modal')"
-            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+            type="button"
+            class="text-gray-800 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-500 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
           >
             Close
           </button>

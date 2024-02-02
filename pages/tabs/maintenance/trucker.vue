@@ -1,0 +1,568 @@
+<template>
+  <IonPage>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title></ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <div>
+        <div class="border-2 items-center justify-center flex">
+          <label
+            for="title"
+            class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
+          >
+            Trucker Maintenance
+          </label>
+        </div>
+        <div class="mt-4 mb-4 flex justify-end">
+          <button
+            @click="onOpenModal()"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          >
+            New
+          </button>
+        </div>
+
+        <div
+          class="w-screen p-4 mt-3 grid grid-cols-1 gap-4 md:hidden bg-gray-100 overflow-y-auto max-h-[75vh]"
+        >
+          <div
+            v-for="x in scope.appData"
+            class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
+          >
+            <div>
+              <label for="transactionNumber">ID: {{ x.fleetownerId }}</label>
+            </div>
+            <div>
+              <label for="orderNumber">Trucker: {{ x.ownername }}</label>
+            </div>
+            <div>
+              <label for="transactionNumber"
+                >Contact Person: {{ x.contactperson }}</label
+              >
+            </div>
+            <div>
+              <label for="orderNumber">Mobile#: {{ x.celphoneno }}</label>
+            </div>
+
+            <div>
+              <label for="transactionNumber">Tel#: {{ x.telephoneno }}</label>
+            </div>
+            <div>
+              <label for="orderNumber">Email: {{ x.emailadd }}</label>
+            </div>
+            <div>
+              <label for="deliveryDate">Address: {{ x.address }}</label>
+            </div>
+            <div>
+              <label for="deliveryDate"
+                >Status: {{ x.status === "A" ? "Active" : "Inactive" }}</label
+              >
+            </div>
+            <div class="bg-black h-px"></div>
+            <div>
+              <label for="modifiedDate">Modified Date: </label>
+            </div>
+
+            <div class="flex items-center justify-end">
+              <button
+                @click="onEdit(x)"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Edit
+              </button>
+              <button
+                @click="onDelete(x)"
+                class="text-white bg-red-500 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-content>
+
+    <!-- Main modal Add/Edit-->
+    <div
+      v-if="showModal"
+       
+      tabindex="-1"
+      aria-hidden="true"
+      class="fixed top-0 left-0 right-0 z-50 w-full h-full p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full"
+    >
+      <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 bg-gray-900 opacity-50"></div>
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <!-- Modal header -->
+          <div
+            class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600"
+          >
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+              Trucker Setup
+            </h3>
+            <button
+              @click="hideModal()"
+              type="button"
+              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <span class="sr-only">Close modal</span>
+            </button>
+          </div>
+          <!-- Modal body -->
+          <div class="p-2 overflow-y-auto max-h-[60vh]">
+            <div class="grid gap-6 md:grid-cols-2">
+              <div>
+                <label
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Trucker Code</label
+                >
+                <input
+                  type="text"
+                  v-model="scope.form.fleetownerId"
+                  :disabled="scope.mode === 1"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Trucker Name</label
+                >
+                <input
+                  type="text"
+                  v-model="scope.form.ownername"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Contact Person</label
+                >
+                <input
+                  type="text"
+                  v-model="scope.form.contactperson"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Enter Description"
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Mobile#</label
+                >
+                <input
+                  type="text"
+                  v-model="scope.form.celphoneno"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Tel#</label
+                >
+                <input
+                  type="text"
+                  v-model="scope.form.telephoneno"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Email Address</label
+                >
+                <input
+                  type="text"
+                  v-model="scope.form.emailadd"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Address</label
+                >
+                <input
+                  type="text"
+                  v-model="scope.form.address"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div>
+                <label
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Remarks</label
+                >
+                <input
+                  type="text"
+                  v-model="scope.form.remarks"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
+                />
+              </div>
+              <div class="flex items-start mb-6">
+                <div class="flex items-center h-5">
+                  <input
+                    id="remember"
+                    type="checkbox"
+                    :value="scope.form.status"
+                    v-model="scope.form.status"
+                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
+                    required
+                  />
+                </div>
+                <label
+                  for="remember"
+                  class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >IsActive
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- Modal footer -->
+          <div
+            class="flex justify-end items-center p-2 space-x-2 border-gray-200 rounded-b dark:border-gray-600"
+          >
+            <button
+              @click="onSave()"
+              type="button"
+              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Save
+            </button>
+            <button
+              @click="hideModal()"
+              type="button"
+              class="text-white bg-gray-400 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main modal Warehouse-->
+    <div
+      v-if="viewWarehouse"
+       
+      tabindex="-1"
+      aria-hidden="true"
+      class="fixed top-0 left-0 right-0 z-50 w-full h-full p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full"
+    >
+      <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 bg-gray-900 opacity-50"></div>
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <!-- Modal header -->
+          <div
+            class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600"
+          >
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+              Trucker Setup
+            </h3>
+            <button
+              @click="hideViewWarehouse()"
+              type="button"
+              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <span class="sr-only">Close modal</span>
+            </button>
+          </div>
+          <!-- Modal body -->
+          <div class="p-6 space-y-6 overflow-y-auto max-h-[60vh]">
+            <div
+              v-for="warehouse in scope.warehouseList"
+              :key="warehouse.brancode"
+              @click="onSelectWarehouse(warehouse)"
+              class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
+            >
+              <div class="flex items-center">
+                <div id="default-checkbox">
+                  <div>
+                    <label for="temp">Code: {{ warehouse.brancode }}</label>
+                  </div>
+                  <div>
+                    <label for="temp"
+                      >Warehouse: {{ warehouse.branname }}</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Modal footer -->
+          <div
+            class="flex justify-end items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
+          >
+            <button
+              @click="hideViewWarehouse()"
+              type="button"
+              class="text-gray-800 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-500 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </IonPage>
+</template>
+
+<script setup>
+import { serviceApi } from "../../../services/piso-serviceapi";
+import { format } from "date-fns";
+import Swal from "sweetalert2";
+
+const scope = reactive({});
+scope.setup = {};
+scope.itemsPerPage = 20;
+scope.currentPage = 0;
+var sitecode = JSON.parse(localStorage.getItem("_102")).sitecode;
+var userFullname = JSON.parse(localStorage.getItem("_214")).fullname;
+const showModal = ref(false);
+const viewWarehouse = ref(false);
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  /* didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }, */
+});
+
+const hideModal = () => {
+  showModal.value = false;
+};
+
+const hideViewWarehouse = () => {
+  viewWarehouse.value = false;
+};
+
+const onInit = async () => {
+  scope.appData = [];
+
+  const response = await serviceApi().get(
+    "wfms/get-fleet-owner-list?param=&brancode=" +
+      sitecode +
+      "&appname=PISO&tk=100&pg=1",
+    {
+      headers: {
+        Token: JSON.parse(localStorage.getItem("_214")).token,
+      },
+    }
+  );
+
+  if (response.status === 200) {
+    scope.appData = response.data.fleetowners;
+  }
+};
+
+const onEdit = (val) => {
+  scope.mode = 1; //edit mode
+  scope.form = val;
+  scope.form.status = val.status == "A" ? true : false;
+  showModal.value = true;
+};
+
+const onOpenModal = () => {
+  scope.mode = 0;
+  scope.form = {};
+  showModal.value = true;
+};
+
+const onSave = async () => {
+  Swal.fire({
+    title: "Are you sure?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes",
+    heightAuto: false,
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        scope.form.ownertype = "TRUCKER";
+        scope.form.created_by = userFullname;
+        scope.form.status = scope.form.status == true ? "A" : "I";
+        scope.form.branch = sitecode;
+        scope.form.appname = "PISO";
+        if (scope.mode === 1) {
+          const response = await serviceApi().put(
+            "wfms/edit-fleet-owner",
+            scope.form,
+            {
+              headers: {
+                Token: JSON.parse(localStorage.getItem("_214")).token,
+                "Content-Type": "application/json", // Specify the content type
+              },
+            }
+          );
+          if (response.status === 200) {
+            Toast.fire({
+              title: "Success",
+              text: "Save Complete.",
+              icon: "success",
+            });
+            showModal.value = false;
+            await onInit();
+          } else {
+            Toast.fire({
+              title: "Error",
+              text: response.error,
+              icon: "error",
+            });
+            showModal.value = false;
+          }
+        } else {
+          if (scope.form.fleetownerId) {
+            if (scope.form.ownername) {
+              const response = await serviceApi().post(
+                "wfms/add-fleet-owner",
+                scope.form,
+                {
+                  headers: {
+                    Token: JSON.parse(localStorage.getItem("_214")).token,
+                    "Content-Type": "application/json", // Specify the content type
+                  },
+                }
+              );
+
+              if (response.status === 200) {
+                Toast.fire({
+                  title: "Success",
+                  text: "Save Complete.",
+                  icon: "success",
+                });
+                showModal.value = false;
+                await onInit();
+              }
+            } else {
+              Toast.fire({
+                title: "Error",
+                text: "Trucker Name is Required",
+                icon: "warning",
+              });
+            }
+          } else {
+            Toast.fire({
+              title: "Error",
+              text: "Trucker Code is Required",
+              icon: "warning",
+            });
+          }
+        }
+      } catch (error) {
+        Toast.fire({
+          title: "Error",
+          text: error,
+          icon: "error",
+        });
+      }
+    }
+  });
+};
+
+const onDelete = (val) => {
+  scope.selected = val;
+  Swal.fire({
+    title: `Are you sure you want to delete Trucker <strong> ${scope.selected.ownername}</strong>?`,
+    showDenyButton: true,
+    confirmButtonText: "Yes",
+    denyButtonText: `No`,
+    heightAuto: false,
+  }).then(async (result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+      try {
+        var fleetowner = {
+          fleetownerId: scope.selected.fleetownerId,
+          branch: sitecode,
+          appname: "PISO",
+        };
+        const response = await serviceApi().delete(
+          "wfms/remove-fleet-owner?fleetownerId=" +
+            scope.selected.fleetownerId +
+            "&branch=" +
+            sitecode,
+          {
+            headers: {
+              Token: JSON.parse(localStorage.getItem("_214")).token,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          Toast.fire({
+            title: "Success",
+            text: "Delete Complete.",
+            icon: "success",
+          });
+          await onInit();
+        }
+      } catch (error) {
+        Toast.fire({
+          title: "Error",
+          text: error.message,
+          icon: "error",
+        });
+      }
+    }
+  });
+};
+
+const onDeleteConfirn = async () => {
+  //scope.form.branch = sitecode;
+  //scope.form.appname = 'PISO';
+  //scope.form.fleetownerId = scope.selected.fleetownerId;
+};
+
+onMounted(() => {
+  onInit(1);
+});
+</script>

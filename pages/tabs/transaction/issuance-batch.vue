@@ -12,13 +12,12 @@
           <div class="grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <label
-                for="supplier"
+                for="customer"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Supplier <span class="text-red-500">*</span></label
+                >Customer <span class="text-red-500">*</span></label
               >
               <select
                 v-model="trans.shipperId"
-                @change="ChangeSupplier"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option v-for="s in scope.supplierOptions" :value="s.value">
@@ -34,7 +33,6 @@
               >
               <select
                 v-model="trans.trucker"
-                @change="ChangeTrucker"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option v-for="t in scope.truckersOptions" :value="t.value">
@@ -80,7 +78,6 @@
               >
               <select
                 v-model="trans.transcode"
-                @change="ChangeTransactionType"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option
@@ -205,6 +202,7 @@
               <!-- Main modal -->
               <div
                 v-if="showModal"
+                 
                 tabindex="-1"
                 aria-hidden="true"
                 class="fixed top-0 left-0 right-0 z-50 w-full h-full p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full"
@@ -252,43 +250,21 @@
                         <label
                           for="default-search"
                           class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-                          >Search</label
+                          >Location</label
                         >
-                        <div class="relative">
-                          <div
-                            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+
+                        <select
+                          v-model="scope.selectedlocation"
+                          @change="onGetItembyLocation()"
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        >
+                          <option
+                            v-for="t in scope.locationOptions"
+                            :value="t.value"
                           >
-                            <svg
-                              class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                              aria-hidden="true"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                              />
-                            </svg>
-                          </div>
-                          <input
-                            type="search"
-                            id="default-search"
-                            v-model="pltSearch"
-                            class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Search Mockups, Logos..."
-                            required
-                          />
-                          <button
-                            type="submit"
-                            class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                          >
-                            Search
-                          </button>
-                        </div>
+                            {{ t.text }}
+                          </option>
+                        </select>
                       </div>
                       <div
                         v-for="itm in scope.itemMasterList"
@@ -314,13 +290,16 @@
                                 >Pallet Code: {{ itm.PalletCode }}</label
                               >
                             </div>
-
                             <div>
                               <label for="temp"
                                 >Description: {{ itm.PalletDescription }}</label
                               >
                             </div>
-
+                            <div>
+                              <label for="temp"
+                                >Available Qty: {{ itm.AvailableQty }}</label
+                              >
+                            </div>
                             <div>
                               <label for="temp"
                                 >UOM: {{ itm.UnitOfMeasure }}</label
@@ -336,7 +315,7 @@
                     >
                       <button
                         type="button"
-                        @click="onAddSelectedPallet"
+                        @click="onAddSelectedPallet()"
                         class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                       >
                         Add
@@ -410,10 +389,23 @@
                 class="bg-white p-4 rounded-lg shadow"
                 v-for="pallet in trans.invty_transdtl"
               >
+                <div>
+                  <label for="destination"
+                    >Location: {{ pallet.destination }}</label
+                  >
+                </div>
                 <div>Code: {{ pallet.itemId }}</div>
                 <div>
                   <label for="description"
                     >Description: {{ pallet.itemdesc }}</label
+                  >
+                </div>
+                <div>
+                  <label for="uom">UOM: {{ pallet.uom }}</label>
+                </div>
+                <div>
+                  <label for="availableqty"
+                    >Available Qty: {{ pallet.AvailableQty }}</label
                   >
                 </div>
                 <!-- Qty -->
@@ -423,32 +415,11 @@
                     type="number"
                     id="QtyServed"
                     v-model="pallet.qtyserved"
+                    @change="onCheckQtyTrans(pallet)"
                     class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder=""
                     required
                   />
-                </div>
-                <!-- Location is a dropdown with search -->
-                <div>
-                  Location: <span class="text-red-500">*</span>
-                  <select
-                    id="dropdown"
-                    v-model="pallet.destination"
-                    class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="--Select Supplier--"
-                    required="true"
-                  >
-                    <option value="" disabled selected>
-                      --Select Location--
-                    </option>
-                    <option
-                      v-for="loc in scope.locationOptions"
-                      :key="loc.value"
-                      :value="loc.value"
-                    >
-                      {{ loc.text }}
-                    </option>
-                  </select>
                 </div>
                 <div>
                   Remarks:
@@ -494,6 +465,7 @@ import { format } from "date-fns";
 import Swal from "sweetalert2";
 
 const scope = reactive({});
+
 const pltSearch = ref();
 const supplierOptions = []; // Your options data here
 const trans = reactive({});
@@ -514,12 +486,156 @@ const Toast = Swal.mixin({
   }, */
 });
 
-const toggleModal = () => {
-  showModal.value = !showModal.value;
+/*search item*/
+const onSearchItem = () => {
+  showModal.value = true;
 };
 
 const hideModal = () => {
   showModal.value = false;
+};
+
+const onSave = async (p) => {
+  const haserror = onValidation();
+
+  if (haserror) {
+    return;
+  }
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Confirm!",
+    heightAuto: false,
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        trans.warehouseId = JSON.parse(localStorage.getItem("_102")).sitecode;
+        trans.created_by = JSON.parse(localStorage.getItem("_214")).fullname;
+        trans.status = p;
+        trans.transtype = "O";
+
+        // Save to API using Axios
+        const response = await serviceApi().post(
+          `Pallet/post-multi-trans`,
+          trans,
+          {
+            headers: {
+              "Content-Type": "application/json", // Specify the content type
+              Token: JSON.parse(localStorage.getItem("_214")).token,
+            },
+          }
+        );
+
+        if (response.status == 200) {
+          if (!response.hasError) {
+            Toast.fire({
+              title: "Success!",
+              text: "Inbound Transaction Save Complete.",
+              icon: "success",
+            });
+          } else {
+            Toast.fire({
+              title: "Error:",
+              text: response.errorMessage,
+              icon: "error",
+            });
+          }
+          trans.invty_transdtl = [];
+        } else {
+          Swal.fire("Error Encounter!", `${response.data}`, "error");
+          console.error(response.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  });
+};
+
+//Add selected Pallet
+const onAddSelectedPallet = () => {
+  if (trans.invty_transdtl === undefined) {
+    trans.invty_transdtl = [];
+  }
+
+  scope.itemMasterList.forEach((item) => {
+    if (item.isSelected === true) {
+      const newItem = {
+        itemId: item.PalletCode,
+        itemdesc: item.PalletDescription,
+        uom: item.UnitOfMeasure,
+        qtytrans: 0,
+        qtyserved: 0,
+        AvailableQty: item.AvailableQty,
+        destination: scope.selectedlocation,
+      };
+
+      trans.invty_transdtl.push(newItem);
+
+      item.isSelected = false;
+    }
+  });
+  console.log(trans.invty_transdtl);
+};
+
+const onGetItembyLocation = async () => {
+  scope.itemMasterList = [];
+  const response = await serviceApi().get(
+    "pallet/get-inbound-item/?location=" +
+      scope.selectedlocation +
+      "&sitecode=" +
+      JSON.parse(localStorage.getItem("_102")).sitecode,
+    {
+      headers: {
+        Token: JSON.parse(localStorage.getItem("_214")).token,
+      },
+    }
+  );
+
+  if (!response.hasError) {
+    var resData = response.data.data;
+    for (var i in resData) {
+      scope.itemMasterList.push({
+        isSelected: false,
+        PalletCode: resData[i].PalletCode,
+        PalletDescription: resData[i].PalletDescription,
+        AvailableQty: resData[i].qtyAvailable,
+        UnitOfMeasure: resData[i].UnitOfMeasure,
+        AvailableQty: resData[i].qtyAvailable,
+      });
+    }
+  } else {
+    Toast.fire({
+      title: "Error",
+      text: response.errorMessage,
+      icon: "error",
+    });
+  }
+};
+
+const alreadyExist = (palletcode) => {
+  return (
+    trans.invty_transdtl &&
+    Array.isArray(trans.invty_transdtl) &&
+    trans.invty_transdtl.some((item) => item.itemId === palletcode)
+  );
+};
+
+const onItemSelect = (p) => {
+  if (p.isSelected) {
+    trans.itemdesc = "";
+    trans.itemid = "";
+    p.isSelected = false;
+  } else {
+    trans.itemdesc = p.PalletDescription;
+    trans.itemid = p.PalletCode;
+    p.isSelected = true;
+  }
 };
 
 async function getIncomingTransTyps() {
@@ -529,17 +645,17 @@ async function getIncomingTransTyps() {
     // initialize module add/edit
     if (scope.trnscde === "" || scope.trnscde === undefined) {
       scope.iconform = "glyphicons glyphicons-circle_plus";
-      scope.titleform = "New Receipt";
+      scope.titleform = "New Issuance";
     } else {
       scope.iconform = "glyphicon glyphicon-edit";
-      scope.titleform = "Update Receipt";
+      scope.titleform = "Update Issuance";
       scope.isEdit = true;
       await onGetItemUpdate(scope.trnscde);
     }
 
     // get trans type
     const transTypeResponse = await serviceApi().get(
-      `pallet/get-trans-type/?code=incoming`,
+      `pallet/get-trans-type/?code=outgoing`,
       {
         headers: {
           Token: JSON.parse(localStorage.getItem("_214")).token,
@@ -570,7 +686,7 @@ async function getIncomingTransTyps() {
 
     // get Supplier
     const supplierResponse = await serviceApi().get(
-      `pallet/get-pallet-shipper-type/${sitecode},I`,
+      `pallet/get-pallet-shipper-type/${sitecode},O`,
       {
         headers: {
           Token: JSON.parse(localStorage.getItem("_214")).token,
@@ -615,11 +731,6 @@ async function getIncomingTransTyps() {
       text: error.message,
       icon: "error",
     });
-    // HttpErrorService.getStatus(error.response.status, error.response.data);
-    // $rootScope.ShowPrompt(
-    //   "#modal-panel-prompt-error",
-    //   "onInit: " + JSON.stringify(error.message)
-    // );
   }
 }
 
@@ -654,196 +765,16 @@ async function onGetItemUpdate(id) {
   }
 }
 
-const onSave = async (p) => {
-  const haserror = onValidation();
-
-  if (haserror) {
-    return;
-  }
-
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, Confirm!",
-    heightAuto: false,
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      try {
-        trans.warehouseId = JSON.parse(localStorage.getItem("_102")).sitecode;
-        trans.created_by = JSON.parse(localStorage.getItem("_214")).fullname;
-        trans.status = p;
-        trans.transtype = "I";
-
-        // Save to API using Axios
-        const response = await serviceApi().post(
-          `Pallet/post-multi-trans`,
-          trans,
-          {
-            headers: {
-              "Content-Type": "application/json", // Specify the content type
-              Token: JSON.parse(localStorage.getItem("_214")).token,
-            },
-          }
-        );
-
-        if (response.status == 200) {
-          if (p === "P") {
-            Toast.fire({
-              title: "Success!",
-              text: "Your data has been saved and posted.",
-              icon: "success",
-            });
-          } else {
-            Toast.fire({
-              title: "Success!",
-              text: "Your data has been saved.",
-              icon: "success",
-            });
-          }
-          trans.invty_transdtl = [];
-        } else {
-          Swal.fire("Error Encounter!", `${response.data}`, "error");
-          console.error(response.data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  });
-};
-
-const ChangeSupplier = () => {
-  for (var i in scope.supplier) {
-    if (scope.supplier[i].Id === trans.shipperId) {
-      trans.shipperId = scope.supplier[i].Id;
-      break;
-    }
-  }
-};
-
-const ChangeTrucker = () => {
-  for (var i in scope.trucker) {
-    if (scope.trucker[i].fleetownerId === trans.trucker) {
-      trans.trucker = scope.trucker[i].fleetownerId;
-      break;
-    }
-  }
-};
-
-const ChangeTransactionType = () => {
-  for (var i in scope.transcodeList) {
-    if (scope.transcodeList[i].master_key === trans.transcode) {
-      trans.transcode = scope.transcodeList[i].master_key;
-      break;
-    }
-  }
-};
-
-const onSearchItem = async () => {
-  scope.itemMasterList = [];
-  try {
-    const response = await serviceApi().get(
-      "pallet/get-pallet-item-master/?sitecode=" +
-        JSON.parse(localStorage.getItem("_102")).sitecode +
-        "&status=A&take=50&page=1",
-      {
-        headers: {
-          Token: JSON.parse(localStorage.getItem("_214")).token,
-        },
-      }
-    );
-
-    if (!response.hasError) {
-      console.log(response);
-      var resData = response.data.data.data;
-      for (var i in resData) {
-        scope.itemMasterList.push({
-          isSelected: false,
-          CreateDate: resData[i].CreateDate,
-          CreatedBy: resData[i].CreatedBy,
-          PalletCode: resData[i].PalletCode,
-          PalletDescription: resData[i].PalletDescription,
-          PalletType: resData[i].PalletType,
-          Status: resData[i].Status,
-          UnitOfMeasure: resData[i].UnitOfMeasure,
-        });
-      }
-
-      showModal.value = true;
-    } else {
-      console.log("Error: " + response.errorMessage);
-    }
-  } catch (error) {
+const onCheckQtyTrans = (p) => {
+  var p1 = p.AvailableQty;
+  var p2 = p.qtyserved;
+  if (p1 < p2) {
     Toast.fire({
-      title: "Error",
-      text: error.message,
-      icon: "error",
+      title: "The quantity you enter is greater than available quantity!",
+      icon: "warning",
     });
+    p.qtyserved = 0;
   }
-
-  // .success(function (response, status, headers, config) {
-
-  // })
-  // .error(function (data, status, headers, config) {
-  //   HttpErrorService.getStatus(status, data);
-  // });
-};
-
-//Add selected Pallet
-const onAddSelectedPallet = () => {
-  if (trans.invty_transdtl === undefined) {
-    trans.invty_transdtl = [];
-  }
-
-  scope.itemMasterList.forEach((item) => {
-    if (item.isSelected === true) {
-      const newItem = {
-        itemId: item.PalletCode,
-        itemdesc: item.PalletDescription,
-        uom: item.UnitOfMeasure,
-        qtytrans: 0,
-        qtyserved: 0,
-      };
-
-      trans.invty_transdtl.push(newItem);
-
-      item.isSelected = false;
-    }
-  });
-  console.log(trans.invty_transdtl);
-};
-
-const alreadyExist = (palletcode) => {
-  return (
-    trans.invty_transdtl &&
-    Array.isArray(trans.invty_transdtl) &&
-    trans.invty_transdtl.some((item) => item.itemId === palletcode)
-  );
-};
-
-const onItemSelect = (p) => {
-  if (p.isSelected) {
-    trans.itemdesc = "";
-    trans.itemid = "";
-    p.isSelected = false;
-  } else {
-    trans.itemdesc = p.PalletDescription;
-    trans.itemid = p.PalletCode;
-    p.isSelected = true;
-  }
-};
-
-const onCreateNew = () => {
-  scope.isError = false;
-  scope.isSuccess = false;
-
-  scope.itemMasterList = [];
-  scope.trans = {};
-  scope.trans.invty_transdtl = [];
 };
 
 function onValidation() {
@@ -902,22 +833,9 @@ function onValidation() {
     }
   }
 
-  for (var j = 0; j < trans.invty_transdtl.length; j++) {
-    if (
-      trans.invty_transdtl[j].destination === "" ||
-      trans.invty_transdtl[j].destination === undefined
-    ) {
-      Toast.fire({
-        title: "Please Select Location",
-        icon: "warning",
-      });
-      hasError = true;
-      break;
-    }
-  }
-
   return hasError;
 }
+
 onMounted(() => {
   getIncomingTransTyps();
 });

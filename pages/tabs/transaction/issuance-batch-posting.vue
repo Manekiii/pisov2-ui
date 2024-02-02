@@ -7,7 +7,7 @@
             for="title"
             class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
           >
-            Receipt Batch Posting
+            Issuance Batch Posting
           </label>
         </div>
         <div class="mt-4 mb-4 flex justify-end">
@@ -108,7 +108,7 @@ scope.currentPage = 0;
 scope.itemMasterList = [];
 scope.trans = {};
 scope.trans.invty_transdtl = [];
-scope.menuId = "636808269730236079";
+scope.menuId = "636808272376317312";
 
 const ionRouter = useIonRouter();
 
@@ -119,9 +119,9 @@ const Toast = Swal.mixin({
   timer: 3000,
   timerProgressBar: true,
   /* didOpen: (toast) => {
-    toast.onmouseenter = Swal.stopTimer;
-    toast.onmouseleave = Swal.resumeTimer;
-  }, */
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }, */
 });
 
 async function getTransHeaders() {
@@ -130,7 +130,7 @@ async function getTransHeaders() {
     const response = await serviceApi().get(
       `pallet/get-all-transaction-batch/?warehouseId=${
         JSON.parse(localStorage.getItem("_102")).sitecode
-      }&transtype=I`,
+      }&transtype=O`,
       {
         headers: {
           Token: JSON.parse(localStorage.getItem("_214")).token,
@@ -138,7 +138,6 @@ async function getTransHeaders() {
       }
     );
 
-    console.log(response);
     scope.transHeaders = response.data.data;
     scope.total_count = response.data.total_count;
   } catch (error) {
@@ -174,12 +173,12 @@ const onInitMenu = async () => {
 };
 
 const addNew = () => {
-  ionRouter.replace("/tabs/transaction/receipt-batch");
+  ionRouter.replace("/tabs/transaction/issuance-batch");
 };
 
 const onEdit = (p) => {
   setCookie("transid", p);
-  ionRouter.replace("/tabs/transaction/receipt-batch");
+  ionRouter.replace("/tabs/transaction/issuance-batch");
 };
 
 const onDelete = (p) => {
@@ -194,28 +193,52 @@ const onDelete = (p) => {
     confirmButtonText: "Yes",
     denyButtonText: `No`,
     heightAuto: false,
-  }).then((result) => {
+  }).then(async (result) => {
     /* Read more about isConfirmed, isDenied below */
     if (result.isConfirmed) {
-      Swal.fire("Saved!", "", "success");
-    } 
+      try {
+        const response = await serviceApi().delete(
+          "pallet/delete-pallet-trans/" + p,
+          {
+            headers: {
+              Token: JSON.parse(localStorage.getItem("_214")).token,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          Toast.fire({
+            title: "Success",
+            text: "Transaction ID: " + p + " has been removed",
+            icon: "success",
+          });
+        }
+      } catch (error) {
+        Toast.fire({
+          title: "Error",
+          text: error.message,
+          icon: "error",
+        });
+      }
+    }
   });
 };
 
 const onPost = async (transID) => {
   try {
     const response = await serviceApi().get(
-      "pallet/posted-transction/" + transID, {
+      "pallet/posted-transction/" + transID,
+      {
         headers: {
-          Token: JSON.parse(localStorage.getItem('_214')).token
-        }
+          Token: JSON.parse(localStorage.getItem("_214")).token,
+        },
       }
     );
 
     if (response.status === 200) {
       Toast.fire({
         title: "Success",
-        text: "Receipt transaction: " + transID + " posted complete.",
+        text: "Issuance Transaction: " + transID + " posted complete.",
         icon: "success",
       });
       await getTransHeaders();

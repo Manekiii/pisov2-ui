@@ -126,7 +126,7 @@ async function onLogin() {
           userHascode: response.data.stringParam2,
           empId: userData.emplId,
           userrole: userData.userrole,
-          token: response2.headers['token'],
+          token: response2.headers["token"],
         };
 
         // Convert the user object to a JSON string
@@ -142,6 +142,10 @@ async function onLogin() {
     console.log(error);
   }
 }
+
+onMounted(() => {
+  localStorage.clear();
+});
 </script>
 
 <style scoped></style>
