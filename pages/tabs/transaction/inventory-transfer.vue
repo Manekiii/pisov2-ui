@@ -147,7 +147,6 @@
         <!-- Main modal -->
         <div
           v-if="showModal"
-           
           tabindex="-1"
           aria-hidden="true"
           class="fixed top-0 left-0 right-0 z-50 w-full h-full p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full"
@@ -426,8 +425,7 @@ const onSave = async () => {
 
   Swal.fire({
     title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
+    icon: "question",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
@@ -454,11 +452,12 @@ const onSave = async () => {
 
       try {
         const response = await serviceApi().post(
-          "pallet/post-transaction-ledger/" + setup,
+          "pallet/post-transaction-ledger/",
+          new URLSearchParams(setup), // Convert data to URL-encoded format,
           {
             headers: {
+              "Content-Type": "application/x-www-form-urlencoded", // Specify the content type
               Token: JSON.parse(localStorage.getItem("_214")).token,
-              "Content-Type": "application/json", // Specify the content type
             },
           }
         );
@@ -473,12 +472,16 @@ const onSave = async () => {
             text: scope.successMessage,
             icon: "success",
           });
+
+          for (const key in setup) {
+            setup[key] = "";
+          }
         } else {
           scope.isError = false;
           scope.isSuccess = false;
 
           Toast.fire({
-            title: "error",
+            title: "ERROR",
             text: response.errorMessage,
             icon: "error",
           });

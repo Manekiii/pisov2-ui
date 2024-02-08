@@ -40,6 +40,25 @@
                 </option>
               </select>
             </div>
+
+            <div>
+              <label
+                for="transactiontype"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Transaction Type <span class="text-red-500">*</span></label
+              >
+              <select
+                v-model="trans.transcode"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                <option
+                  v-for="t in scope.transactiontypeOptions"
+                  :value="t.value"
+                >
+                  {{ t.text }}
+                </option>
+              </select>
+            </div>
             <div>
               <label
                 for="reference1"
@@ -70,54 +89,7 @@
                 required
               />
             </div>
-            <div>
-              <label
-                for="transactiontype"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Transaction Type <span class="text-red-500">*</span></label
-              >
-              <select
-                v-model="trans.transcode"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              >
-                <option
-                  v-for="t in scope.transactiontypeOptions"
-                  :value="t.value"
-                >
-                  {{ t.text }}
-                </option>
-              </select>
-            </div>
-            <div>
-              <label
-                for="refdate"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Ref Date <span class="text-red-500">*</span></label
-              >
-              <input
-                type="date"
-                id="refdate"
-                v-model="trans.referencedate"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Flowbite"
-                required
-              />
-            </div>
-            <div>
-              <label
-                for="remarks"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Remarks
-              </label>
-              <textarea
-                id="renarks"
-                rows="4"
-                v-model="trans.remarks"
-                class="max-w-md block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Write your remarks here..."
-              ></textarea>
-            </div>
+
             <div>
               <label
                 for="reference3"
@@ -152,6 +124,22 @@
             </div>
             <div>
               <label
+                for="refdate"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Ref Date <span class="text-red-500">*</span></label
+              >
+              <input
+                type="date"
+                id="refdate"
+                v-model="trans.referencedate"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Flowbite"
+                required
+              />
+            </div>
+
+            <div>
+              <label
                 for="orderDate"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
@@ -182,6 +170,21 @@
                 required
               />
             </div>
+            <div>
+              <label
+                for="remarks"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Remarks
+              </label>
+              <textarea
+                id="renarks"
+                rows="4"
+                v-model="trans.remarks"
+                class="max-w-md block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Write your remarks here..."
+              ></textarea>
+            </div>
           </div>
           <div class="mt-5 overflow-auto rounded-lg shadow">
             <label
@@ -202,7 +205,6 @@
               <!-- Main modal -->
               <div
                 v-if="showModal"
-                 
                 tabindex="-1"
                 aria-hidden="true"
                 class="fixed top-0 left-0 right-0 z-50 w-full h-full p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full"
@@ -387,12 +389,28 @@
             <div class="p-4 mt-3 grid grid-cols-1 gap-4 md:hidden bg-gray-100">
               <div
                 class="bg-white p-4 rounded-lg shadow"
-                v-for="pallet in trans.invty_transdtl"
+                v-for="(pallet, index) in trans.invty_transdtl"
+                :key="index"
               >
-                <div>
+                <div class="flex justify-between">
                   <label for="destination"
                     >Location: {{ pallet.destination }}</label
                   >
+                  <button @click="onDelete(index)">
+                    <svg
+                      class="w-6 h-6 text-red-500 dark:text-red-500"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8.6 2.6A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4c0-.5.2-1 .6-1.4ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </button>
                 </div>
                 <div>Code: {{ pallet.itemId }}</div>
                 <div>
@@ -439,6 +457,14 @@
         </div>
 
         <div class="mt-3 flex justify-end">
+          <button
+            type="submit"
+            v-if="scope.isEdit"
+            @click="onBack"
+            class="text-white bg-gray-500 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          >
+            Back
+          </button>
           <button
             type="submit"
             @click="onSave('P')"
@@ -495,6 +521,10 @@ const hideModal = () => {
   showModal.value = false;
 };
 
+const onBack = () => {
+  ionRouter.replace("/tabs/transaction/issuance-batch-posting");
+};
+
 const onSave = async (p) => {
   const haserror = onValidation();
 
@@ -545,7 +575,12 @@ const onSave = async (p) => {
               icon: "error",
             });
           }
-          trans.invty_transdtl = [];
+          if (scope.isEdit) {
+            ionRouter.replace("/tabs/transaction/issuance-batch-posting");
+          }
+          for (const key in trans) {
+            trans[key] = "";
+          }
         } else {
           Swal.fire("Error Encounter!", `${response.data}`, "error");
           console.error(response.data);
@@ -581,6 +616,7 @@ const onAddSelectedPallet = () => {
     }
   });
   console.log(trans.invty_transdtl);
+  showModal.value = false;
 };
 
 const onGetItembyLocation = async () => {
@@ -636,6 +672,10 @@ const onItemSelect = (p) => {
     trans.itemid = p.PalletCode;
     p.isSelected = true;
   }
+};
+
+const onDelete = (index) => {
+  trans.invty_transdtl.splice(index, 1);
 };
 
 async function getIncomingTransTyps() {
@@ -779,37 +819,33 @@ const onCheckQtyTrans = (p) => {
 
 function onValidation() {
   var hasError = false;
+  const name = ref();
   if (trans.shipperId === "" || trans.shipperId === undefined) {
     hasError = true;
-  }
-
-  if (trans.trucker === "" || trans.trucker === undefined) {
+    name.value = "Supplier";
+  } else if (trans.trucker === "" || trans.trucker === undefined) {
     hasError = true;
-  }
-
-  if (trans.referenceno === "" || trans.referenceno === undefined) {
+    name.value = "Trucker";
+  } else if (trans.referenceno === "" || trans.referenceno === undefined) {
     hasError = true;
-  }
-
-  if (trans.transcode === "" || trans.transcode === undefined) {
+    name.value = "Reference 1";
+  } else if (trans.transcode === "" || trans.transcode === undefined) {
     hasError = true;
-  }
-
-  if (trans.referencedate === "" || trans.referencedate === undefined) {
+    name.value = "Transcode";
+  } else if (trans.referencedate === "" || trans.referencedate === undefined) {
     hasError = true;
-  }
-
-  if (trans.orderdate === "" || trans.orderdate === undefined) {
+    name.value = "Reference Date";
+  } else if (trans.orderdate === "" || trans.orderdate === undefined) {
     hasError = true;
-  }
-
-  if (trans.deliverydate === "" || trans.deliverydate === undefined) {
+    name.value = "Order Date";
+  } else if (trans.deliverydate === "" || trans.deliverydate === undefined) {
     hasError = true;
+    name.value = "Delivery Date";
   }
 
   if (hasError) {
     Toast.fire({
-      title: "Please fill all required required fields!",
+      title: `${name.value} is required!`,
       icon: "warning",
     });
   }

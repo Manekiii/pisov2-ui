@@ -2,12 +2,15 @@
   <IonPage>
     <ion-header>
       <ion-toolbar>
-        <ion-title></ion-title>
+        <ion-title>Header</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
+      <div id="loadingindicator" class="hidden">
+        <LoadingIndicator />
+      </div>
       <div>
-        <div class="border-2 items-center justify-center flex">
+        <div class="border-2 items-center justify-center flex p-2">
           <label
             for="title"
             class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
@@ -15,20 +18,60 @@
             Trucker Maintenance
           </label>
         </div>
-        <div class="mt-4 mb-4 flex justify-end">
-          <button
-            @click="onOpenModal()"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          >
-            New
-          </button>
+
+        <div class="p-2">
+          <div class="items-stretch">
+            <!-- <label
+              for="default-search"
+              class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+              >Search</label
+            > -->
+            <div class="relative">
+              <div
+                class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+              >
+                <svg
+                  class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  />
+                </svg>
+              </div>
+              <input
+                type="search"
+                id="default-search"
+                v-model="itemSearch"
+                @input="onSearch(itemSearch)"
+                class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search ID"
+                required
+              />
+            </div>
+          </div>
+          <div class="flex justify-end pt-2">
+            <button
+              @click="onOpenModal()"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              New
+            </button>
+          </div>
         </div>
 
         <div
-          class="w-screen p-4 mt-3 grid grid-cols-1 gap-4 md:hidden bg-gray-100 overflow-y-auto max-h-[75vh]"
+          class="w-screen p-4 mt-3 grid grid-cols-1 gap-4 md:hidden bg-gray-100 overflow-y-auto max-h-[68vh]"
         >
           <div
-            v-for="x in scope.appData"
+            v-for="x in filteredTrucker"
             class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
           >
             <div>
@@ -87,7 +130,6 @@
     <!-- Main modal Add/Edit-->
     <div
       v-if="showModal"
-       
       tabindex="-1"
       aria-hidden="true"
       class="fixed top-0 left-0 right-0 z-50 w-full h-full p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full"
@@ -131,7 +173,7 @@
               <div>
                 <label
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >Trucker Code</label
+                  >Trucker Code <span class="text-red-500">*</span></label
                 >
                 <input
                   type="text"
@@ -144,7 +186,7 @@
               <div>
                 <label
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >Trucker Name</label
+                  >Trucker Name <span class="text-red-500">*</span></label
                 >
                 <input
                   type="text"
@@ -250,18 +292,18 @@
             class="flex justify-end items-center p-2 space-x-2 border-gray-200 rounded-b dark:border-gray-600"
           >
             <button
-              @click="onSave()"
-              type="button"
-              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              Save
-            </button>
-            <button
               @click="hideModal()"
               type="button"
               class="text-white bg-gray-400 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               Close
+            </button>
+            <button
+              @click="onSave()"
+              type="button"
+              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Save
             </button>
           </div>
         </div>
@@ -271,7 +313,6 @@
     <!-- Main modal Warehouse-->
     <div
       v-if="viewWarehouse"
-       
       tabindex="-1"
       aria-hidden="true"
       class="fixed top-0 left-0 right-0 z-50 w-full h-full p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full"
@@ -360,8 +401,10 @@ scope.itemsPerPage = 20;
 scope.currentPage = 0;
 var sitecode = JSON.parse(localStorage.getItem("_102")).sitecode;
 var userFullname = JSON.parse(localStorage.getItem("_214")).fullname;
+const filteredTrucker = ref();
 const showModal = ref(false);
 const viewWarehouse = ref(false);
+const itemSearch = ref();
 
 const Toast = Swal.mixin({
   toast: true,
@@ -375,6 +418,10 @@ const Toast = Swal.mixin({
     }, */
 });
 
+const handleLoading = async () => {
+  document.querySelector("#loadingindicator").classList.toggle("hidden");
+};
+
 const hideModal = () => {
   showModal.value = false;
 };
@@ -384,6 +431,7 @@ const hideViewWarehouse = () => {
 };
 
 const onInit = async () => {
+  handleLoading()
   scope.appData = [];
 
   const response = await serviceApi().get(
@@ -399,6 +447,8 @@ const onInit = async () => {
 
   if (response.status === 200) {
     scope.appData = response.data.fleetowners;
+    filteredTrucker.value = scope.appData;
+    handleLoading()
   }
 };
 
@@ -416,6 +466,12 @@ const onOpenModal = () => {
 };
 
 const onSave = async () => {
+  const haserror = onValidation();
+
+  if (haserror) {
+    return;
+  }
+
   Swal.fire({
     title: "Are you sure?",
     icon: "question",
@@ -556,11 +612,45 @@ const onDelete = (val) => {
   });
 };
 
+const onSearch = (search) => {
+  if (search !== null) {
+    filteredTrucker.value = scope.appData.filter((item) =>
+      item.fleetownerId.toLowerCase().includes(itemSearch.value.toLowerCase())
+    );
+  } else {
+    filteredTrucker.value = scope.appData;
+  }
+};
+
 const onDeleteConfirn = async () => {
   //scope.form.branch = sitecode;
   //scope.form.appname = 'PISO';
   //scope.form.fleetownerId = scope.selected.fleetownerId;
 };
+
+function onValidation() {
+  var hasError = false;
+  const name = ref();
+  if (scope.form.fleetownerId === "" || scope.form.fleetownerId === undefined) {
+    hasError = true;
+    name.value = "Trucker Code";
+  } else if (
+    scope.form.ownername === "" ||
+    scope.form.ownername === undefined
+  ) {
+    hasError = true;
+    name.value = "Trucker Name";
+  }
+
+  if (hasError) {
+    Toast.fire({
+      title: `${name.value} is required!`,
+      icon: "warning",
+    });
+  }
+
+  return hasError;
+}
 
 onMounted(() => {
   onInit(1);

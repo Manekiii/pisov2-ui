@@ -1,8 +1,17 @@
 <template>
   <IonPage>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title></ion-title>
+      </ion-toolbar>
+    </ion-header>
     <ion-content>
+      <div id="loadingindicator" class="hidden">
+        <LoadingIndicator />
+      </div>
+
       <div>
-        <div class="border-2 items-center justify-center flex">
+        <div class="border-2 items-center justify-center flex p-2">
           <label
             for="title"
             class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
@@ -83,14 +92,14 @@
         </div>
 
         <!-- Call Modal on Button click -->
-        <div class="items-center">
+        <!-- <div class="items-center">
           <ReceiptBatchPostingModal
             :data="postingData.transhdrId"
             v-if="showPreviewModal"
             @close-modal="showPreviewModal = false"
             @data-updated="getReceiptBatchPosting()"
           />
-        </div>
+        </div> -->
       </div>
     </ion-content>
   </IonPage>
@@ -124,8 +133,13 @@ const Toast = Swal.mixin({
   }, */
 });
 
+const handleLoading = async () => {
+  document.querySelector("#loadingindicator").classList.toggle("hidden");
+};
+
 async function getTransHeaders() {
   try {
+    handleLoading();
     scope.currentPage = 1;
     const response = await serviceApi().get(
       `pallet/get-all-transaction-batch/?warehouseId=${
@@ -138,11 +152,12 @@ async function getTransHeaders() {
       }
     );
 
-    console.log(response);
     scope.transHeaders = response.data.data;
     scope.total_count = response.data.total_count;
+    handleLoading();
   } catch (error) {
     console.error("Error:", error.message);
+    handleLoading();
     // HttpErrorService.getStatus(error.response.status, error.response.data);
     // $rootScope.ShowPrompt(
     //   "#modal-panel-prompt-error",
@@ -198,17 +213,18 @@ const onDelete = (p) => {
     /* Read more about isConfirmed, isDenied below */
     if (result.isConfirmed) {
       Swal.fire("Saved!", "", "success");
-    } 
+    }
   });
 };
 
 const onPost = async (transID) => {
   try {
     const response = await serviceApi().get(
-      "pallet/posted-transction/" + transID, {
+      "pallet/posted-transction/" + transID,
+      {
         headers: {
-          Token: JSON.parse(localStorage.getItem('_214')).token
-        }
+          Token: JSON.parse(localStorage.getItem("_214")).token,
+        },
       }
     );
 

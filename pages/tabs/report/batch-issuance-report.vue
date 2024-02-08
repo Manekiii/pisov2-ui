@@ -6,8 +6,11 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
+      <div id="loadingindicator" class="hidden">
+        <LoadingIndicator />
+      </div>
       <div>
-        <div class="border-2 items-center justify-center flex">
+        <div class="border-2 items-center justify-center flex p-2">
           <label
             for="title"
             class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
@@ -225,12 +228,17 @@ const Toast = Swal.mixin({
     }, */
 });
 
+const handleLoading = async () => {
+  document.querySelector("#loadingindicator").classList.toggle("hidden");
+};
+
 const hideModal = () => {
   showModal.value = false;
 };
 
 /*initialize first load*/
 const onInit = async (ipage) => {
+  handleLoading()
   scope.currentPage = ipage;
 
   const response = await serviceApi().get(
@@ -249,6 +257,7 @@ const onInit = async (ipage) => {
 
   if (response.status === 200) {
     scope.transactionList = response.data;
+    handleLoading()
   }
 };
 

@@ -39,27 +39,25 @@
         </div>
         <!-- Modal body -->
         <div class="p-6 space-y-6 overflow-y-auto max-h-[60vh]">
-          <div
-            v-for="site in userSiteList"
-            :key="site.branname"
-            class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
-          >
-            <div class="flex items-center">
-              <div class="mr-2">
-                <!-- Checkbox -->
-                <input
-                  type="radio"
-                  :value="site"
-                  @click="getBranchCode(site)"
-                  v-model="branchSeleted"
-                  class="w-4 h-4 mr-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                />
-              </div>
-              <div>
+          <div v-for="site in userSiteList" :key="site.branname">
+            <div
+              @click="getBranchCode(site)"
+              class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
+            >
+              <div class="flex items-center">
+                <div class="mr-2">
+                  <!-- Checkbox -->
+                  <input
+                    type="radio"
+                    :value="site"
+                    v-model="branchSeleted"
+                    class="w-4 h-4 mr-3 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                </div>
                 <div>
-                  <label @click="getBranchCode(site)" for="item">{{
-                    site.branname
-                  }}</label>
+                  <div>
+                    <label for="item">{{ site.branname }}</label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -145,7 +143,7 @@ async function getBranchCode(branch) {
   console.log(branchSeleted.value.brancode);
 }
 
-onMounted(() => {
-  onSwitchSite();
+onMounted(async () => {
+  await onSwitchSite();
 });
 </script>

@@ -6,8 +6,11 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
+      <div id="loadingindicator" class="hidden">
+        <LoadingIndicator />
+      </div>
       <div>
-        <div class="border-2 items-center justify-center flex">
+        <div class="border-2 items-center justify-center flex p-2">
           <label
             for="title"
             class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
@@ -27,10 +30,10 @@
         <div
           class="w-screen p-4 mt-3 grid grid-cols-1 gap-4 md:hidden bg-gray-100 overflow-y-auto max-h-[75vh]"
         >
-          <div v-for="trans in scope.transactionList">
+          <div v-for="trans in filterPallet">
             <div
               class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
-              v-show="trans.locationId === scope.location"
+              v-if="trans.locationId === scope.location"
             >
               <div>
                 <label for="transactionNumber"
@@ -95,7 +98,6 @@
     <!-- Main modal DateFilter-->
     <div
       v-if="showModal"
-       
       tabindex="-1"
       aria-hidden="true"
       class="fixed top-0 left-0 right-0 z-50 w-full h-full p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full"
@@ -257,7 +259,7 @@ var sitecode = JSON.parse(
 ).sitecode; /*set sidecode*/
 
 const showModal = ref(false);
-
+const filterPallet = ref();
 const scope = reactive({});
 
 scope.itemsPerPage = 20;
@@ -277,12 +279,17 @@ const Toast = Swal.mixin({
   }, */
 });
 
+const handleLoading = async () => {
+  document.querySelector("#loadingindicator").classList.toggle("hidden");
+};
+
 const hideModal = () => {
   showModal.value = false;
 };
 
 /*initialize first load*/
 const onInit = async (ipage) => {
+  handleLoading()
   scope.currentPage = ipage;
 
   const response = await serviceApi().get(
@@ -304,7 +311,11 @@ const onInit = async (ipage) => {
   if (response.status === 200) {
     scope.transactionList = response.data.data.data;
     scope.total_count = response.data.data.total_count;
+    filterPallet.value = scope.transactionList.filter((item) =>
+      item.locationId.toLowerCase().includes(scope.location.toLowerCase())
+    );
     showModal.value = false;
+    handleLoading()
   }
 };
 
@@ -329,8 +340,7 @@ scope.onPreview = function () {
     scope.palletDes = filterFilter(scope.itemMasterList, {
       PalletCode: scope.itemId,
     })[0].PalletDescription;
-    scope.onInit(1);
-    $rootScope.closeModalForm();
+    onInit(1);
   }
 };
 

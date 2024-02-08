@@ -6,8 +6,11 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
+      <div id="loadingindicator" class="hidden">
+        <LoadingIndicator />
+      </div>
       <div>
-        <div class="border-2 items-center justify-center flex">
+        <div class="border-2 items-center justify-center flex p-2">
           <label
             for="title"
             class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
@@ -90,7 +93,6 @@
       <!-- Main modal Add/Edit-->
       <div
         v-if="showModal"
-         
         tabindex="-1"
         aria-hidden="true"
         class="fixed top-0 left-0 right-0 z-50 w-full h-full p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full"
@@ -281,11 +283,16 @@ const Toast = Swal.mixin({
   }, */
 });
 
+const handleLoading = async () => {
+  document.querySelector("#loadingindicator").classList.toggle("hidden");
+};
+
 const hideModal = () => {
   showModal.value = false;
 };
 
 const onInit = async (ipage) => {
+  handleLoading();
   scope.currentPage = ipage;
   const response = await serviceApi().get(
     "pallet/get-pallet-item-master/?sitecode=" +
@@ -307,6 +314,7 @@ const onInit = async (ipage) => {
   }
 
   onInitMenu();
+  handleLoading();
 };
 
 const onInitMenu = async () => {
