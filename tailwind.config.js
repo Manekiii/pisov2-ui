@@ -8,6 +8,7 @@ export default {
     "./nuxt.config.{js,ts}",
     "./src/**/*.{html,js}",
     "./node_modules/flowbite/**/*.{js,ts}",
+    "./node_modules/flowbite/**/*.js"
   ],
   theme: {
     extend: {
@@ -64,5 +65,9 @@ export default {
       ],
     },
   },
-  plugins: [require("flowbite/plugin")],
+  plugins: [
+    require("flowbite/plugin")({
+      charts: true,
+    }),
+  ],
 };

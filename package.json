@@ -34,7 +34,7 @@
     "@capacitor/status-bar": "5.0.6",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/date-fns": "^1.5.0",
-    "apexcharts": "^3.43.0",
+    "apexcharts": "^3.45.2",
     "cordova-plugin-android-permissions": "^1.1.5",
     "date-fns": "^2.30.0",
     "file-saver": "^2.0.5",

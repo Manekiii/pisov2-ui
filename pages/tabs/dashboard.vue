@@ -12,9 +12,11 @@
             <!--fill dashboard here-->
             <div class="container-fluid animated fadeIn">
               <div class="row">
-                <div class="row mb10">
+                <div class="grid gap-6 mb-6 md:grid-cols-2">
                   <div class="col-md-3">
-                    <div class="panel bg-purple-400 light of-h mb10 p-4 text-white">
+                    <div
+                      class="panel bg-purple-400 light of-h mb10 p-4 text-white"
+                    >
                       <div class="pn pl20 p15">
                         <div class="icon-bg">
                           <i class="glyphicons glyphicons-charts"></i>
@@ -48,7 +50,9 @@
                     </div>
                   </div>
                   <div class="col-md-3">
-                    <div class="panel bg-blue-400 light of-h mb10 p-4 text-white">
+                    <div
+                      class="panel bg-blue-400 light of-h mb10 p-4 text-white"
+                    >
                       <div class="text-left"><h2>Today</h2></div>
                       <div>
                         <div class="grid gap-6 grid-cols-2">
@@ -77,7 +81,9 @@
                     </div>
                   </div>
                   <div class="col-md-3">
-                    <div class="panel bg-red-400 light of-h mb10 p-4 text-white">
+                    <div
+                      class="panel bg-red-400 light of-h mb10 p-4 text-white"
+                    >
                       <div class="pn pl20 p15">
                         <div class="icon-bg">
                           <i class="fa fa-bar-chart-o"></i>
@@ -94,7 +100,7 @@
                             </div>
                             <h2 class="mt15 lh15">
                               <b>{{
-                                setNumber(scope.monthlyLastMonth.TotalIn)
+                                setNumber(scope.monthlyLastMonth?.TotalIn)
                               }}</b>
                             </h2>
                           </div>
@@ -104,7 +110,7 @@
                             </div>
                             <h2 class="mt15 lh15">
                               <b>{{
-                                setNumber(scope.monthlyLastMonth.TotalOut)
+                                setNumber(scope.monthlyLastMonth?.TotalOut)
                               }}</b>
                             </h2>
                           </div>
@@ -113,7 +119,9 @@
                     </div>
                   </div>
                   <div class="col-md-3">
-                    <div class="panel bg-yellow-300 light of-h mb10 p-4 text-white">
+                    <div
+                      class="panel bg-yellow-300 light of-h mb10 p-4 text-white"
+                    >
                       <div class="pn pl20 p15">
                         <div class="icon-bg">
                           <i class="fa fa-bar-chart-o"></i>
@@ -130,7 +138,9 @@
                               <div class="col-xs-6" style="border: none">
                                 <h2 class="mt15 lh15">
                                   <b>{{
-                                    setNumber(scope.monthlyCurrentMonth.TotalIn)
+                                    setNumber(
+                                      scope.monthlyCurrentMonth?.TotalIn
+                                    )
                                   }}</b>
                                 </h2>
                               </div>
@@ -146,7 +156,7 @@
                                   <h2 class="mt15 lh15">
                                     <b>{{
                                       setNumber(
-                                        scope.monthlyCurrentMonth.TotalOut
+                                        scope.monthlyCurrentMonth?.TotalOut
                                       )
                                     }}</b>
                                   </h2>
@@ -196,6 +206,16 @@
             </div>
           </div>
         </div>
+
+        <div class="mt-3" v-if="dynamicLink">
+          <iframe
+            :src="dynamicLink"
+            frameborder="0"
+            class="w-screen h-screen max-h-[40%] "
+            sandbox="allow-scripts allow-same-origin"
+            aria-readonly="true"
+          ></iframe>
+        </div>
       </ion-card>
     </ion-content>
   </IonPage>
@@ -204,6 +224,7 @@
 <script setup>
 import { serviceApi } from "../../services/piso-serviceapi";
 import { format, subMonths } from "date-fns";
+import { initFlowbite } from "flowbite";
 
 definePageMeta({
   alias: ["/", "/tabs"],
@@ -211,6 +232,7 @@ definePageMeta({
 
 var userFullname = JSON.parse(localStorage.getItem("_214")).fullname;
 var userId = JSON.parse(localStorage.getItem("_214")).userid;
+var dynamicLink = "https://metabase.fast.com.ph/public/dashboard/cc6c27ae-77cc-4a2c-a414-efaa4a195e2a?sitecode=" + JSON.parse(localStorage.getItem("_102")).sitecode;
 /* var sitecode = JSON.parse(
   localStorage.getItem("_102")
 ).sitecode; */ /*set sidecode*/
@@ -271,6 +293,10 @@ function convertPallets(param) {
 }
 
 onMounted(() => {
+  initFlowbite();
+  // if(JSON.parse(localStorage.getItem("_102")).sitecode){
+  //   dynamicLink = "https://metabase.fast.com.ph/public/dashboard/cc6c27ae-77cc-4a2c-a414-efaa4a195e2a?sitecode=" + JSON.parse(localStorage.getItem("_102")).sitecode
+  // }
   init();
 });
 </script>
