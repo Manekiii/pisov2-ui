@@ -232,7 +232,7 @@ definePageMeta({
 
 var userFullname = JSON.parse(localStorage.getItem("_214")).fullname;
 var userId = JSON.parse(localStorage.getItem("_214")).userid;
-var dynamicLink = "https://metabase.fast.com.ph/public/dashboard/cc6c27ae-77cc-4a2c-a414-efaa4a195e2a?sitecode=" + JSON.parse(localStorage.getItem("_102")).sitecode;
+var dynamicLink = localStorage.getItem("_102") ? "https://metabase.fast.com.ph/public/dashboard/cc6c27ae-77cc-4a2c-a414-efaa4a195e2a?sitecode=" + JSON.parse(localStorage.getItem("_102")).sitecode : null; 
 /* var sitecode = JSON.parse(
   localStorage.getItem("_102")
 ).sitecode; */ /*set sidecode*/
