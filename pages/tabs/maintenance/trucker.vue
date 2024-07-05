@@ -1,16 +1,11 @@
 <template>
   <IonPage>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Header</ion-title>
-      </ion-toolbar>
-    </ion-header>
     <ion-content>
       <!-- <div id="loadingindicator" class="hidden">
         <LoadingIndicator />
       </div> -->
       <div>
-        <div class="border-2 items-center justify-center flex p-2">
+        <div class="border-b-2 items-center justify-center flex p-2">
           <label
             for="title"
             class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
@@ -20,13 +15,10 @@
         </div>
 
         <div class="p-2">
-          <div class="items-stretch">
-            <!-- <label
-              for="default-search"
-              class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-              >Search</label
-            > -->
-            <div class="relative">
+          <div
+            class="m-4 flex flex-col sm:flex-row sm:justify-between space-y-4 sm:space-y-0"
+          >
+            <div class="relative flex-1">
               <div
                 class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
               >
@@ -51,16 +43,14 @@
                 id="default-search"
                 v-model="itemSearch"
                 @input="onSearch(itemSearch)"
-                class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="block w-full sm:w-[350px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search ID"
                 required
               />
             </div>
-          </div>
-          <div class="flex justify-end pt-2">
             <button
               @click="onOpenModal()"
-              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
             >
               New
             </button>
@@ -150,7 +140,7 @@
               </tr>
             </tbody>
           </table>
-          <div class="mt-4 flex justify-end">
+          <!-- <div class="mt-4 flex justify-end">
             <svg
               class="w-6 h-6 text-gray-400"
               aria-hidden="true"
@@ -182,7 +172,7 @@
                 d="m9 5 7 7-7 7"
               />
             </svg>
-          </div>
+          </div> -->
         </div>
         <!-- MOBILE -->
         <div

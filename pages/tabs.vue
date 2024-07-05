@@ -2,7 +2,7 @@
   <IonPage>
     <!-- <nav
     ></nav> -->
-    <ion-content>
+    <!-- <ion-content>
       <nav
         class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"
       >
@@ -224,13 +224,20 @@
           @close-modal="showSwitchSiteModal = false"
         />
       </div>
-    </ion-content>
+    </ion-content> -->
+
+    <Layout>
+      <ion-content>
+        <ion-router-outlet />
+      </ion-content>
+    </Layout>
   </IonPage>
 </template>
 
 <script setup>
+import Layout from "~/dashboard/Layout.vue";
 import { initFlowbite } from "flowbite";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import { serviceApi } from "../services/piso-serviceapi";
 
 // Sidebar state

@@ -1,10 +1,6 @@
 <template>
-  <IonPage>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title></ion-title>
-      </ion-toolbar>
-    </ion-header>
+  <IonPage class="p-2">
+    <label class="font-bold text-3xl">Overview</label>
     <ion-content>
       <ion-card>
         <div class="panel panel-primary">
@@ -225,6 +221,7 @@
 import { serviceApi } from "../../services/piso-serviceapi";
 import { format, subMonths } from "date-fns";
 import { initFlowbite } from "flowbite";
+import { showSwitchSiteModal } from "../../dashboard/store";
 
 definePageMeta({
   alias: ["/", "/tabs"],
@@ -232,7 +229,7 @@ definePageMeta({
 
 var userFullname = JSON.parse(localStorage.getItem("_214")).fullname;
 var userId = JSON.parse(localStorage.getItem("_214")).userid;
-var dynamicLink = localStorage.getItem("_102") ? "https://metabase.fast.com.ph/public/dashboard/cc6c27ae-77cc-4a2c-a414-efaa4a195e2a?sitecode=" + JSON.parse(localStorage.getItem("_102")).sitecode : null; 
+var dynamicLink = localStorage.getItem("_102") ? "https://metabase.fast.com.ph/public/dashboard/cc6c27ae-77cc-4a2c-a414-efaa4a195e2a?sitecode=" + JSON.parse(localStorage.getItem("_102")).sitecode : null + "#hide_parameters=Sitecode"; 
 /* var sitecode = JSON.parse(
   localStorage.getItem("_102")
 ).sitecode; */ /*set sidecode*/
@@ -243,6 +240,11 @@ scope.lastMonth = format(prevDate, "MMMM");
 scope.currentMonth = format(new Date(), "MMMM");
 
 const init = async () => {
+if(localStorage.getItem("_102") == undefined || localStorage.getItem("_102") == null){
+  showSwitchSiteModal.value = true
+  return;
+}
+
   const response = await serviceApi().get(
     "pallet/GetPisoPalletChart/?sitecode=" +
       JSON.parse(localStorage.getItem("_102")).sitecode,

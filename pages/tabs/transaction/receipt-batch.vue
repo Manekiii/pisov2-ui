@@ -1,12 +1,7 @@
 <template>
   <IonPage>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title></ion-title>
-      </ion-toolbar>
-    </ion-header>
     <ion-content>
-      <ion-card class="p-4">
+      <div class="p-4">
         <ion-card-title>{{ scope.titleform }}</ion-card-title>
         <div class="p-4 h-[80vh] overflow-y-auto">
           <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -72,7 +67,7 @@
                 id="reference1"
                 v-model="trans.referenceno"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Flowbite"
+                placeholder=""
                 required
               />
             </div>
@@ -87,7 +82,7 @@
                 id="reference2"
                 v-model="trans.orderno"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Flowbite"
+                placeholder=""
                 required
               />
             </div>
@@ -134,7 +129,7 @@
                 id="refdate"
                 v-model="trans.referencedate"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Flowbite"
+                placeholder=""
                 required
               />
             </div>
@@ -533,33 +528,33 @@
             </div>
             *
           </div>
-        </div>
 
-        <div class="mt-3 flex justify-end">
-          <button
-            type="submit"
-            v-if="scope.isEdit"
-            @click="onBack"
-            class="text-white bg-gray-500 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          >
-            Back
-          </button>
-          <button
-            type="submit"
-            @click="onSave('P')"
-            class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          >
-            Save And Post
-          </button>
-          <button
-            type="submit"
-            @click="onSave('O')"
-            class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          >
-            Save
-          </button>
+          <div class="mt-3 flex justify-end">
+            <button
+              type="submit"
+              v-if="scope.isEdit"
+              @click="onBack"
+              class="text-white bg-gray-500 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Back
+            </button>
+            <button
+              type="submit"
+              @click="onSave('P')"
+              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Save And Post
+            </button>
+            <button
+              type="submit"
+              @click="onSave('O')"
+              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Save
+            </button>
+          </div>
         </div>
-      </ion-card>
+      </div>
     </ion-content>
   </IonPage>
 </template>
@@ -968,9 +963,15 @@ function onValidation() {
       title: `${name.value} is required!`,
       icon: "warning",
     });
+
+    return hasError;
   }
 
-  if (trans.invty_transdtl.length === 0) {
+  if (
+    trans.invty_transdtl === undefined ||
+    trans.invty_transdtl === null ||
+    trans.invty_transdtl.length === 0
+  ) {
     Toast.fire({
       title: "Please add at least one pallet!",
       icon: "warning",

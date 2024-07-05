@@ -8,7 +8,19 @@ export default {
     "./nuxt.config.{js,ts}",
     "./src/**/*.{html,js}",
     "./node_modules/flowbite/**/*.{js,ts}",
-    "./node_modules/flowbite/**/*.js"
+    "./node_modules/flowbite/**/*.js",
+    `./components/**/*.{vue,js,ts}`,
+    `./dashboard/**/*.vue`,
+    `./layouts/**/*.vue`,
+    `./pages/**/*.vue`,
+    `./composables/**/*.{js,ts}`,
+    `./plugins/**/*.{js,ts}`,
+    `./utils/**/*.{js,ts}`,
+    `./App.{js,ts,vue}`,
+    `./app.{js,ts,vue}`,
+    `./Error.{js,ts,vue}`,
+    `./error.{js,ts,vue}`,
+    `./app.config.{js,ts}`,
   ],
   theme: {
     extend: {

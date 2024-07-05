@@ -1,16 +1,11 @@
 <template>
   <IonPage>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title></ion-title>
-      </ion-toolbar>
-    </ion-header>
     <ion-content>
       <div id="loadingindicator" class="hidden">
         <LoadingIndicator />
       </div>
       <div>
-        <div class="border-2 items-center justify-center flex p-2">
+        <div class="border-b-2 items-center justify-center flex p-2">
           <label
             for="title"
             class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
@@ -28,8 +23,8 @@
           </button>
         </div>
 
-          <!-- WEB -->
-          <div class="hidden md:block">
+        <!-- WEB -->
+        <div class="hidden md:block">
           <table
             class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg"
           >
@@ -145,7 +140,9 @@
                   {{ trans.Specifics }}
                 </td>
                 <td class="px-6 py-4">
-                  {{ format(new Date(trans.create_date), "MM/dd/yyyy hh:mm:ss a") }}
+                  {{
+                    format(new Date(trans.create_date), "MM/dd/yyyy hh:mm:ss a")
+                  }}
                 </td>
                 <td class="px-6 py-4">
                   {{ trans.created_by }}
@@ -153,7 +150,7 @@
               </tr>
             </tbody>
           </table>
-          <div class="mt-4 flex justify-end">
+          <!-- <div class="mt-4 flex justify-end">
             <svg
               class="w-6 h-6 text-gray-400"
               aria-hidden="true"
@@ -185,7 +182,7 @@
                 d="m9 5 7 7-7 7"
               />
             </svg>
-          </div>
+          </div> -->
         </div>
 
         <!-- mobile -->
@@ -299,7 +296,7 @@
           </div>
           <!-- Modal body -->
           <div class="p-2 overflow-y-auto max-h-[60vh]">
-            <div class="grid gap-6 md:grid-cols-2">
+            <div class="grid gap-2 md:grid-cols-1">
               <div>
                 <label
                   for="first_name"
@@ -340,55 +337,68 @@
                   </option>
                 </select>
               </div>
-              <div date-rangepicker class="flex items-center">
-                <div class="relative">
-                  <div
-                    class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+              <div class="grid gap-2 md:grid-cols-1">
+                <div>
+                  <label
+                    for="first_name"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Data From</label
                   >
-                    <svg
-                      class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
+                  <div class="relative">
+                    <div
+                      class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
                     >
-                      <path
-                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
-                      />
-                    </svg>
+                      <svg
+                        class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+                        />
+                      </svg>
+                    </div>
+                    <input
+                      name="start"
+                      type="date"
+                      v-model="scope.dtefrom"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Select date start"
+                    />
                   </div>
-                  <input
-                    name="start"
-                    type="date"
-                    v-model="scope.dtefrom"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Select date start"
-                  />
                 </div>
-                <span class="mx-2 text-gray-500">to</span>
-                <div class="relative">
-                  <div
-                    class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+                <div>
+                  <label
+                    for="first_name"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Data To</label
                   >
-                    <svg
-                      class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
+                  <div class="relative">
+                    <div
+                      class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
                     >
-                      <path
-                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
-                      />
-                    </svg>
+                      <svg
+                        class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+                        />
+                      </svg>
+                    </div>
+                    <input
+                      name="end"
+                      type="date"
+                      v-model="scope.dteto"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Select date end"
+                    />
                   </div>
-                  <input
-                    name="end"
-                    type="date"
-                    v-model="scope.dteto"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Select date end"
-                  />
                 </div>
               </div>
             </div>
@@ -451,7 +461,6 @@ const hideModal = () => {
 
 /*initialize first load*/
 const onInit = async (ipage) => {
-  handleLoading()
   scope.currentPage = ipage;
 
   const response = await serviceApi().get(
@@ -477,7 +486,6 @@ const onInit = async (ipage) => {
       item.locationId.toLowerCase().includes(scope.location.toLowerCase())
     );
     showModal.value = false;
-    handleLoading()
   }
 };
 

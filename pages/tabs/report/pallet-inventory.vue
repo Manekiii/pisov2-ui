@@ -1,16 +1,11 @@
 <template>
   <IonPage>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title></ion-title>
-      </ion-toolbar>
-    </ion-header>
     <ion-content>
       <!-- <div id="loadingindicator" class="hidden">
         <LoadingIndicator />
       </div> -->
       <div>
-        <div class="border-2 items-center justify-center flex p-2">
+        <div class="border-b-2 items-center justify-center flex p-2">
           <label
             for="title"
             class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
@@ -18,31 +13,40 @@
             Pallet Inventory
           </label>
         </div>
+        <div class="flex justify-end m-4">
+          <button
+            type="submit"
+            @click="showModal = true"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          >
+            Filter
+          </button>
+        </div>
 
-<!-- WEB -->
-<div class="hidden md:block">
-  <table
-    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg"
-  >
-    <thead
-      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-    >
-      <tr>
-        <!-- <th scope="col" class="px-6 py-3">Action</th> -->
-        <th scope="col" class="px-6 py-3">Pallet Code</th>
-        <th scope="col" class="px-6 py-3">Pallet Name</th>
-        <th scope="col" class="px-6 py-3">QtyOnHand</th>
-        <th scope="col" class="px-6 py-3">Total Contracted</th>
-        <th scope="col" class="px-6 py-3">Unposted Receipt</th>
-        <th scope="col" class="px-6 py-3">Unposted Issuance</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-        v-for="trans in scope.transactionList"
-      >
-        <!-- <th
+        <!-- WEB -->
+        <div class="hidden md:block">
+          <table
+            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg"
+          >
+            <thead
+              class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+            >
+              <tr>
+                <!-- <th scope="col" class="px-6 py-3">Action</th> -->
+                <th scope="col" class="px-6 py-3">Pallet Code</th>
+                <th scope="col" class="px-6 py-3">Pallet Name</th>
+                <th scope="col" class="px-6 py-3">QtyOnHand</th>
+                <th scope="col" class="px-6 py-3">Total Contracted</th>
+                <th scope="col" class="px-6 py-3">Unposted Receipt</th>
+                <th scope="col" class="px-6 py-3">Unposted Issuance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                v-for="trans in scope.transactionList"
+              >
+                <!-- <th
           scope="row"
           class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
@@ -109,57 +113,62 @@
             </button>
           </div>
         </th> -->
-        <td class="px-6 py-4">{{ trans.PalletId }}</td>
-        <td class="px-6 py-4">{{ trans.PalletDesc }}</td>
-        <td class="px-6 py-4">{{ trans.QuantityOnHand }}</td>
-        <td class="px-6 py-4">
-          {{ trans.TotalContracted }}
-        </td>
-        <td class="px-6 py-4">
-          {{ trans.UnpostedReceipt }}
-        </td>
-        <td class="px-6 py-4">
-          {{ trans.UnpostedIssuance }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="mt-4 flex justify-end">
-    <svg
-      class="w-6 h-6 text-gray-400"
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-    >
-      <path
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="m15 19-7-7 7-7"
-      />
-    </svg>
-    <label class="mx-2">3 out of 3</label>
-    <svg
-      class="w-6 h-6 text-gray-400"
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-    >
-      <path
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="m9 5 7 7-7 7"
-      />
-    </svg>
-  </div>
-</div>
+                <td class="px-6 py-4">{{ trans.PalletId }}</td>
+                <td class="px-6 py-4">{{ trans.PalletDesc }}</td>
+                <td class="px-6 py-4">{{ trans.QuantityOnHand }}</td>
+                <td class="px-6 py-4">
+                  {{ trans.TotalContracted }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ trans.UnpostedReceipt }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ trans.UnpostedIssuance }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <div class="mt-4 flex justify-end items-center">
+            <button :disabled="scope.currentPage == 0"  @click="onInit(scope.currentPage - 1)">
+              <svg
+                class="w-6 h-6"
+                :class="{'text-gray-400' : scope.currentPage == 0}"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m15 19-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <label class="mx-2">{{ scope.currentPage + 1 }}</label>
+            <button @click="onInit(scope.currentPage + 1)">
+              <svg
+                class="w-6 h-6"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m9 5 7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div> -->
+        </div>
 
-<!-- MOBILE -->
+        <!-- MOBILE -->
 
         <div
           class="w-screen p-4 mt-3 grid grid-cols-1 gap-4 md:hidden bg-gray-100 overflow-y-auto max-h-[75vh]"
@@ -169,10 +178,14 @@
             class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
           >
             <div>
-              <label for="transactionNumber">Pallet Code: {{ trans.PalletId }}</label>
+              <label for="transactionNumber"
+                >Pallet Code: {{ trans.PalletId }}</label
+              >
             </div>
             <div>
-              <label for="orderNumber">Pallet Name: {{ trans.PalletDesc }}</label>
+              <label for="orderNumber"
+                >Pallet Name: {{ trans.PalletDesc }}</label
+              >
             </div>
             <div>
               <label for="transactionNumber"
@@ -180,7 +193,9 @@
               >
             </div>
             <div>
-              <label for="orderNumber">Total Contracted: {{ trans.TotalContracted }}</label>
+              <label for="orderNumber"
+                >Total Contracted: {{ trans.TotalContracted }}</label
+              >
             </div>
 
             <div>
@@ -189,9 +204,8 @@
               >
             </div>
             <div>
-              <label for="orderNumber"
-                >	Unposted Issuance:
-                {{ trans.UnpostedIssuance }}</label
+              <label for="orderNumber">
+                Unposted Issuance: {{ trans.UnpostedIssuance }}</label
               >
             </div>
 
@@ -233,7 +247,7 @@ const handleLoading = async () => {
   document.querySelector("#loadingindicator").classList.toggle("hidden");
 };
 
-scope.pageChangeHandlerPalletInventoryReport = function (num) {
+const pageChangeHandlerPalletInventoryReport = function (num) {
   scope.currentPage = num;
 };
 var sitecode = JSON.parse(localStorage.getItem("_102")).sitecode;
@@ -241,7 +255,6 @@ var userFullname = JSON.parse(localStorage.getItem("_214")).fullname;
 
 /*initialize first load*/
 const onInit = async (ipage) => {
-  handleLoading()
   scope.currentPage = ipage;
 
   const response = await serviceApi().get(
@@ -256,11 +269,10 @@ const onInit = async (ipage) => {
   if (response.status === 200) {
     scope.transactionList = response.data.data.data;
     scope.total_count = response.data.data.total_count;
-    handleLoading()
   }
 };
 
 onMounted(() => {
-  onInit();
+  onInit(0);
 });
 </script>

@@ -1,16 +1,11 @@
 <template>
   <IonPage>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Header</ion-title>
-      </ion-toolbar>
-    </ion-header>
     <ion-content>
       <div id="loadingindicator" class="hidden">
         <LoadingIndicator />
       </div>
       <div>
-        <div class="border-2 items-center justify-center flex p-2">
+        <div class="border-b-2 items-center justify-center flex p-2">
           <label
             for="title"
             class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
@@ -18,15 +13,48 @@
             Location Master
           </label>
         </div>
-        <div class="mt-4 mb-4 flex justify-end">
+        <div
+          class="m-4 flex flex-col sm:flex-row sm:justify-between space-y-4 sm:space-y-0"
+        >
+          <div class="relative flex-1">
+            <div
+              class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+            >
+              <svg
+                class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
+            </div>
+            <input
+              type="search"
+              id="default-search"
+              class="block w-full sm:w-[350px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter"
+              required
+              v-model="searchQuery"
+              @change=""
+            />
+          </div>
           <button
             v-show="scope.canAdd"
             @click="onNewLocation()"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
           >
             New
           </button>
         </div>
+
         <!-- WEB VIEW -->
         <div class="hidden md:block">
           <table
@@ -46,7 +74,8 @@
             <tbody>
               <tr
                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                v-for="pallet in scope.locationlist"
+                v-if="filteredLocations"
+                v-for="pallet in filteredLocations"
               >
                 <th
                   scope="row"
@@ -104,9 +133,12 @@
                   }}
                 </td>
               </tr>
+              <div v-else class="flex justify-center items-center">
+                No Location found.
+              </div>
             </tbody>
           </table>
-          <div class="mt-4 flex justify-end">
+          <!-- <div class="mt-4 flex justify-end">
             <svg
               class="w-6 h-6 text-gray-400"
               aria-hidden="true"
@@ -122,7 +154,7 @@
                 d="m15 19-7-7 7-7"
               />
             </svg>
-            <label class="mx-2">3 out of 3</label>
+            <label class="mx-2">{{currentPage}}</label>
             <svg
               class="w-6 h-6 text-gray-400"
               aria-hidden="true"
@@ -138,14 +170,15 @@
                 d="m9 5 7 7-7 7"
               />
             </svg>
-          </div>
+          </div> -->
         </div>
         <!-- MOBILE VIEW -->
         <div
           class="w-screen p-4 mt-3 grid grid-cols-1 gap-4 md:hidden bg-gray-100 overflow-y-auto max-h-[75vh]"
         >
           <div
-            v-for="pallet in scope.locationlist"
+            v-if="filteredLocations"
+            v-for="pallet in filteredLocations"
             class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
           >
             <div>
@@ -191,6 +224,10 @@
                 Delete
               </button>
             </div>
+          </div>
+
+          <div v-else class="flex justify-center items-center">
+            No Location found.
           </div>
         </div>
       </div>
@@ -249,7 +286,7 @@
                     id="storageid"
                     v-model="setup.locationId"
                     :disabled="scope.isEdit"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Enter Storage Id"
                     required
                   />
@@ -391,11 +428,33 @@ const scope = reactive({});
 const setup = reactive({});
 const sitecode = JSON.parse(localStorage.getItem("_102")).sitecode;
 const userFullname = JSON.parse(localStorage.getItem("_214")).fullname;
+const searchQuery = ref("");
 const showModal = ref(false);
 const viewWarehouse = ref(false);
 scope.itemsPerPage = 20;
 scope.currentPage = 0;
 scope.menuId = "location";
+
+const filteredLocations = computed(() => {
+  if (!searchQuery.value.trim()) return scope.locationlist;
+  {
+    return scope.locationlist.filter((location) => {
+      return (
+        location.Location.toLowerCase().includes(
+          searchQuery.value.toLowerCase()
+        ) ||
+        location.LocationDescription.toLowerCase().includes(
+          searchQuery.value.toLowerCase()
+        ) ||
+        location.CreatedBy.toLowerCase().includes(
+          searchQuery.value.toLowerCase()
+        )
+      );
+    });
+  }
+});
+
+const OnSearch = () => {};
 
 const Toast = Swal.mixin({
   toast: true,

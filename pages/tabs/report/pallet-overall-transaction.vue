@@ -1,22 +1,26 @@
 <template>
   <IonPage>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title></ion-title>
-      </ion-toolbar>
-    </ion-header>
     <ion-content>
       <!-- <div id="loadingindicator" class="hidden">
         <LoadingIndicator />
       </div> -->
       <div>
-        <div class="border-2 items-center justify-center flex p-2">
+        <div class="border-b-2 items-center justify-center flex p-2">
           <label
             for="title"
             class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
           >
             Pallet Overall Transaction
           </label>
+        </div>
+        <div class="flex justify-end m-4">
+          <button
+            type="submit"
+            @click="showModal = true"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          >
+            Filter
+          </button>
         </div>
 
         <!-- WEB -->
@@ -132,7 +136,7 @@
               </tr>
             </tbody>
           </table>
-          <div class="mt-4 flex justify-end">
+          <!-- <div class="mt-4 flex justify-end">
             <svg
               class="w-6 h-6 text-gray-400"
               aria-hidden="true"
@@ -164,7 +168,7 @@
                 d="m9 5 7 7-7 7"
               />
             </svg>
-          </div>
+          </div> -->
         </div>
 
         <!-- MOBILE -->
@@ -262,8 +266,13 @@
           </div>
           <!-- Modal body -->
           <div class="p-2 overflow-y-auto max-h-[60vh]">
-            <div class="grid gap-6 md:grid-cols-2">
-              <div date-rangepicker class="flex items-center">
+            <div class="grid gap-2 md:grid-cols-1">
+              <div>
+                <label
+                  for="first_name"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Data From</label
+                >
                 <div class="relative">
                   <div
                     class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
@@ -288,7 +297,13 @@
                     placeholder="Select date start"
                   />
                 </div>
-                <span class="mx-2 text-gray-500">to</span>
+              </div>
+              <div>
+                <label
+                  for="first_name"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Data To</label
+                >
                 <div class="relative">
                   <div
                     class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
@@ -359,7 +374,6 @@ const hideModal = () => {
 
 /*initialize first load*/
 const onInit = async (ipage) => {
-  handleLoading();
   scope.currentPage = ipage;
 
   const response = await serviceApi().get(
@@ -379,7 +393,6 @@ const onInit = async (ipage) => {
   if (response.status === 200) {
     scope.transactionList = response.data;
     showModal.value = false;
-    handleLoading();
   }
 };
 

@@ -1,17 +1,9 @@
 <template>
   <IonPage>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title></ion-title>
-      </ion-toolbar>
-    </ion-header>
     <ion-content>
-      <div id="loadingindicator" class="hidden">
-        <LoadingIndicator />
-      </div>
 
       <div>
-        <div class="border-2 items-center justify-center flex p-2">
+        <div class="border-b-2 items-center justify-center flex p-2">
           <label
             for="title"
             class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
@@ -19,11 +11,43 @@
             Receipt Batch Posting
           </label>
         </div>
-        <div class="mt-4 mb-4 flex justify-end">
+        <div
+          class="m-4 flex flex-col sm:flex-row sm:justify-between space-y-4 sm:space-y-0"
+        >
+          <div class="relative flex-1">
+            <div
+              class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+            >
+              <svg
+                class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
+            </div>
+            <input
+              type="search"
+              id="default-search"
+              class="block w-full sm:w-[350px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter"
+              required
+              v-model="searchQuery"
+              @change=""
+            />
+          </div>
           <button
             v-show="scope.canAdd"
             @click="addNew"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
           >
             New
           </button>
@@ -52,7 +76,8 @@
             <tbody>
               <tr
                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                v-for="posting in scope.transHeaders"
+                v-if="filteredLocations"
+                v-for="posting in filteredLocations"
               >
                 <th
                   scope="row"
@@ -154,9 +179,13 @@
                   }}
                 </td>
               </tr>
+
+              <div v-else class="flex justify-center items-center">
+                No Receipt found.
+              </div>
             </tbody>
           </table>
-          <div class="mt-4 flex justify-end">
+          <!-- <div class="mt-4 flex justify-end">
             <svg
               class="w-6 h-6 text-gray-400"
               aria-hidden="true"
@@ -188,7 +217,7 @@
                 d="m9 5 7 7-7 7"
               />
             </svg>
-          </div>
+          </div> -->
         </div>
 
         <!-- MOBILE -->
@@ -196,7 +225,8 @@
           class="w-screen p-4 mt-3 grid grid-cols-1 gap-4 md:hidden bg-gray-100 overflow-y-auto max-h-[75vh]"
         >
           <div
-            v-for="posting in scope.transHeaders"
+            v-if="filteredLocations"
+            v-for="posting in filteredLocations"
             class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
           >
             <div>
@@ -252,6 +282,10 @@
               </button>
             </div>
           </div>
+
+          <div v-else class="flex justify-center items-center">
+            No Receipt found.
+          </div>
         </div>
 
         <!-- Call Modal on Button click -->
@@ -283,6 +317,21 @@ scope.trans.invty_transdtl = [];
 scope.menuId = "636808269730236079";
 
 const ionRouter = useIonRouter();
+
+const searchQuery = ref("");
+const filteredLocations = computed(() => {
+  if (!searchQuery.value.trim()) return scope.transHeaders;
+  {
+    return scope.transHeaders.filter((item) => {
+      return (
+        item.referenceno
+          .toLowerCase()
+          .includes(searchQuery.value.toLowerCase()) ||
+        item.created_by.toLowerCase().includes(searchQuery.value.toLowerCase())
+      );
+    });
+  }
+});
 
 const Toast = Swal.mixin({
   toast: true,
