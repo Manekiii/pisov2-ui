@@ -48,10 +48,10 @@ watch(route, () => {
   <div class="relative h-screen overflow-hidden bg-[#d8f1f0]">
     <div class="flex items-start">
       <Overlay />
-      <Sidebar mobile-orientation="end" />
+      <Sidebar id="sidebar" mobile-orientation="start" />
       <div class="flex h-screen w-full flex-col pl-0 lg:space-y-4">
-        <TopBar />
-        <main class="h-screen px-2 pt-4 md:pb-8 lg:px-4">
+        <TopBar id="topbar" />
+        <main class="h-screen overflow-auto lg:px-4">
           <slot />
         </main>
       </div>
@@ -64,3 +64,12 @@ watch(route, () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+@media print {
+  #sidebar,
+  #topbar {
+    display: none;
+  }
+}
+</style>

@@ -9,14 +9,14 @@
             <div>
               <label
                 for="default-search"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
                 >Location <span class="text-red-500">*</span></label
               >
 
               <select
                 v-model="setup.source"
                 @change="onChangeLocSource(scope.locationOptions)"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >
                 <option v-for="t in scope.locationOptions" :value="t.value">
                   {{ t.text }}
@@ -26,7 +26,7 @@
             <div>
               <label
                 for="de"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
                 >Item Description <span class="text-red-500">*</span></label
               >
               <div class="flex">
@@ -35,14 +35,14 @@
                   id="de"
                   v-model="setup.itemdesc"
                   readonly
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder=""
                   required
                 />
                 <button
                   type="submit"
                   @click="onSearchItem"
-                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
                 >
                   Search
                 </button>
@@ -51,7 +51,7 @@
             <div>
               <label
                 for="visitors"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
                 >Quantity <span class="text-red-500">*</span></label
               >
               <input
@@ -59,7 +59,7 @@
                 id="visitors"
                 v-model="setup.quantity"
                 @change="onChangeQty"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder=""
                 required
               />
@@ -68,14 +68,14 @@
             <div>
               <label
                 for="reference1"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
                 >Reference No. <span class="text-red-500">*</span></label
               >
               <input
                 type="text"
                 id="reference1"
                 v-model="setup.referenceno"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder=""
                 required
               />
@@ -83,14 +83,14 @@
             <div>
               <label
                 for="reference2"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
                 >Document No <span class="text-red-500">*</span></label
               >
               <input
                 type="text"
                 id="reference2"
                 v-model="setup.documentno"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder=""
                 required
               />
@@ -98,13 +98,13 @@
             <div>
               <label
                 for="default-search"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
                 >Transfer To <span class="text-red-500">*</span></label
               >
 
               <select
                 v-model="setup.destination"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >
                 <option v-for="t in scope.storageOptions" :value="t.value">
                   {{ t.text }}
@@ -114,7 +114,7 @@
             <div>
               <label
                 for="remarks"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
               >
                 Remarks
               </label>
@@ -122,7 +122,7 @@
                 id="renarks"
                 rows="4"
                 v-model="setup.remarks"
-                class="max-w-md block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="max-w-md block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Write your remarks here..."
               ></textarea>
             </div>
@@ -131,10 +131,11 @@
           <div class="mt-3 flex justify-end">
             <button
               type="submit"
+              :disabled="isClick"
               @click="onSave()"
-              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
             >
-              Save
+              {{isClick ? "Saving..." : "Save"}}
             </button>
           </div>
         </div>
@@ -150,18 +151,18 @@
             <!-- Background overlay -->
             <div class="fixed inset-0 bg-gray-900 opacity-50"></div>
             <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div class="relative bg-white rounded-lg shadow">
               <!-- Modal header -->
               <div
-                class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600"
+                class="flex items-start justify-between p-4 border-b rounded-t"
               >
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                <h3 class="text-xl font-semibold text-gray-900">
                   Choose Pallets
                 </h3>
                 <button
                   @click="hideModal()"
                   type="button"
-                  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
                 >
                   <svg
                     aria-hidden="true"
@@ -185,7 +186,7 @@
                   v-for="itm in scope.itemlist"
                   :key="itm.PalletCode"
                   @click="onItemSelect(itm)"
-                  class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
+                  class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 mb-3"
                 >
                   <div class="flex items-center">
                     <div id="default-checkbox">
@@ -208,12 +209,12 @@
               </div>
               <!-- Modal footer -->
               <div
-                class="flex justify-end items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
+                class="flex justify-end items-center p-6 space-x-2 border-t border-gray-200 rounded-b"
               >
                 <button
                   @click="hideModal()"
                   type="button"
-                  class="text-gray-800 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-500 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                  class="text-gray-800 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-500 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
                 >
                   Close
                 </button>
@@ -228,10 +229,11 @@
 
 <script setup>
 import { serviceApi } from "../../../services/piso-serviceapi";
+import { isClick } from "~/dashboard/store";
 import Swal from "sweetalert2";
 
 const sitecode = JSON.parse(localStorage.getItem("_102")).sitecode;
-const userFullname = JSON.parse(localStorage.getItem("_214")).fullname;
+const userFullname = JSON.parse(decrypt(localStorage.getItem("_214"))).fullname;
 
 const scope = reactive({});
 const setup = reactive({});
@@ -297,7 +299,7 @@ async function onInit() {
     `pallet/get-pallet-location/?sitecode=${sitecode}`,
     {
       headers: {
-        Token: JSON.parse(localStorage.getItem("_214")).token,
+        Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
       },
     }
   );
@@ -313,7 +315,7 @@ async function onInit() {
     "pallet/get-inbound-location/" + sitecode,
     {
       headers: {
-        Token: JSON.parse(localStorage.getItem("_214")).token,
+        Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
       },
     }
   );
@@ -375,7 +377,7 @@ const onSearchItem = async () => {
         sitecode,
       {
         headers: {
-          Token: JSON.parse(localStorage.getItem("_214")).token,
+          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
         },
       }
     );
@@ -446,13 +448,14 @@ const onSave = async () => {
       }
 
       try {
+        isClick.value = true;
         const response = await serviceApi().post(
           "pallet/post-transaction-ledger/",
           new URLSearchParams(setup), // Convert data to URL-encoded format,
           {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded", // Specify the content type
-              Token: JSON.parse(localStorage.getItem("_214")).token,
+              Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
             },
           }
         );
@@ -471,6 +474,7 @@ const onSave = async () => {
           for (const key in setup) {
             setup[key] = "";
           }
+          isClick.value = false;
         } else {
           scope.isError = false;
           scope.isSuccess = false;
@@ -480,6 +484,7 @@ const onSave = async () => {
             text: response.errorMessage,
             icon: "error",
           });
+          isClick.value = false;
         }
       } catch (error) {
         Toast.fire({
@@ -487,6 +492,7 @@ const onSave = async () => {
           text: error.message,
           icon: "error",
         });
+        isClick.value = false;
       }
     }
   });

@@ -1,12 +1,11 @@
 <template>
   <IonPage>
     <ion-content>
-
       <div>
         <div class="border-b-2 items-center justify-center flex p-2">
           <label
             for="title"
-            class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
+            class="font-semibold text-3xl block mb-2 text-gray-900"
           >
             Receipt Batch Posting
           </label>
@@ -19,7 +18,7 @@
               class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
             >
               <svg
-                class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                class="w-4 h-4 text-gray-500"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -37,7 +36,7 @@
             <input
               type="search"
               id="default-search"
-              class="block w-full sm:w-[350px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+              class="block w-full sm:w-[350px] p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter"
               required
               v-model="searchQuery"
@@ -55,94 +54,131 @@
 
         <!-- WEB -->
         <div class="hidden md:block">
-          <table
-            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg"
-          >
-            <thead
-              class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-            >
+          <table class="w-full text-sm text-left rtl:text-right rounded-lg">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
                 <th scope="col" class="px-6 py-3">Action</th>
                 <th scope="col" class="px-6 py-3">Transaction#</th>
                 <th scope="col" class="px-6 py-3">Doc#</th>
                 <th scope="col" class="px-6 py-3">Order#</th>
                 <th scope="col" class="px-6 py-3">Ref#</th>
+                <th scope="col" class="px-6 py-3">Pallet Desc</th>
                 <th scope="col" class="px-6 py-3">Quantity</th>
                 <th scope="col" class="px-6 py-3">Delivery Date</th>
+                <th scope="col" class="px-6 py-3">Type</th>
                 <th scope="col" class="px-6 py-3">Created By</th>
                 <th scope="col" class="px-6 py-3">Created Date</th>
               </tr>
             </thead>
             <tbody>
               <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                class="bg-white border-b"
                 v-if="filteredLocations"
-                v-for="posting in filteredLocations"
+                v-for="(posting, index) in filteredLocations"
               >
                 <th
                   scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                 >
                   <div>
-                    <button
-                      class="bg-blue-500 rounded-lg p-1"
-                      v-show="scope.canEdit"
-                      @click="onEdit(posting.transhdrId)"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-6 h-6"
+                    <!-- Edit Button and Tooltip -->
+                    <div class="relative inline-block">
+                      <!-- Edit Button and Tooltip -->
+                      <button
+                        @mouseover="tooltips[index].showEdit = true"
+                        @mouseleave="tooltips[index].showEdit = false"
+                        class="bg-blue-500 rounded-lg p-1 text-white"
+                        v-show="scope.canEdit"
+                        @click="onEdit(posting.transhdrId)"
                       >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                        />
-                      </svg>
-                    </button>
-                    <button
-                      class="bg-red-500 rounded-lg p-1 ml-3"
-                      v-show="scope.canDelete && posting.transcode !== 'IN03'"
-                      @click="onDelete(posting.transhdrId)"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-6 h-6"
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-6 h-6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                          />
+                        </svg>
+                      </button>
+                      <div
+                        v-if="tooltips[index].showEdit"
+                        class="absolute bottom-full mb-2 w-max px-2 py-1 text-sm text-white bg-gray-700 rounded shadow-lg"
+                        :style="{ left: '50%', transform: 'translateX(-50%)' }"
                       >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                        />
-                      </svg>
-                    </button>
-                    <button
-                      class="bg-green-500 rounded-lg p-1 ml-3"
-                      @click="onPost(posting.transhdrId)"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-6 h-6"
+                        Edit
+                      </div>
+                    </div>
+
+                    <!-- Delete Button and Tooltip -->
+                    <div class="relative inline-block">
+                      <button
+                        @mouseover="tooltips[index].showDelete = true"
+                        @mouseleave="tooltips[index].showDelete = false"
+                        class="bg-red-500 rounded-lg p-1 ml-3 text-white hover:bg-red-300"
+                        v-show="scope.canDelete && posting.transcode !== 'IN03'"
+                        @click="onDelete(posting.transhdrId)"
                       >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
-                        />
-                      </svg>
-                    </button>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-6 h-6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                          />
+                        </svg>
+                      </button>
+                      <div
+                        v-if="tooltips[index].showDelete"
+                        class="absolute bottom-full mb-2 w-max px-2 py-1 text-sm text-white bg-gray-700 rounded shadow-lg"
+                        :style="{ left: '50%', transform: 'translateX(-50%)' }"
+                      >
+                        Delete
+                      </div>
+                    </div>
+
+                    <!-- Post Button and Tooltip -->
+                    <div class="relative inline-block ml-3">
+                      <button
+                        @mouseover="tooltips[index].showPost = true"
+                        @mouseleave="tooltips[index].showPost = false"
+                        class="bg-green-500 rounded-lg p-1 text-white hover:bg-green-800"
+                        @click="onPost(posting.transhdrId)"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-6 h-6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+                          />
+                        </svg>
+                      </button>
+                      <div
+                        v-if="tooltips[index].showPost"
+                        class="absolute bottom-full mb-2 w-max px-2 py-1 text-sm text-white bg-gray-700 rounded shadow-lg"
+                        :style="{ left: '50%', transform: 'translateX(-50%)' }"
+                      >
+                        Post
+                      </div>
+                    </div>
                   </div>
                 </th>
                 <td class="px-6 py-4">{{ posting.transhdrId }}</td>
@@ -169,6 +205,9 @@
                 </td>
                 <td class="px-6 py-4">
                   {{ format(new Date(posting.deliverydate), "yyyy-MM-dd") }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ posting.transcode !== "IN03" ? "Normal" : "Inter-plant" }}
                 </td>
                 <td class="px-6 py-4">
                   {{ posting.created_by }}
@@ -227,7 +266,7 @@
           <div
             v-if="filteredLocations"
             v-for="posting in filteredLocations"
-            class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
+            class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 mb-3"
           >
             <div>
               <label for="transactionNumber"
@@ -263,20 +302,20 @@
               <button
                 v-show="scope.canEdit"
                 @click="onEdit(posting.transhdrId)"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
               >
                 Edit
               </button>
               <button
                 v-show="scope.canDelete && posting.transcode !== 'IN03'"
                 @click="onDelete(posting.transhdrId)"
-                class="text-white bg-red-500 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                class="text-white bg-red-500 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
               >
                 Delete
               </button>
               <button
                 @click="onPost(posting.transhdrId)"
-                class="text-white bg-green-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                class="text-white bg-green-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
               >
                 Post
               </button>
@@ -315,7 +354,9 @@ scope.itemMasterList = [];
 scope.trans = {};
 scope.trans.invty_transdtl = [];
 scope.menuId = "636808269730236079";
-
+const showDeleteTooltip = ref(false);
+const showEditTooltip = ref(false);
+const showPostTooltip = ref(false);
 const ionRouter = useIonRouter();
 
 const searchQuery = ref("");
@@ -333,6 +374,24 @@ const filteredLocations = computed(() => {
   }
 });
 
+const tooltips = ref([]);
+
+// Initialize tooltips array with states for each item
+const initializeTooltips = (length) => {
+  tooltips.value = Array.from({ length }, () => ({
+    showEdit: false,
+    showDelete: false,
+    showPost: false,
+  }));
+};
+
+// Initialize tooltips when data is loaded
+watch(filteredLocations, (newVal) => {
+  if (newVal) {
+    initializeTooltips(newVal.length);
+  }
+});
+
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -345,13 +404,13 @@ const Toast = Swal.mixin({
   }, */
 });
 
-const handleLoading = async () => {
+/* const handleLoading = async () => {
   document.querySelector("#loadingindicator").classList.toggle("hidden");
-};
+}; */
 
 async function getTransHeaders() {
   try {
-    handleLoading();
+    // handleLoading();
     scope.currentPage = 1;
     const response = await serviceApi().get(
       `pallet/get-all-transaction-batch/?warehouseId=${
@@ -359,17 +418,17 @@ async function getTransHeaders() {
       }&transtype=I`,
       {
         headers: {
-          Token: JSON.parse(localStorage.getItem("_214")).token,
+          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
         },
       }
     );
 
     scope.transHeaders = response.data.data;
     scope.total_count = response.data.total_count;
-    handleLoading();
+    // handleLoading();
   } catch (error) {
     console.error("Error:", error.message);
-    handleLoading();
+    // handleLoading();
     // HttpErrorService.getStatus(error.response.status, error.response.data);
     // $rootScope.ShowPrompt(
     //   "#modal-panel-prompt-error",
@@ -379,7 +438,7 @@ async function getTransHeaders() {
 }
 
 const onInitMenu = async () => {
-  const userId = JSON.parse(localStorage.getItem("_214")).userid;
+  const userId = JSON.parse(decrypt(localStorage.getItem("_214"))).userid;
   const params = scope.menuId + "," + userId;
 
   try {
@@ -387,7 +446,7 @@ const onInitMenu = async () => {
       `user/get-user-menu-list/${params}`,
       {
         headers: {
-          Token: JSON.parse(localStorage.getItem("_214")).token,
+          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
         },
       }
     );
@@ -409,7 +468,7 @@ const onEdit = (p) => {
   ionRouter.replace("/tabs/transaction/receipt-batch");
 };
 
-const onDelete = (p) => {
+const onDelete = async (p) => {
   scope.isError2 = false;
   scope.isSuccess2 = false;
   // $("#itemname").text("Transaction ID: " + p);
@@ -421,10 +480,25 @@ const onDelete = (p) => {
     confirmButtonText: "Yes",
     denyButtonText: `No`,
     heightAuto: false,
-  }).then((result) => {
+  }).then(async (result) => {
     /* Read more about isConfirmed, isDenied below */
     if (result.isConfirmed) {
-      Swal.fire("Saved!", "", "success");
+      const response = await serviceApi().delete(
+        "pallet/delete-pallet-trans/" + p,
+        {
+          headers: {
+            Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
+          },
+        }
+      );
+      if (response) {
+        Toast.fire({
+          title: "Success",
+          text: "Receipt transaction: " + p + " deletion complete.",
+          icon: "success",
+        });
+        await getTransHeaders();
+      }
     }
   });
 };
@@ -435,7 +509,7 @@ const onPost = async (transID) => {
       "pallet/posted-transction/" + transID,
       {
         headers: {
-          Token: JSON.parse(localStorage.getItem("_214")).token,
+          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
         },
       }
     );
@@ -449,11 +523,22 @@ const onPost = async (transID) => {
       await getTransHeaders();
     }
   } catch (error) {
-    Toast.fire({
-      title: "Error",
-      text: error.message,
-      icon: "error",
-    });
+    console.log("Error:", error);
+
+    if (error.response.data) {
+      Toast.fire({
+        title: "Validation",
+        text: error.response.data,
+        icon: "warning",
+        iconColor: "#FFEA00",
+      });
+    } else {
+      Toast.fire({
+        title: "Error",
+        text: error.message,
+        icon: "error",
+      });
+    }
   }
 };
 

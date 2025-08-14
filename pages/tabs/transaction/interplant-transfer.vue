@@ -7,13 +7,12 @@
           <div class="grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <label
-                for="supplier"
+                for="customer"
                 class="block mb-2 text-sm font-medium text-gray-900"
-                >Supplier <span class="text-red-500">*</span></label
+                >Customer <span class="text-red-500">*</span></label
               >
               <select
                 v-model="trans.shipperId"
-                @change="ChangeSupplier"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >
                 <option v-for="s in scope.supplierOptions" :value="s.value">
@@ -29,7 +28,6 @@
               >
               <select
                 v-model="trans.trucker"
-                @change="ChangeTrucker"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >
                 <option v-for="t in scope.truckersOptions" :value="t.value">
@@ -37,15 +35,15 @@
                 </option>
               </select>
             </div>
-            <div>
+
+            <!-- <div>
               <label
                 for="transactiontype"
-                class="block mb-2 text-sm font-medium text-gray-900"
+                class="block mb-2 text-sm font-medium text-gray-900 "
                 >Transaction Type <span class="text-red-500">*</span></label
               >
               <select
                 v-model="trans.transcode"
-                @change="ChangeTransactionType"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >
                 <option
@@ -55,12 +53,12 @@
                   {{ t.text }}
                 </option>
               </select>
-            </div>
+            </div> -->
             <div>
               <label
                 for="reference1"
                 class="block mb-2 text-sm font-medium text-gray-900"
-                >Reference 1 <span class="text-red-500">*</span></label
+                >Ref # <span class="text-red-500">*</span></label
               >
               <input
                 type="text"
@@ -75,7 +73,7 @@
               <label
                 for="reference2"
                 class="block mb-2 text-sm font-medium text-gray-900"
-                >Reference 2</label
+                >Order # <span class="text-red-500">*</span></label
               >
               <input
                 type="text"
@@ -86,12 +84,13 @@
                 required
               />
             </div>
+
             <div>
               <label
                 for="reference3"
                 class="block mb-2 text-sm font-medium text-gray-900"
               >
-                Reference 3
+                Doc #
               </label>
               <input
                 id="reference3"
@@ -107,7 +106,7 @@
                 for="reference4"
                 class="block mb-2 text-sm font-medium text-gray-900"
               >
-                Reference 4
+                Invoice #
               </label>
               <input
                 id="reference4"
@@ -128,8 +127,8 @@
                 type="date"
                 id="refdate"
                 v-model="trans.referencedate"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                placeholder=""
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5   "
+                placeholder="Flowbite"
                 required
               /> -->
               <VueDatePicker
@@ -140,6 +139,7 @@
                 auto-apply
               ></VueDatePicker>
             </div>
+
             <div>
               <label
                 for="orderDate"
@@ -147,11 +147,11 @@
               >
                 Order Date <span class="text-red-500">*</span>
               </label>
-              <!--  <input
+              <!-- <input
                 id="orderDate"
                 type="date"
                 v-model="trans.orderdate"
-                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5   "
                 placeholder=""
                 required
               /> -->
@@ -170,15 +170,14 @@
               >
                 Delivery Date <span class="text-red-500">*</span>
               </label>
-              <!-- <input
+              <!--  <input
                 id="deliveryDate"
                 type="date"
                 v-model="trans.deliverydate"
-                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5   "
                 placeholder=""
                 required
               /> -->
-
               <VueDatePicker
                 v-model="trans.deliverydate"
                 :auto-position="false"
@@ -212,31 +211,21 @@
             </label>
 
             <div class="p-4">
-              <div class="flex gap-4">
-                <button
-                  type="button"
-                  @click="onSearchItem()"
-                  class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
-                >
-                  Add Pallet
-                </button>
-                <!-- <button
-                  type="button"
-                  @click="openModal = true"
-                  class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
-                >
-                  Scan QR/Barcode
-                </button> -->
-              </div>
-
+              <button
+                type="button"
+                @click="onSearchItem()"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              >
+                Add Pallet
+              </button>
               <!-- Main modal -->
               <div
                 v-if="showModal"
                 tabindex="-1"
                 aria-hidden="true"
-                class="fixed top-0 left-0 right-0 z-50 w-full p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0"
+                class="fixed top-0 left-0 right-0 z-50 w-full h-full p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full"
               >
-                <div class="relative w-full max-w-2xl">
+                <div class="relative w-full max-w-2xl max-h-full">
                   <!-- Background overlay -->
                   <div class="fixed inset-0 bg-gray-900 opacity-50"></div>
                   <!-- Modal content -->
@@ -270,52 +259,39 @@
                       </button>
                     </div>
                     <!-- Modal body -->
-                    <div class="p-6 space-y-6">
-                      <div>
+                    <div class="p-6 space-y-6 overflow-y-auto">
+                      <div class="flex items-center gap-10 mb-4">
                         <label
                           for="default-search"
-                          class="mb-2 text-sm font-medium text-gray-900 sr-only"
-                          >Search</label
+                          class="mb-2 text-gray-900 font-medium text-lg"
+                          >Location:</label
                         >
-                        <div class="relative">
-                          <div
-                            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+
+                        <select
+                          v-model="scope.selectedlocation"
+                          @change="onGetItembyLocation()"
+                          class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        >
+                          <option selected disabled value="">
+                            Select a location to view items.
+                          </option>
+                          <option
+                            v-for="t in scope.locationOptions"
+                            :value="t.value"
                           >
-                            <svg
-                              class="w-4 h-4 text-gray-500"
-                              aria-hidden="true"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                              />
-                            </svg>
-                          </div>
-                          <input
-                            type="search"
-                            id="default-search"
-                            v-model="searchQuery"
-                            class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Search Code/Description"
-                            required
-                          />
-                          <!--  <button
-                            type="submit"
-                            class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 "
-                          >
-                            Search
-                          </button> -->
-                        </div>
+                            {{ t.text }}
+                          </option>
+                        </select>
                       </div>
-                      <div class="overflow-y-auto max-h-96">
+                      <span class="font-medium text-lg">Select Item: </span>
+                      <div
+                        v-if="
+                          scope.itemMasterList &&
+                          scope.itemMasterList.length > 0
+                        "
+                      >
                         <div
-                          v-for="itm in itemMasterList"
+                          v-for="itm in scope.itemMasterList"
                           :key="itm.PalletCode"
                           @click="onItemSelect(itm)"
                           v-show="!alreadyExist(itm.PalletCode)"
@@ -338,14 +314,17 @@
                                   >Pallet Code: {{ itm.PalletCode }}</label
                                 >
                               </div>
-
                               <div>
                                 <label for="temp"
                                   >Description:
                                   {{ itm.PalletDescription }}</label
                                 >
                               </div>
-
+                              <div>
+                                <label for="temp"
+                                  >Available Qty: {{ itm.AvailableQty }}</label
+                                >
+                              </div>
                               <div>
                                 <label for="temp"
                                   >UOM: {{ itm.UnitOfMeasure }}</label
@@ -355,6 +334,18 @@
                           </div>
                         </div>
                       </div>
+                      <div
+                        v-else-if="
+                          scope.itemMasterList === undefined ||
+                          (scope.itemMasterList &&
+                            scope.itemMasterList.length === 0)
+                        "
+                        class="flex justify-center items-center"
+                      >
+                        <span class="font-medium text-lg"
+                          >No available item.</span
+                        >
+                      </div>
                     </div>
                     <!-- Modal footer -->
                     <div
@@ -362,7 +353,7 @@
                     >
                       <button
                         type="button"
-                        @click="onAddSelectedPallet"
+                        @click="onAddSelectedPallet()"
                         class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
                       >
                         Add
@@ -386,11 +377,12 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                   <tr>
                     <th scope="col" class="px-6 py-3">Action</th>
+                    <th scope="col" class="px-6 py-3">Location</th>
                     <th scope="col" class="px-6 py-3">Pallet Code</th>
                     <th scope="col" class="px-6 py-3">Pallet Description</th>
                     <th scope="col" class="px-6 py-3">UOM</th>
+                    <th scope="col" class="px-6 py-3">Available Qty</th>
                     <th scope="col" class="px-6 py-3">Qty Served</th>
-                    <th scope="col" class="px-6 py-3">Location</th>
                     <th scope="col" class="px-6 py-3">Remarks</th>
                   </tr>
                 </thead>
@@ -437,7 +429,7 @@
                           Delete
                         </div>
                       </div>
-                      <!-- <button
+                      <!--   <button
                         @click="onDelete(index)"
                         class="bg-red-500 rounded-lg p-1 ml-3"
                       >
@@ -459,48 +451,37 @@
                     </th>
 
                     <td class="p-3 text-sm text-gray-700">
+                      {{ pallet.destination }}
+                    </td>
+                    <td class="p-3 text-sm text-gray-700">
                       {{ pallet.itemId }}
                     </td>
                     <td class="p-3 text-sm text-gray-700">
                       {{ pallet.itemdesc }}
                     </td>
-                    <td class="p-3 text-sm text-gray-700">{{ pallet.uom }}</td>
+                    <td class="p-3 text-sm text-gray-700">
+                      {{ pallet.uom }}
+                    </td>
+                    <td class="p-3 text-sm text-gray-700">
+                      {{ pallet.AvailableQty }}
+                    </td>
                     <td class="p-3 text-sm text-gray-700">
                       <input
                         type="number"
                         id="QtyServed"
                         v-model="pallet.qtyserved"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        @change="onCheckQtyTrans(pallet)"
+                        class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder=""
                         required
                       />
-                    </td>
-                    <td class="p-3 text-sm text-gray-700">
-                      <select
-                        id="dropdown"
-                        v-model="pallet.destination"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        placeholder="--Select Supplier--"
-                        required="true"
-                      >
-                        <option value="" disabled selected>
-                          --Select Location--
-                        </option>
-                        <option
-                          v-for="loc in scope.locationOptions"
-                          :key="loc.value"
-                          :value="loc.value"
-                        >
-                          {{ loc.text }}
-                        </option>
-                      </select>
                     </td>
                     <td class="p-3 text-sm text-gray-700">
                       <input
                         type="text"
                         id="remarks"
                         v-model="pallet.remarks"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder=""
                         required
                       />
@@ -518,7 +499,9 @@
                 :key="index"
               >
                 <div class="flex justify-between">
-                  <div>Code: {{ pallet.itemId }}</div>
+                  <label for="destination"
+                    >Location: {{ pallet.destination }}</label
+                  >
                   <button @click="onDelete(index)">
                     <svg
                       class="w-6 h-6 text-red-500"
@@ -535,9 +518,18 @@
                     </svg>
                   </button>
                 </div>
+                <div>Code: {{ pallet.itemId }}</div>
                 <div>
                   <label for="description"
                     >Description: {{ pallet.itemdesc }}</label
+                  >
+                </div>
+                <div>
+                  <label for="uom">UOM: {{ pallet.uom }}</label>
+                </div>
+                <div>
+                  <label for="availableqty"
+                    >Available Qty: {{ pallet.AvailableQty }}</label
                   >
                 </div>
                 <!-- Qty -->
@@ -547,32 +539,11 @@
                     type="number"
                     id="QtyServed"
                     v-model="pallet.qtyserved"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    @change="onCheckQtyTrans(pallet)"
+                    class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder=""
                     required
                   />
-                </div>
-                <!-- Location is a dropdown with search -->
-                <div>
-                  Location: <span class="text-red-500">*</span>
-                  <select
-                    id="dropdown"
-                    v-model="pallet.destination"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    placeholder="--Select Supplier--"
-                    required="true"
-                  >
-                    <option value="" disabled selected>
-                      --Select Location--
-                    </option>
-                    <option
-                      v-for="loc in scope.locationOptions"
-                      :key="loc.value"
-                      :value="loc.value"
-                    >
-                      {{ loc.text }}
-                    </option>
-                  </select>
                 </div>
                 <div>
                   Remarks:
@@ -580,13 +551,14 @@
                     type="text"
                     id="remarks"
                     v-model="pallet.remarks"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder=""
                     required
                   />
                 </div>
               </div>
             </div>
+            *
           </div>
 
           <div class="mt-3 flex justify-end">
@@ -617,60 +589,32 @@
           </div>
         </div>
       </div>
-
-      <div
-        v-if="openModal"
-        class="fixed top-0 left-0 right-0 z-50 w-[50vh] h-[50vh] p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full"
-      >
-        <QRBarcodeScanner
-          @close="openModal = false"
-          @success="OnSuccessScanPalletCode"
-        />
-      </div>
     </ion-content>
   </IonPage>
 </template>
 
 <script setup>
-import { openModal } from "../../../dashboard/store";
 import { serviceApi } from "../../../services/piso-serviceapi";
-import { isClick } from "../../../dashboard/store";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import { tr } from "date-fns/locale";
+import { isClick } from "~/dashboard/store";
 
 const scope = reactive({});
+scope.selectedlocation = "";
+
 const pltSearch = ref();
 const supplierOptions = []; // Your options data here
 const trans = reactive({});
 const ionRouter = useIonRouter();
 const showModal = ref(false);
+
 trans.deliverydate = new Date();
 trans.orderdate = new Date();
 trans.referencedate = new Date();
 scope.trnscde = getCookie("transid");
 const tooltips = ref(false);
-const searchQuery = ref("");
-
-const itemMasterList = computed(() => {
-  if (!searchQuery.value.trim()) return scope.itemMasterList;
-  {
-    return scope.itemMasterList.filter((item) => {
-      return (
-        item.PalletCode.toLowerCase().includes(
-          searchQuery.value.toLowerCase()
-        ) ||
-        item.PalletDescription.toLowerCase().includes(
-          searchQuery.value.toLowerCase()
-        ) ||
-        item.CreatedBy.toLowerCase().includes(searchQuery.value.toLowerCase())
-      );
-    });
-  }
-});
-
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -683,8 +627,9 @@ const Toast = Swal.mixin({
   }, */
 });
 
-const toggleModal = () => {
-  showModal.value = !showModal.value;
+/*search item*/
+const onSearchItem = () => {
+  showModal.value = true;
 };
 
 const hideModal = () => {
@@ -692,7 +637,183 @@ const hideModal = () => {
 };
 
 const onBack = () => {
-  ionRouter.replace("/tabs/transaction/receipt-batch-posting");
+  ionRouter.replace("/tabs/transaction/interplant-transfer-posting");
+};
+
+const onSave = async (p) => {
+  const haserror = onValidation();
+
+  if (haserror) {
+    return;
+  }
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Confirm!",
+    heightAuto: false,
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        isClick.value = true;
+
+        trans.warehouseId = JSON.parse(localStorage.getItem("_102")).sitecode;
+        trans.created_by = JSON.parse(
+          decrypt(localStorage.getItem("_214"))
+        ).fullname;
+        trans.status = p;
+        trans.transtype = "O";
+        trans.transcode = "OUT03";
+
+        // Save to API using Axios
+        const response = await serviceApi().post(
+          `Pallet/post-multi-trans`,
+          trans,
+          {
+            headers: {
+              "Content-Type": "application/json", // Specify the content type
+              Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
+            },
+          }
+        );
+
+        if (response.status == 200) {
+          if (!response.hasError) {
+            if (p === "P") {
+              Toast.fire({
+                title: "Success!",
+                text: "Successfully saved and posted.",
+                icon: "success",
+              });
+            } else {
+              Toast.fire({
+                title: "Success!",
+                text: "Successfully saved.",
+                icon: "success",
+              });
+            }
+
+            isClick.value = false;
+          } else {
+            Toast.fire({
+              title: "Error:",
+              text: response.errorMessage,
+              icon: "error",
+            });
+            isClick.value = false;
+          }
+          if (scope.isEdit) {
+            ionRouter.replace("/tabs/transaction/interplant-transfer-posting");
+          }
+          for (const key in trans) {
+            trans[key] = null;
+          }
+
+          trans.deliverydate = new Date();
+          trans.orderdate = new Date();
+          trans.referencedate = new Date();
+          isClick.value = false;
+        } else {
+          Swal.fire("Error Encounter!", `${response.data}`, "error");
+          console.error(response.data);
+          isClick.value = false;
+        }
+      } catch (error) {
+        console.error(error);
+        isClick.value = false;
+      }
+    }
+  });
+};
+
+//Add selected Pallet
+const onAddSelectedPallet = () => {
+  if (trans.invty_transdtl === undefined || trans.invty_transdtl === null) {
+    trans.invty_transdtl = [];
+  }
+
+  scope.itemMasterList.forEach((item) => {
+    if (item.isSelected === true) {
+      const newItem = {
+        itemId: item.PalletCode,
+        itemdesc: item.PalletDescription,
+        uom: item.UnitOfMeasure,
+        qtytrans: 0,
+        qtyserved: 0,
+        AvailableQty: item.AvailableQty,
+        destination: scope.selectedlocation,
+      };
+
+      trans.invty_transdtl.push(newItem);
+
+      item.isSelected = false;
+    }
+  });
+  console.log(trans.invty_transdtl);
+  showModal.value = false;
+};
+
+const onGetItembyLocation = async () => {
+  scope.itemMasterList = [];
+  const response = await serviceApi().get(
+    "pallet/get-inbound-item/?location=" +
+      scope.selectedlocation +
+      "&sitecode=" +
+      JSON.parse(localStorage.getItem("_102")).sitecode,
+    {
+      headers: {
+        Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
+      },
+    }
+  );
+
+  if (!response.hasError) {
+    var resData = response.data.data;
+    for (var i in resData) {
+      scope.itemMasterList.push({
+        isSelected: false,
+        PalletCode: resData[i].PalletCode,
+        PalletDescription: resData[i].PalletDescription,
+        AvailableQty: resData[i].qtyAvailable,
+        UnitOfMeasure: resData[i].UnitOfMeasure,
+        AvailableQty: resData[i].qtyAvailable,
+      });
+    }
+  } else {
+    Toast.fire({
+      title: "Error",
+      text: response.errorMessage,
+      icon: "error",
+    });
+  }
+};
+
+const alreadyExist = (palletcode) => {
+  return (
+    trans.invty_transdtl &&
+    Array.isArray(trans.invty_transdtl) &&
+    trans.invty_transdtl.some((item) => item.itemId === palletcode)
+  );
+};
+
+const onItemSelect = (p) => {
+  if (p.isSelected) {
+    trans.itemdesc = "";
+    trans.itemid = "";
+    p.isSelected = false;
+  } else {
+    trans.itemdesc = p.PalletDescription;
+    trans.itemid = p.PalletCode;
+    p.isSelected = true;
+  }
+};
+
+const onDelete = (index) => {
+  trans.invty_transdtl.splice(index, 1);
 };
 
 async function getIncomingTransTyps() {
@@ -700,30 +821,32 @@ async function getIncomingTransTyps() {
     var sitecode = JSON.parse(localStorage.getItem("_102")).sitecode;
 
     // initialize module add/edit
-    if (scope.trnscde === "" || scope.trnscde === undefined) {
+    if (!scope.trnscde) {
       scope.iconform = "glyphicons glyphicons-circle_plus";
-      scope.titleform = "New Receipt";
+      scope.titleform = "New Inter-Plant";
     } else {
       scope.iconform = "glyphicon glyphicon-edit";
-      scope.titleform = "Update Receipt";
+      scope.titleform = "Update Inter-Plant";
       scope.isEdit = true;
       await onGetItemUpdate(scope.trnscde);
     }
 
     // get trans type
-    const transTypeResponse = await serviceApi().get(
-      `pallet/get-trans-type/?code=incoming`,
-      {
-        headers: {
-          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
-        },
-      }
-    );
-    scope.transcodeList = transTypeResponse.data;
-    scope.transactiontypeOptions = scope.transcodeList.map((item) => ({
-      value: item.master_key,
-      text: item.description,
-    }));
+    // const transTypeResponse = await serviceApi().get(
+    //   `pallet/get-pallet-location/`+sitecode+ ',100,1',
+    //   {
+    //     headers: {
+    //       Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
+    //     },
+    //   }
+    // );
+    // console.log(transTypeResponse);
+    // scope.location = transTypeResponse.data.data.data;
+    // scope.transcodeList = transTypeResponse.data;
+    // scope.transactiontypeOptions = scope.transcodeList.map((item) => ({
+    //   value: item.master_key,
+    //   text: item.description,
+    // }));
 
     // get location
     const locationResponse = await serviceApi().get(
@@ -743,7 +866,7 @@ async function getIncomingTransTyps() {
 
     // get Supplier
     const supplierResponse = await serviceApi().get(
-      `pallet/get-pallet-shipper-type/${sitecode},I`,
+      `pallet/get-pallet-shipper-interplant/${sitecode}`,
       {
         headers: {
           Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
@@ -788,11 +911,6 @@ async function getIncomingTransTyps() {
       text: error.message,
       icon: "error",
     });
-    // HttpErrorService.getStatus(error.response.status, error.response.data);
-    // $rootScope.ShowPrompt(
-    //   "#modal-panel-prompt-error",
-    //   "onInit: " + JSON.stringify(error.message)
-    // );
   }
 }
 
@@ -827,225 +945,21 @@ async function onGetItemUpdate(id) {
   }
 }
 
-const onSave = async (p) => {
-  const haserror = onValidation();
-
-  if (haserror) {
-    return;
-  }
-
-  Swal.fire({
-    title: "Are you sure?",
-    icon: "question",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes",
-    heightAuto: false,
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      try {
-        isClick.value = true;
-        trans.warehouseId = JSON.parse(localStorage.getItem("_102")).sitecode;
-        trans.created_by = JSON.parse(
-          decrypt(localStorage.getItem("_214"))
-        ).fullname;
-        trans.status = p;
-        trans.transtype = "I";
-
-        // Save to API using Axios
-        const response = await serviceApi().post(
-          `Pallet/post-multi-trans`,
-          trans,
-          {
-            headers: {
-              "Content-Type": "application/json", // Specify the content type
-              Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
-            },
-          }
-        );
-
-        if (response.status == 200) {
-          if (p === "P") {
-            Toast.fire({
-              title: "Success!",
-              text: "Successfully saved and posted.",
-              icon: "success",
-            });
-          } else {
-            Toast.fire({
-              title: "Success!",
-              text: "Successfully saved.",
-              icon: "success",
-            });
-          }
-
-          if (scope.isEdit) {
-            ionRouter.replace("/tabs/transaction/receipt-batch-posting");
-          }
-
-          for (const key in trans) {
-            trans[key] = null;
-          }
-
-          searchQuery.value = "";
-
-          trans.deliverydate = new Date();
-          trans.orderdate = new Date();
-          trans.referencedate = new Date();
-
-          isClick.value = false;
-        } else {
-          Swal.fire("Error Encounter!", `${response.data}`, "error");
-          console.error(response.data);
-          isClick.value = false;
-        }
-      } catch (error) {
-        console.error(error);
-        isClick.value = false;
-      }
-    }
-  });
-};
-
-const ChangeSupplier = () => {
-  for (var i in scope.supplier) {
-    if (scope.supplier[i].Id === trans.shipperId) {
-      trans.shipperId = scope.supplier[i].Id;
-      break;
-    }
-  }
-};
-
-const ChangeTrucker = () => {
-  for (var i in scope.trucker) {
-    if (scope.trucker[i].fleetownerId === trans.trucker) {
-      trans.trucker = scope.trucker[i].fleetownerId;
-      break;
-    }
-  }
-};
-
-const ChangeTransactionType = () => {
-  for (var i in scope.transcodeList) {
-    if (scope.transcodeList[i].master_key === trans.transcode) {
-      trans.transcode = scope.transcodeList[i].master_key;
-      break;
-    }
-  }
-};
-
-const onSearchItem = async () => {
-  scope.itemMasterList = [];
-  try {
-    const response = await serviceApi().get(
-      "pallet/get-pallet-item-master/?sitecode=" +
-        JSON.parse(localStorage.getItem("_102")).sitecode +
-        "&status=A&take=50&page=1",
-      {
-        headers: {
-          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
-        },
-      }
-    );
-
-    if (!response.hasError) {
-      console.log(response);
-      var resData = response.data.data.data;
-      for (var i in resData) {
-        scope.itemMasterList.push({
-          isSelected: false,
-          CreateDate: resData[i].CreateDate,
-          CreatedBy: resData[i].CreatedBy,
-          PalletCode: resData[i].PalletCode,
-          PalletDescription: resData[i].PalletDescription,
-          PalletType: resData[i].PalletType,
-          Status: resData[i].Status,
-          UnitOfMeasure: resData[i].UnitOfMeasure,
-        });
-      }
-
-      showModal.value = true;
-    } else {
-      console.log("Error: " + response.errorMessage);
-    }
-  } catch (error) {
+const onCheckQtyTrans = (p) => {
+  var p1 = p.AvailableQty;
+  var p2 = p.qtyserved;
+  if (p1 < p2) {
     Toast.fire({
-      title: "Error",
-      text: error.message,
-      icon: "error",
+      title: "The quantity you enter is greater than available quantity!",
+      icon: "warning",
     });
+    p.qtyserved = 0;
   }
-
-  // .success(function (response, status, headers, config) {
-
-  // })
-  // .error(function (data, status, headers, config) {
-  //   HttpErrorService.getStatus(status, data);
-  // });
-};
-
-//Add selected Pallet
-const onAddSelectedPallet = () => {
-  if (trans.invty_transdtl === undefined || trans.invty_transdtl === null) {
-    trans.invty_transdtl = [];
-  }
-
-  scope.itemMasterList.forEach((item) => {
-    if (item.isSelected === true) {
-      const newItem = {
-        itemId: item.PalletCode,
-        itemdesc: item.PalletDescription,
-        uom: item.UnitOfMeasure,
-        qtytrans: 0,
-        qtyserved: 0,
-      };
-
-      trans.invty_transdtl.push(newItem);
-
-      item.isSelected = false;
-    }
-  });
-  console.log(trans.invty_transdtl);
-  showModal.value = false;
-};
-
-const alreadyExist = (palletcode) => {
-  return (
-    trans.invty_transdtl &&
-    Array.isArray(trans.invty_transdtl) &&
-    trans.invty_transdtl.some((item) => item.itemId === palletcode)
-  );
-};
-
-const onItemSelect = (p) => {
-  if (p.isSelected) {
-    trans.itemdesc = "";
-    trans.itemid = "";
-    p.isSelected = false;
-  } else {
-    trans.itemdesc = p.PalletDescription;
-    trans.itemid = p.PalletCode;
-    p.isSelected = true;
-  }
-};
-
-const onDelete = (index) => {
-  trans.invty_transdtl.splice(index, 1);
-};
-
-const onCreateNew = () => {
-  scope.isError = false;
-  scope.isSuccess = false;
-
-  scope.itemMasterList = [];
-  scope.trans = {};
-  scope.trans.invty_transdtl = [];
 };
 
 function onValidation() {
   var hasError = false;
-  const name = ref();
+  const name = ref("");
   if (trans.shipperId === "" || trans.shipperId === undefined) {
     hasError = true;
     name.value = "Supplier";
@@ -1055,9 +969,9 @@ function onValidation() {
   } else if (trans.referenceno === "" || trans.referenceno === undefined) {
     hasError = true;
     name.value = "Reference 1";
-  } else if (trans.transcode === "" || trans.transcode === undefined) {
+  } else if (trans.orderno === "" || trans.orderno === undefined) {
     hasError = true;
-    name.value = "Transcode";
+    name.value = "Order #";
   } else if (trans.referencedate === "" || trans.referencedate === undefined) {
     hasError = true;
     name.value = "Reference Date";
@@ -1074,7 +988,6 @@ function onValidation() {
       title: `${name.value} is required!`,
       icon: "warning",
     });
-
     return hasError;
   }
 
@@ -1101,70 +1014,9 @@ function onValidation() {
     }
   }
 
-  for (var j = 0; j < trans.invty_transdtl.length; j++) {
-    if (
-      trans.invty_transdtl[j].destination === "" ||
-      trans.invty_transdtl[j].destination === undefined
-    ) {
-      Toast.fire({
-        title: "Please Select Location",
-        icon: "warning",
-      });
-      hasError = true;
-      break;
-    }
-  }
-
   return hasError;
 }
 
-const OnSuccessScanPalletCode = async (item) => {
-  try {
-    const response = await serviceApi().get(
-      "pallet/get-pallet-item/?sitecode=" +
-        JSON.parse(localStorage.getItem("_102")).sitecode +
-        "&palletCode=" +
-        item,
-      {
-        headers: {
-          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
-        },
-      }
-    );
-
-    if (!response.hasError) {
-      console.log(response);
-      var resData = response.data.data;
-      if (trans.invty_transdtl === undefined || trans.invty_transdtl === null) {
-        trans.invty_transdtl = [];
-      }
-
-      if (alreadyExist(resData.PalletCode)) {
-        console.log(resData.PalletCode + " is already exist.");
-
-        return;
-      }
-      const newItem = {
-        itemId: resData.PalletCode,
-        itemdesc: resData.PalletDescription,
-        uom: resData.UnitOfMeasure,
-        qtytrans: 0,
-        qtyserved: 0,
-      };
-
-      trans.invty_transdtl.push(newItem);
-      console.log(trans.invty_transdtl);
-    } else {
-      console.log("Error: " + response.errorMessage);
-    }
-  } catch (error) {
-    Toast.fire({
-      title: "Error",
-      text: error.message,
-      icon: "error",
-    });
-  }
-};
 onMounted(() => {
   getIncomingTransTyps();
 });

@@ -1,7 +1,7 @@
 import axios from 'axios'
 	export const serviceApi = () => {
 	return axios.create({
-		baseURL: 'https://apps.fastlogistics.com.ph/pisoapi/api/'
+		baseURL: 'https://localhost:44393/api/'
 });
 } 
 

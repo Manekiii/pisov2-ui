@@ -1,10 +1,10 @@
 <template>
   <IonPage>
     <div>
-      <div class="border-b-2  items-center justify-center flex p-2">
+      <div class="border-b-2 items-center justify-center flex p-2">
         <label
           for="title"
-          class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
+          class="font-semibold text-3xl block mb-2 text-gray-900"
         >
           Pallet Master
         </label>
@@ -17,7 +17,7 @@
             class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
           >
             <svg
-              class="w-4 h-4 text-gray-500 dark:text-gray-400"
+              class="w-4 h-4 text-gray-500"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -35,7 +35,7 @@
           <input
             type="search"
             id="default-search"
-            class="block w-full sm:w-[350px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+            class="block w-full sm:w-[350px] p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Enter"
             required
             v-model="searchQuery"
@@ -52,13 +52,9 @@
       </div>
 
       <!-- WEB -->
-      <div class="hidden md:block">
-        <table
-          class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg"
-        >
-          <thead
-            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-          >
+      <div class="hidden md:block h-[75vh] overflow-auto">
+        <table class="w-full text-sm text-left rtl:text-right rounded-lg">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
               <th scope="col" class="px-6 py-3">Action</th>
               <th scope="col" class="px-6 py-3">Pallet Code</th>
@@ -71,16 +67,82 @@
           </thead>
           <tbody>
             <tr
-              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              class="bg-white border-b"
               v-if="filteredLocations"
-              v-for="item in filteredLocations"
+              v-for="(item, index) in filteredLocations"
             >
               <th
                 scope="row"
-                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
               >
                 <div>
-                  <button
+                  <!-- Edit Button and Tooltip -->
+                  <div class="relative inline-block">
+                    <!-- Edit Button and Tooltip -->
+                    <button
+                      @mouseover="tooltips[index].showEdit = true"
+                      @mouseleave="tooltips[index].showEdit = false"
+                      class="bg-blue-500 rounded-lg p-1 text-white"
+                      v-show="scope.canEdit"
+                      @click="onEditItemMaster(item.PalletCode)"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-6 h-6"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                        />
+                      </svg>
+                    </button>
+                    <div
+                      v-if="tooltips[index].showEdit"
+                      class="absolute bottom-full mb-2 w-max px-2 py-1 text-sm text-white bg-gray-700 rounded shadow-lg"
+                      :style="{ left: '50%', transform: 'translateX(-50%)' }"
+                    >
+                      Edit
+                    </div>
+                  </div>
+
+                  <!-- Delete Button and Tooltip -->
+                  <div class="relative inline-block">
+                    <button
+                      @mouseover="tooltips[index].showDelete = true"
+                      @mouseleave="tooltips[index].showDelete = false"
+                      class="bg-red-500 rounded-lg p-1 ml-3 text-white hover:bg-red-300"
+                      v-show="scope.canDelete"
+                      @click="onDeleteItem(item.PalletCode)"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-6 h-6"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                        />
+                      </svg>
+                    </button>
+                    <div
+                      v-if="tooltips[index].showDelete"
+                      class="absolute bottom-full mb-2 w-max px-2 py-1 text-sm text-white bg-gray-700 rounded shadow-lg"
+                      :style="{ left: '50%', transform: 'translateX(-50%)' }"
+                    >
+                      Delete
+                    </div>
+                  </div>
+                  <!-- <button
                     class="bg-blue-500 rounded-lg p-1 mr-3"
                     v-show="scope.canEdit"
                     @click="onEditItemMaster(item.PalletCode)"
@@ -119,7 +181,7 @@
                         d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
                       />
                     </svg>
-                  </button>
+                  </button> -->
                 </div>
               </th>
               <td class="px-6 py-4">{{ item.PalletCode }}</td>
@@ -177,7 +239,8 @@
       <div
         class="w-screen p-4 mt-3 grid grid-cols-1 gap-4 md:hidden bg-gray-100 overflow-y-auto max-h-[75vh]"
       >
-        <div v-if="filteredLocations"
+        <div
+          v-if="filteredLocations"
           v-for="item in filteredLocations"
           class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8"
         >
@@ -220,25 +283,28 @@
             <button
               v-show="scope.canEdit"
               @click="onEditItemMaster(item.PalletCode)"
-              class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
             >
               Edit
             </button>
             <button
               v-show="scope.canDelete"
               @click="onDeleteItem(item.PalletCode)"
-              class="text-white bg-red-500 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+              class="text-white bg-red-500 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
             >
               Delete
             </button>
           </div>
         </div>
 
-        <div v-else class="flex justify-center items-center">No Pallet found.</div>
+        <div v-else class="flex justify-center items-center">
+          No Pallet found.
+        </div>
       </div>
     </div>
 
     <!-- Main modal Add/Edit-->
+
     <div
       v-if="showModal"
       tabindex="-1"
@@ -249,18 +315,14 @@
         <!-- Background overlay -->
         <div class="fixed inset-0 bg-gray-900 opacity-50"></div>
         <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="relative bg-white rounded-lg shadow">
           <!-- Modal header -->
-          <div
-            class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600"
-          >
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-              Item Master
-            </h3>
+          <div class="flex items-start justify-between p-4 border-b rounded-t">
+            <h3 class="text-xl font-semibold text-gray-900">Item Master</h3>
             <button
               @click="hideModal()"
               type="button"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
             >
               <svg
                 aria-hidden="true"
@@ -278,120 +340,194 @@
               <span class="sr-only">Close modal</span>
             </button>
           </div>
+
           <!-- Modal body -->
           <div class="p-6 space-y-6 overflow-y-auto max-h-[50vh]">
-            <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <!-- Presets Dropdown Search -->
+            <!-- <div class="mb-6">
+              <label class="block mb-2 text-sm font-medium text-gray-900"
+                >Presets</label
+              >
+              <div class="relative">
+                <button
+                  @click.stop="toggleDropdown"
+                  class="flex items-center justify-between w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                  type="button"
+                >
+                  <span>{{
+                    selectedPreset
+                      ? `${selectedPreset.itemid} - ${selectedPreset.itemdesc}`
+                      : "Select an item..."
+                  }}</span>
+                  <svg
+                    class="w-4 h-4 ml-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg>
+                </button>
+
+                <div
+                  v-if="isDropdownOpen"
+                  class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                >
+                  <div class="p-2 sticky top-0 bg-white">
+                    <input
+                      type="text"
+                      v-model="searchTerm"
+                      class="w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Search items..."
+                      @click.stop
+                    />
+                  </div>
+
+                  <ul>
+                    <li
+                      v-for="item in filteredItems"
+                      :key="item.id"
+                      @click="selectPreset(item)"
+                      class="p-2 text-sm hover:bg-gray-100 cursor-pointer"
+                      :class="{ 'bg-blue-50': selectedPreset?.id === item.id }"
+                    >
+                      {{ item.itemid }} - {{ item.itemdesc }}
+                    </li>
+                    <li
+                      v-if="filteredItems.length === 0"
+                      class="p-2 text-sm text-gray-500"
+                    >
+                      No items found
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div> -->
+
+            <!-- Form Fields -->
+            <div class="grid gap-6 mb-6 md:grid-cols-2" @click="toggleDropdown">
               <div>
                 <label
                   for="storageid"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-gray-900"
                   >Item ID</label
                 >
                 <input
                   type="text"
                   id="storageid"
                   v-model="setup.itemid"
+                  @input="toUpperCase('itemid')"
                   :disabled="scope.isEdit"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Enter Storage Id"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  placeholder="Enter Item ID"
                   required
                 />
               </div>
               <div>
                 <label
                   for="description"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >Item Desc.</label
+                  class="block mb-2 text-sm font-medium text-gray-900"
+                  >Item Description</label
                 >
                 <input
                   type="text"
                   id="description"
                   v-model="setup.itemdesc"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  @input="toUpperCase('itemdesc')"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Enter Description"
                   required
                 />
               </div>
               <div>
                 <label
-                  for="description"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  for="uom"
+                  class="block mb-2 text-sm font-medium text-gray-900"
                   >Unit of Measure</label
                 >
                 <input
                   type="text"
-                  id="description"
+                  id="uom"
                   v-model="setup.uom"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Enter Description"
+                  @input="toUpperCase('uom')"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  placeholder="Enter UOM (e.g., KG, L)"
                   required
                 />
               </div>
               <div>
                 <label
-                  for="description"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >Shelf life</label
+                  for="shelflife"
+                  class="block mb-2 text-sm font-medium text-gray-900"
+                  >Shelf Life (days)</label
                 >
                 <input
                   type="number"
-                  id="visitors"
+                  id="shelflife"
                   v-model="setup.shelflife"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder=""
+                  min="0"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  placeholder="Enter shelf life in days"
                   required
                 />
               </div>
               <div>
                 <label
-                  for="description"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >Total Contracted</label
+                  for="totalcontracted"
+                  class="block mb-2 text-sm font-medium text-gray-900"
+                  >Total Contracted Quantity</label
                 >
                 <input
                   type="number"
-                  id="visitors"
+                  id="totalcontracted"
                   v-model="setup.totalcontracted"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder=""
+                  min="0"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  placeholder="Enter contracted quantity"
                   required
                 />
               </div>
-              <div class="flex items-start">
+              <div class="flex items-center">
                 <div class="flex items-center h-5">
                   <input
-                    id="remember"
+                    id="status"
                     type="checkbox"
-                    value=""
-                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
-                    required
+                    v-model="setup.status"
+                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
                   />
                 </div>
                 <label
-                  for="remember"
-                  class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >IsActive
+                  for="status"
+                  class="ml-2 text-sm font-medium text-gray-900"
+                >
+                  Active
                 </label>
               </div>
             </div>
           </div>
+
           <!-- Modal footer -->
           <div
-            class="flex justify-end items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
+            class="flex justify-end items-center p-6 space-x-2 border-t border-gray-200 rounded-b"
           >
             <button
               @click="onSaveItem()"
               type="button"
-              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
             >
               Save
             </button>
             <button
               @click="hideModal()"
               type="button"
-              class="text-white bg-gray-400 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
             >
-              Close
+              Cancel
             </button>
           </div>
         </div>
@@ -412,7 +548,7 @@ const sitecode = JSON.parse(
   localStorage.getItem("_102")
 ).sitecode; /*set sidecode*/
 const userFullname = JSON.parse(
-  localStorage.getItem("_214")
+  decrypt(localStorage.getItem("_214"))
 ).fullname; /*set userfullname*/
 scope.itemsPerPage = 20;
 scope.currentPage = 0;
@@ -432,6 +568,44 @@ const filteredLocations = computed(() => {
         item.CreatedBy.toLowerCase().includes(searchQuery.value.toLowerCase())
       );
     });
+  }
+});
+
+const searchTerm = ref();
+
+const filteredItems = computed(() => {
+  return scope.presetitemList;
+  /* if (!searchQuery.value.trim()) return scope.itemList;
+  
+  {
+    return scope.itemList.filter((item) => {
+      return (
+        item.PalletCode.toLowerCase().includes(
+          searchQuery.value.toLowerCase()
+        ) ||
+        item.PalletDescription.toLowerCase().includes(
+          searchQuery.value.toLowerCase()
+        ) ||
+        item.CreatedBy.toLowerCase().includes(searchQuery.value.toLowerCase())
+      );
+    });
+  } */
+});
+const tooltips = ref([]);
+
+// Initialize tooltips array with states for each item
+const initializeTooltips = (length) => {
+  tooltips.value = Array.from({ length }, () => ({
+    showEdit: false,
+    showDelete: false,
+    showPost: false,
+  }));
+};
+
+// Initialize tooltips when data is loaded
+watch(filteredLocations, (newVal) => {
+  if (newVal) {
+    initializeTooltips(newVal.length);
   }
 });
 
@@ -456,7 +630,6 @@ const hideModal = () => {
 };
 
 const onInit = async (ipage) => {
-  handleLoading();
   scope.currentPage = ipage;
   const response = await serviceApi().get(
     "pallet/get-pallet-item-master/?sitecode=" +
@@ -467,7 +640,7 @@ const onInit = async (ipage) => {
       ipage,
     {
       headers: {
-        Token: JSON.parse(localStorage.getItem("_214")).token,
+        Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
       },
     }
   );
@@ -477,12 +650,28 @@ const onInit = async (ipage) => {
     scope.total_count = response.data.data.total_count;
   }
 
+  const response1 = await serviceApi().get(
+    "pallet/get-preset-pallet-item-master/?" +
+      "&status=1&take=" +
+      scope.itemsPerPage +
+      "&page=" +
+      ipage,
+    {
+      headers: {
+        Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
+      },
+    }
+  );
+
+  if (response1.status === 200) {
+    scope.presetitemList = response1.data.data.data;
+  }
+
   onInitMenu();
-  handleLoading();
 };
 
 const onInitMenu = async () => {
-  const userId = JSON.parse(localStorage.getItem("_214")).userid;
+  const userId = JSON.parse(decrypt(localStorage.getItem("_214"))).userid;
   const params = scope.menuId + "," + userId;
 
   try {
@@ -490,7 +679,7 @@ const onInitMenu = async () => {
       `user/get-user-menu-list/${params}`,
       {
         headers: {
-          Token: JSON.parse(localStorage.getItem("_214")).token,
+          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
         },
       }
     );
@@ -536,10 +725,13 @@ const onDeleteItem = (p) => {
       try {
         scope.menuid = p;
         const response = await serviceApi().get(
-          "pallet/remove-pallet-item-master/" + scope.menuid,
+          "pallet/remove-pallet-item-master/" +
+            scope.menuid +
+            "?warehouseId=" +
+            sitecode,
           {
             headers: {
-              Token: JSON.parse(localStorage.getItem("_214")).token,
+              Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
             },
           }
         );
@@ -617,12 +809,16 @@ const onSaveItem = async () => {
         setup.created_by = userFullname;
         setup.status = setup.status ? "A" : "I";
         setup.warehouseId = sitecode;
+        setup.itemid = setup.itemid.toUpperCase();
+        setup.itemdesc = setup.itemdesc.toUpperCase();
+        setup.uom = setup.uom.toUpperCase();
+
         const response = await serviceApi().post(
           "pallet/post-pallet-item-master/",
           setup,
           {
             headers: {
-              Token: JSON.parse(localStorage.getItem("_214")).token,
+              Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
             },
           }
         );
@@ -643,6 +839,30 @@ const onSaveItem = async () => {
     }
   });
 };
+
+// Function to convert the input field to uppercase
+const toUpperCase = (field) => {
+  setup[field] = setup[field].toUpperCase();
+};
+
+const isDropdownOpen = ref(false);
+const selectedPreset = ref(null);
+function toggleDropdown() {
+  isDropdownOpen.value = !isDropdownOpen.value;
+  if (isDropdownOpen.value) {
+    searchTerm.value = "";
+  }
+}
+function selectPreset(item) {
+  selectedPreset.value = item;
+  setup.value = { ...item }; // Copy all properties to your form
+  isDropdownOpen.value = false;
+}
+
+// Handle click outside
+function handleClickOutside(event) {
+  isDropdownOpen.value = false;
+}
 
 onMounted(() => {
   onInit(1);

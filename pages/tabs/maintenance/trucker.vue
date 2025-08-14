@@ -8,7 +8,7 @@
         <div class="border-b-2 items-center justify-center flex p-2">
           <label
             for="title"
-            class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
+            class="font-semibold text-3xl block mb-2 text-gray-900"
           >
             Trucker Maintenance
           </label>
@@ -23,7 +23,7 @@
                 class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
               >
                 <svg
-                  class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                  class="w-4 h-4 text-gray-500"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -43,7 +43,7 @@
                 id="default-search"
                 v-model="itemSearch"
                 @input="onSearch(itemSearch)"
-                class="block w-full sm:w-[350px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                class="block w-full sm:w-[350px] p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search ID"
                 required
               />
@@ -59,12 +59,8 @@
 
         <!-- WEB -->
         <div class="hidden md:block">
-          <table
-            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg"
-          >
-            <thead
-              class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-            >
+          <table class="w-full text-sm text-left rtl:text-right rounded-lg">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
                 <th scope="col" class="px-6 py-3">Action</th>
                 <th scope="col" class="px-6 py-3">Id</th>
@@ -79,15 +75,79 @@
             </thead>
             <tbody>
               <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                v-for="x in filteredTrucker"
+                class="bg-white border-b"
+                v-for="(x, index) in filteredTrucker"
               >
                 <th
                   scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                 >
                   <div>
-                    <button
+                    <!-- Edit Button and Tooltip -->
+                    <div class="relative inline-block">
+                      <!-- Edit Button and Tooltip -->
+                      <button
+                        @mouseover="tooltips[index].showEdit = true"
+                        @mouseleave="tooltips[index].showEdit = false"
+                        class="bg-blue-500 rounded-lg p-1 text-white"
+                        @click="onEdit(x)"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-6 h-6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                          />
+                        </svg>
+                      </button>
+                      <div
+                        v-if="tooltips[index].showEdit"
+                        class="absolute bottom-full mb-2 w-max px-2 py-1 text-sm text-white bg-gray-700 rounded shadow-lg"
+                        :style="{ left: '50%', transform: 'translateX(-50%)' }"
+                      >
+                        Edit
+                      </div>
+                    </div>
+
+                    <!-- Delete Button and Tooltip -->
+                    <div class="relative inline-block">
+                      <button
+                        @mouseover="tooltips[index].showDelete = true"
+                        @mouseleave="tooltips[index].showDelete = false"
+                        class="bg-red-500 rounded-lg p-1 ml-3 text-white hover:bg-red-300"
+                        @click="onDelete(x)"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-6 h-6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                          />
+                        </svg>
+                      </button>
+                      <div
+                        v-if="tooltips[index].showDelete"
+                        class="absolute bottom-full mb-2 w-max px-2 py-1 text-sm text-white bg-gray-700 rounded shadow-lg"
+                        :style="{ left: '50%', transform: 'translateX(-50%)' }"
+                      >
+                        Delete
+                      </div>
+                    </div>
+                    <!-- <button
                       class="bg-blue-500 rounded-lg p-1 mr-3"
                       @click="onEdit(x)"
                     >
@@ -124,7 +184,7 @@
                           d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
                         />
                       </svg>
-                    </button>
+                    </button> -->
                   </div>
                 </th>
                 <td class="px-6 py-4">{{ x.fleetownerId }}</td>
@@ -132,7 +192,7 @@
                 <td class="px-6 py-4">{{ x.contactperson }}</td>
                 <td class="px-6 py-4">{{ x.celphoneno }}</td>
                 <td class="px-6 py-4">{{ x.telephoneno }}</td>
-                <td class="px-6 py-4">{{ x.emailaddy }}</td>
+                <td class="px-6 py-4">{{ x.emailadd }}</td>
                 <td class="px-6 py-4">{{ x.address }}</td>
                 <td class="px-6 py-4">
                   {{ x.status === "A" ? "Active" : "Inactive" }}
@@ -180,7 +240,7 @@
         >
           <div
             v-for="x in filteredTrucker"
-            class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
+            class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 mb-3"
           >
             <div>
               <label for="transactionNumber">ID: {{ x.fleetownerId }}</label>
@@ -219,13 +279,13 @@
             <div class="flex items-center justify-end">
               <button
                 @click="onEdit(x)"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
               >
                 Edit
               </button>
               <button
                 @click="onDelete(x)"
-                class="text-white bg-red-500 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                class="text-white bg-red-500 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
               >
                 Delete
               </button>
@@ -246,18 +306,14 @@
         <!-- Background overlay -->
         <div class="fixed inset-0 bg-gray-900 opacity-50"></div>
         <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="relative bg-white rounded-lg shadow">
           <!-- Modal header -->
-          <div
-            class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600"
-          >
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-              Trucker Setup
-            </h3>
+          <div class="flex items-start justify-between p-4 border-b rounded-t">
+            <h3 class="text-xl font-semibold text-gray-900">Trucker Setup</h3>
             <button
               @click="hideModal()"
               type="button"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
             >
               <svg
                 aria-hidden="true"
@@ -279,100 +335,97 @@
           <div class="p-2 overflow-y-auto max-h-[60vh]">
             <div class="grid gap-6 md:grid-cols-2">
               <div>
-                <label
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <label class="block mb-2 text-sm font-medium text-gray-900"
                   >Trucker Code <span class="text-red-500">*</span></label
                 >
                 <input
                   type="text"
                   v-model="scope.form.fleetownerId"
+                  @input="toUpperCase('fleetownerId')"
                   :disabled="scope.mode === 1"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   required
                 />
               </div>
               <div>
-                <label
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <label class="block mb-2 text-sm font-medium text-gray-900"
                   >Trucker Name <span class="text-red-500">*</span></label
                 >
                 <input
                   type="text"
                   v-model="scope.form.ownername"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  @input="toUpperCase('ownername')"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   required
                 />
               </div>
               <div>
-                <label
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <label class="block mb-2 text-sm font-medium text-gray-900"
                   >Contact Person</label
                 >
                 <input
                   type="text"
                   v-model="scope.form.contactperson"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  @input="toUpperCase('contactperson')"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Enter Description"
                   required
                 />
               </div>
               <div>
-                <label
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <label class="block mb-2 text-sm font-medium text-gray-900"
                   >Mobile#</label
                 >
                 <input
-                  type="text"
+                  type="number"
                   v-model="scope.form.celphoneno"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   required
                 />
               </div>
               <div>
-                <label
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <label class="block mb-2 text-sm font-medium text-gray-900"
                   >Tel#</label
                 >
                 <input
-                  type="text"
+                  type="number"
                   v-model="scope.form.telephoneno"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   required
                 />
               </div>
               <div>
-                <label
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <label class="block mb-2 text-sm font-medium text-gray-900"
                   >Email Address</label
                 >
                 <input
                   type="text"
                   v-model="scope.form.emailadd"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   required
                 />
               </div>
               <div>
-                <label
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <label class="block mb-2 text-sm font-medium text-gray-900"
                   >Address</label
                 >
                 <input
                   type="text"
                   v-model="scope.form.address"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  @input="toUpperCase('address')"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   required
                 />
               </div>
               <div>
-                <label
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <label class="block mb-2 text-sm font-medium text-gray-900"
                   >Remarks</label
                 >
                 <input
                   type="text"
                   v-model="scope.form.remarks"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  @input="toUpperCase('remarks')"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   required
                 />
               </div>
@@ -383,13 +436,13 @@
                     type="checkbox"
                     :value="scope.form.status"
                     v-model="scope.form.status"
-                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
+                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
                     required
                   />
                 </div>
                 <label
                   for="remember"
-                  class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  class="ms-2 text-sm font-medium text-gray-900"
                   >IsActive
                 </label>
               </div>
@@ -397,19 +450,19 @@
           </div>
           <!-- Modal footer -->
           <div
-            class="flex justify-end items-center p-2 space-x-2 border-gray-200 rounded-b dark:border-gray-600"
+            class="flex justify-end items-center p-2 space-x-2 border-gray-200 rounded-b"
           >
             <button
               @click="hideModal()"
               type="button"
-              class="text-white bg-gray-400 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              class="text-white bg-gray-400 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
             >
               Close
             </button>
             <button
               @click="onSave()"
               type="button"
-              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
             >
               Save
             </button>
@@ -429,18 +482,14 @@
         <!-- Background overlay -->
         <div class="fixed inset-0 bg-gray-900 opacity-50"></div>
         <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="relative bg-white rounded-lg shadow">
           <!-- Modal header -->
-          <div
-            class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600"
-          >
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-              Trucker Setup
-            </h3>
+          <div class="flex items-start justify-between p-4 border-b rounded-t">
+            <h3 class="text-xl font-semibold text-gray-900">Trucker Setup</h3>
             <button
               @click="hideViewWarehouse()"
               type="button"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
             >
               <svg
                 aria-hidden="true"
@@ -464,7 +513,7 @@
               v-for="warehouse in scope.warehouseList"
               :key="warehouse.brancode"
               @click="onSelectWarehouse(warehouse)"
-              class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
+              class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 mb-3"
             >
               <div class="flex items-center">
                 <div id="default-checkbox">
@@ -482,12 +531,12 @@
           </div>
           <!-- Modal footer -->
           <div
-            class="flex justify-end items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
+            class="flex justify-end items-center p-6 space-x-2 border-t border-gray-200 rounded-b"
           >
             <button
               @click="hideViewWarehouse()"
               type="button"
-              class="text-gray-800 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-500 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+              class="text-gray-800 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-500 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
             >
               Close
             </button>
@@ -508,7 +557,7 @@ scope.setup = {};
 scope.itemsPerPage = 20;
 scope.currentPage = 0;
 var sitecode = JSON.parse(localStorage.getItem("_102")).sitecode;
-var userFullname = JSON.parse(localStorage.getItem("_214")).fullname;
+var userFullname = JSON.parse(decrypt(localStorage.getItem("_214"))).fullname;
 const filteredTrucker = ref();
 const showModal = ref(false);
 const viewWarehouse = ref(false);
@@ -526,9 +575,9 @@ const Toast = Swal.mixin({
     }, */
 });
 
-const handleLoading = async () => {
+/* const handleLoading = async () => {
   document.querySelector("#loadingindicator").classList.toggle("hidden");
-};
+}; */
 
 const hideModal = () => {
   showModal.value = false;
@@ -539,7 +588,6 @@ const hideViewWarehouse = () => {
 };
 
 const onInit = async () => {
-  handleLoading();
   scope.appData = [];
 
   const response = await serviceApi().get(
@@ -548,7 +596,7 @@ const onInit = async () => {
       "&appname=PISO&tk=100&pg=1",
     {
       headers: {
-        Token: JSON.parse(localStorage.getItem("_214")).token,
+        Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
       },
     }
   );
@@ -556,9 +604,26 @@ const onInit = async () => {
   if (response.status === 200) {
     scope.appData = response.data.fleetowners;
     filteredTrucker.value = scope.appData;
-    handleLoading();
   }
 };
+
+const tooltips = ref([]);
+
+// Initialize tooltips array with states for each item
+const initializeTooltips = (length) => {
+  tooltips.value = Array.from({ length }, () => ({
+    showEdit: false,
+    showDelete: false,
+    showPost: false,
+  }));
+};
+
+// Initialize tooltips when data is loaded
+watch(filteredTrucker, (newVal) => {
+  if (newVal) {
+    initializeTooltips(newVal.length);
+  }
+});
 
 const onEdit = (val) => {
   scope.mode = 1; //edit mode
@@ -602,7 +667,7 @@ const onSave = async () => {
             scope.form,
             {
               headers: {
-                Token: JSON.parse(localStorage.getItem("_214")).token,
+                Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
                 "Content-Type": "application/json", // Specify the content type
               },
             }
@@ -631,7 +696,8 @@ const onSave = async () => {
                 scope.form,
                 {
                   headers: {
-                    Token: JSON.parse(localStorage.getItem("_214")).token,
+                    Token: JSON.parse(decrypt(localStorage.getItem("_214")))
+                      .token,
                     "Content-Type": "application/json", // Specify the content type
                   },
                 }
@@ -696,7 +762,7 @@ const onDelete = (val) => {
             sitecode,
           {
             headers: {
-              Token: JSON.parse(localStorage.getItem("_214")).token,
+              Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
             },
           }
         );
@@ -759,6 +825,11 @@ function onValidation() {
 
   return hasError;
 }
+
+// Function to convert the input field to uppercase
+const toUpperCase = (field) => {
+  scope.form[field] = scope.form[field].toUpperCase();
+};
 
 onMounted(() => {
   onInit(1);

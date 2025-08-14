@@ -2,7 +2,11 @@
 import { toggleSidebar, showSwitchSiteModal } from "./store";
 
 const userInfo = reactive({});
-Object.assign(userInfo, JSON.parse(localStorage.getItem("_214")));
+if (localStorage.getItem("_214")) {
+  Object.assign(userInfo, JSON.parse(decrypt(localStorage.getItem("_214"))));
+}
+
+const siteDetails = ref(JSON.parse(localStorage.getItem("_102")));
 
 const isDropdownOpen = ref(false);
 
@@ -20,7 +24,9 @@ const closeDropdown = () => {
     class="relative z-10 h-16 py-9 w-full items-center bg-blue-950 shadow md:h-20 lg:rounded-br-2xl"
   >
     <div class="relative mx-auto flex h-full flex-col justify-center px-3">
-      <div class="relative flex w-full justify-between items-center pl-1 sm:ml-0 sm:pr-2">
+      <div
+        class="relative flex w-full justify-between items-center pl-1 sm:ml-0 sm:pr-2"
+      >
         <div class="relative left-0 flex h-full w-3/4">
           <div class="group relative flex h-full w-12 items-center">
             <button
@@ -32,6 +38,14 @@ const closeDropdown = () => {
             >
               &#8801;
             </button>
+          </div>
+
+          <div class="flex items-center">
+            <span class="ml-5 text-sm text-white">{{
+              `Pallet Inventory System Online - ${
+                siteDetails ? siteDetails.sitename : ""
+              }`
+            }}</span>
           </div>
           <!-- <div class="group relative flex h-full w-36 items-center lg:w-64">
             <div
@@ -76,12 +90,16 @@ const closeDropdown = () => {
         <div class="relative ml-3">
           <button
             type="button"
-            class="flex items-center text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+            class="flex items-center text-sm rounded-full focus:ring-4 focus:ring-gray-300"
             id="user-menu-button-2"
             aria-expanded="false"
-            data-dropdown-toggle="dropdown-2"
             @click="toggleDropdown"
           >
+            <div class="flex items-center">
+              <span class="mr-5 text-sm text-white">{{
+                `Hi ${userInfo.fname}`
+              }}</span>
+            </div>
             <span class="sr-only">Open user menu</span>
             <img
               class="w-10 h-10 rounded-full"
@@ -111,8 +129,9 @@ const closeDropdown = () => {
                   role="menuitem"
                   style="cursor: pointer"
                   @click="showSwitchSiteModal = true"
-                  >Switch Site</button
                 >
+                  Switch Site
+                </button>
               </li>
               <li>
                 <button
@@ -120,8 +139,9 @@ const closeDropdown = () => {
                   role="menuitem"
                   style="cursor: pointer"
                   @click="$router.push('/')"
-                  >Sign out</button
                 >
+                  Sign out
+                </button>
               </li>
             </ul>
           </div>

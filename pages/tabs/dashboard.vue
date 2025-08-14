@@ -1,11 +1,8 @@
 <template>
   <IonPage class="p-2">
-    <label class="font-bold text-3xl">Overview</label>
-    <ion-content>
-      <ion-card>
-        <div class="panel panel-primary">
+    <ion-content class="overflow-auto">
+      <!-- <div class="panel panel-primary">
           <div class="panel-body">
-            <!--fill dashboard here-->
             <div class="container-fluid animated fadeIn">
               <div class="row">
                 <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -169,10 +166,6 @@
                 <div class="col-md-12 col-lg-12 admin-grid">
                   <div class="panel panel-primary panel-border top" id="p1">
                     <div class="panel-body">
-                      <!-- <hc-column-graph
-                      :data="scope.palletAllSites"
-                      title="Pallet Inventory All Site"
-                    ></hc-column-graph> -->
                     </div>
                   </div>
                 </div>
@@ -201,18 +194,16 @@
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="mt-3" v-if="dynamicLink">
-          <iframe
-            :src="dynamicLink"
-            frameborder="0"
-            class="w-screen h-screen max-h-[40%] "
-            sandbox="allow-scripts allow-same-origin"
-            aria-readonly="true"
-          ></iframe>
-        </div>
-      </ion-card>
+        </div> -->
+      <div class="mt-3 overflow-auto" v-if="dynamicLink">
+        <iframe
+          :src="dynamicLink"
+          frameborder="0"
+          class="flex w-screen h-[78vh] overflow-auto"
+          sandbox="allow-scripts allow-same-origin"
+          aria-readonly="true"
+        ></iframe>
+      </div>
     </ion-content>
   </IonPage>
 </template>
@@ -227,9 +218,20 @@ definePageMeta({
   alias: ["/", "/tabs"],
 });
 
-var userFullname = JSON.parse(localStorage.getItem("_214")).fullname;
-var userId = JSON.parse(localStorage.getItem("_214")).userid;
-var dynamicLink = localStorage.getItem("_102") ? "https://metabase.fast.com.ph/public/dashboard/cc6c27ae-77cc-4a2c-a414-efaa4a195e2a?sitecode=" + JSON.parse(localStorage.getItem("_102")).sitecode : null + "#hide_parameters=Sitecode"; 
+var userFullname = JSON.parse(decrypt(localStorage.getItem("_214"))).fullname;
+var userId = JSON.parse(decrypt(localStorage.getItem("_214"))).userid;
+var dynamicLink =
+  "https://metabase.fast.com.ph/public/dashboard/088ab834-7d4d-4a44-9f47-c1a6fde228cc";
+
+/* var dynamicLink = localStorage.getItem("_102")
+  ? "https://metabase.fast.com.ph/public/dashboard/cc6c27ae-77cc-4a2c-a414-efaa4a195e2a?sitecode=" +
+    JSON.parse(localStorage.getItem("_102")).sitecode
+  : null + "#hide_parameters=sitecode"; */
+/* `
+https://metabase.fast.com.ph/public/dashboard/cc6c27ae-77cc-4a2c-a414-efaa4a195e2a?sitecode=
+${
+  JSON.parse(localStorage.getItem("_102")).sitecode ?? null
+}#hide_parameters=sitecode`; */
 /* var sitecode = JSON.parse(
   localStorage.getItem("_102")
 ).sitecode; */ /*set sidecode*/
@@ -240,17 +242,20 @@ scope.lastMonth = format(prevDate, "MMMM");
 scope.currentMonth = format(new Date(), "MMMM");
 
 const init = async () => {
-if(localStorage.getItem("_102") == undefined || localStorage.getItem("_102") == null){
-  showSwitchSiteModal.value = true
-  return;
-}
+  if (
+    localStorage.getItem("_102") == undefined ||
+    localStorage.getItem("_102") == null
+  ) {
+    showSwitchSiteModal.value = true;
+    return;
+  }
 
   const response = await serviceApi().get(
     "pallet/GetPisoPalletChart/?sitecode=" +
       JSON.parse(localStorage.getItem("_102")).sitecode,
     {
       headers: {
-        Token: JSON.parse(localStorage.getItem("_214")).token,
+        Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
       },
     }
   );
@@ -269,9 +274,6 @@ if(localStorage.getItem("_102") == undefined || localStorage.getItem("_102") == 
     scope.monthlyLastMonth = response.data.monthlyCompare.find(
       (item) => item.DateCreated === "LastMonth"
     );
-
-    console.log(scope.monthlyLastMonth.TotalIn);
-    console.log(scope.monthlyCurrentMonth.TotalIn);
   }
 };
 

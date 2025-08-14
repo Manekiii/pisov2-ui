@@ -4,11 +4,11 @@
       <!-- <div id="loadingindicator" class="hidden">
         <LoadingIndicator />
       </div> -->
-      <div>
+      <div class="p-4">
         <div class="border-b-2 items-center justify-center flex p-2">
           <label
             for="title"
-            class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
+            class="font-semibold text-3xl block mb-2 text-gray-900"
           >
             Transaction Ledger
           </label>
@@ -18,108 +18,148 @@
           <button
             type="submit"
             @click="showModal = true"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
           >
             Filter
           </button>
         </div>
 
         <!-- WEB -->
-        <div class="hidden md:block">
-          <table
-            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg"
+        <div class="hidden md:block overflow-auto">
+          <!-- The context menu that will appear when right-clicking -->
+          <div
+            v-if="showMenu"
+            :style="{
+              position: 'fixed',
+              top: `${menuPosition.y}px`,
+              left: `${menuPosition.x}px`,
+            }"
+            class="context-menu"
           >
-            <thead
-              class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-            >
+            <ul class="text-sm">
+              <li @click="exportToExcel" class="flex gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 48 48"
+                >
+                  <g
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-width="4"
+                  >
+                    <path
+                      stroke-linejoin="round"
+                      d="M8 15V6a2 2 0 0 1 2-2h28a2 2 0 0 1 2 2v36a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-9"
+                    />
+                    <path d="M31 15h3m-6 8h6m-6 8h6" />
+                    <path
+                      stroke-linejoin="round"
+                      d="M4 15h18v18H4zm6 6l6 6m0-6l-6 6"
+                    />
+                  </g>
+                </svg>
+                Export to Excel
+              </li>
+              <li @click="printSelection" class="flex gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M16 8V5H8v3H6V3h12v5zM4 10h16zm14 2.5q.425 0 .713-.288T19 11.5t-.288-.712T18 10.5t-.712.288T17 11.5t.288.713t.712.287M16 19v-4H8v4zm2 2H6v-4H2v-6q0-1.275.875-2.137T5 8h14q1.275 0 2.138.863T22 11v6h-4zm2-6v-4q0-.425-.288-.712T19 10H5q-.425 0-.712.288T4 11v4h2v-2h12v2z"
+                  />
+                </svg>
+                Print
+              </li>
+            </ul>
+          </div>
+          <table
+            class="w-full text-sm text-left rtl:text-right rounded-lg overflow-auto"
+            @contextmenu.prevent="handleRightClick"
+          >
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
-                <!-- <th scope="col" class="px-6 py-3">Action</th> -->
+                <th scope="col" class="px-6 py-3">Action</th>
                 <th scope="col" class="px-6 py-3">Trans #</th>
                 <th scope="col" class="px-6 py-3">Reference</th>
                 <th scope="col" class="px-6 py-3">Document</th>
                 <th scope="col" class="px-6 py-3">Shipper No</th>
+                <!-- <th scope="col" class="px-6 py-3">Pallet Description</th>
+                <th scope="col" class="px-6 py-3">Qty Transacted</th>
+                <th scope="col" class="px-6 py-3">From</th>
+                <th scope="col" class="px-6 py-3">To</th> -->
                 <th scope="col" class="px-6 py-3">Created By</th>
                 <th scope="col" class="px-6 py-3">Created Date</th>
               </tr>
             </thead>
             <tbody>
               <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                class="bg-white border-b"
                 v-for="trans in scope.transactionList"
               >
-                <!-- <th
+                <th
                   scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                 >
                   <div>
                     <button
-                      class="bg-blue-500 rounded-lg p-1"
-                      v-show="scope.canEdit"
-                      @click="onEdit(posting.transhdrId)"
+                      class="bg-blue-500 rounded-lg p-2 text-white"
+                      @click="OnPreview(trans.transhdrId)"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-6 h-6"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                        />
-                      </svg>
-                    </button>
-                    <button
-                      class="bg-red-500 rounded-lg p-1 ml-3"
-                      v-show="scope.canDelete && posting.transcode !== 'IN03'"
-                      @click="onDelete(posting.transhdrId)"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-6 h-6"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                        />
-                      </svg>
-                    </button>
-
-                    <button
-                      class="bg-green-500 rounded-lg p-1 ml-3"
-                      @click="onPost(posting.transhdrId)"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-6 h-6"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
-                        />
-                      </svg>
+                      Preview
                     </button>
                   </div>
-                </th> -->
+                </th>
                 <td class="px-6 py-4">{{ trans.transhdrId }}</td>
                 <td class="px-6 py-4">{{ trans.referenceno }}</td>
                 <td class="px-6 py-4">{{ trans.documentno }}</td>
                 <td class="px-6 py-4">
                   {{ trans.shippercode }} - {{ trans.shippername }}
                 </td>
+                <!-- <td class="px-6 py-4">
+                  <div
+                    v-for="(item, index) in trans.transactionledgerdetails"
+                    :key="index"
+                  >
+                    <label>{{ item.itemdesc }}</label>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <div
+                    v-for="(item, index) in trans.transactionledgerdetails"
+                    :key="index"
+                  >
+                    <label>{{ item.qtyserved }}</label>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <div
+                    v-for="(item, index) in getUniqueItems(
+                      trans.transactionledgerdetails,
+                      'from'
+                    )"
+                    :key="index"
+                  >
+                    <label>{{ item.from }}</label>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <div
+                    v-for="(item, index) in getUniqueItems(
+                      trans.transactionledgerdetails,
+                      'destination'
+                    )"
+                    :key="index"
+                  >
+                    <label>{{ item.destination }}</label>
+                  </div>
+                </td> -->
                 <td class="px-6 py-4">
                   {{ trans.created_by }}
                 </td>
@@ -139,7 +179,7 @@
         >
           <div
             v-for="trans in scope.transactionList"
-            class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
+            class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 mb-3"
           >
             <div>
               <label for="transactionNumber"
@@ -173,6 +213,14 @@
                 Created Date: {{ trans.create_date }}</label
               >
             </div>
+            <div class="flex justify-end">
+              <button
+                class="bg-blue-500 rounded-lg p-2 text-white"
+                @click="OnPreview(trans.transhdrId)"
+              >
+                Preview
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -188,18 +236,14 @@
         <!-- Background overlay -->
         <div class="fixed inset-0 bg-gray-900 opacity-50"></div>
         <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="relative bg-white rounded-lg shadow">
           <!-- Modal header -->
-          <div
-            class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600"
-          >
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-              Filter
-            </h3>
+          <div class="flex items-start justify-between p-4 border-b rounded-t">
+            <h3 class="text-xl font-semibold text-gray-900">Filter</h3>
             <button
               @click="hideModal()"
               type="button"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
             >
               <svg
                 aria-hidden="true"
@@ -223,7 +267,7 @@
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-gray-900"
                   >Data From</label
                 >
                 <div class="relative">
@@ -231,7 +275,7 @@
                     class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
                   >
                     <svg
-                      class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                      class="w-4 h-4 text-gray-500"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="currentColor"
@@ -242,19 +286,26 @@
                       />
                     </svg>
                   </div>
-                  <input
+                  <!--  <input
                     name="start"
                     type="date"
                     v-model="scope.dtefrom"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                     placeholder="Select date start"
-                  />
+                  /> -->
+                  <VueDatePicker
+                    v-model="scope.dtefrom"
+                    :auto-position="false"
+                    :teleport="true"
+                    :enable-time-picker="false"
+                    auto-apply
+                  ></VueDatePicker>
                 </div>
               </div>
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-gray-900"
                   >Data To</label
                 >
                 <div class="relative">
@@ -262,7 +313,7 @@
                     class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
                   >
                     <svg
-                      class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                      class="w-4 h-4 text-gray-500"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="currentColor"
@@ -273,25 +324,32 @@
                       />
                     </svg>
                   </div>
-                  <input
+                  <!-- <input
                     name="end"
                     type="date"
                     v-model="scope.dteto"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5   "
                     placeholder="Select date end"
-                  />
+                  /> -->
+                  <VueDatePicker
+                    v-model="scope.dteto"
+                    :auto-position="false"
+                    :teleport="true"
+                    :enable-time-picker="false"
+                    auto-apply
+                  ></VueDatePicker>
                 </div>
               </div>
             </div>
           </div>
           <!-- Modal footer -->
           <div
-            class="flex justify-end items-center p-2 space-x-2 border-gray-200 rounded-b dark:border-gray-600"
+            class="flex justify-end items-center p-2 space-x-2 border-gray-200 rounded-b"
           >
             <button
               @click="onInit()"
               type="button"
-              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
             >
               Preview
             </button>
@@ -305,20 +363,67 @@
 <script setup>
 import { serviceApi } from "../../../services/piso-serviceapi";
 import { format } from "date-fns";
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
 import Swal from "sweetalert2";
+import { sidebarOpen } from "~/dashboard/store";
+import * as XLSX from "xlsx";
 
 var sitecode = JSON.parse(
   localStorage.getItem("_102")
 ).sitecode; /*set sidecode*/
 const showModal = ref(true);
+const ionRouter = useIonRouter();
 const scope = reactive({});
 scope.itemsPerPage = 20;
 scope.currentPage = 0;
-scope.dtefrom = new Date(format(new Date(), "mm/dd/yyyy"));
-scope.dteto = new Date(format(new Date(), "mm/dd/yyyy"));
+scope.dtefrom = new Date();
+scope.dteto = new Date();
+
+const showMenu = ref(false);
+const menuPosition = ref({ x: 0, y: 0 });
+
+// Handle right-click event
+const handleRightClick = (event) => {
+  // Prevent the default right-click menu from showing up
+  event.preventDefault();
+
+  // Set the menu's position based on the mouse coordinates
+  const x = event.clientX;
+  const y = event.clientY;
+
+  // Offset the position slightly if you want some space around the context menu
+  const yoffset = -100;
+  const xoffset = !sidebarOpen.value ? -100 : -225;
+
+  menuPosition.value = { x: x + xoffset, y: y + yoffset };
+
+  // Show the custom context menu
+  showMenu.value = true;
+};
+
+// Export to Excel functionality
+const exportToExcel = () => {
+  console.log("Exporting to Excel...");
+  const ws = XLSX.utils.json_to_sheet(scope.transactionList);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+  XLSX.writeFile(wb, "tableData.xlsx");
+  showMenu.value = false; // Close the context menu after action
+};
+
+// Close the context menu if clicked outside
+window.addEventListener("click", () => {
+  showMenu.value = false;
+});
+
+const printSelection = () => {
+  showMenu.value = false; // Close the context menu after action
+  window.print();
+};
 
 const handleLoading = async () => {
-  document.querySelector("#loadingindicator").classList.toggle("hidden");
+  //document.querySelector("#loadingindicator").classList.toggle("hidden");
 };
 
 const hideModal = () => {
@@ -333,12 +438,12 @@ const onInit = async (ipage) => {
     "TransactionLedgerperWarehouse/?warehouseId=" +
       sitecode +
       "&dateFrom=" +
-      scope.dtefrom +
+      format(scope.dtefrom, "MM/dd/yyyy") +
       "&dateTo=" +
-      scope.dteto,
+      format(scope.dteto, "MM/dd/yyyy"),
     {
       headers: {
-        Token: JSON.parse(localStorage.getItem("_214")).token,
+        Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
       },
     }
   );
@@ -350,7 +455,7 @@ const onInit = async (ipage) => {
   }
 };
 
-const onPreview = function () {
+/* const onPreview = function () {
   scope.dtefrom = $("#dtefrom").data().date;
   scope.dteto = $("#dteto").data().date;
   scope.requiredPrompt = "";
@@ -367,7 +472,59 @@ const onPreview = function () {
     onInit(1);
     //$rootScope.closeModalForm();
   }
+}; */
+
+const OnPreview = (item) => {
+  /*  ionRouter.push({
+    name: "tabs-report-printing-report-transaction-report",
+    query: { transid: 12345 },
+  }); */
+  const router = useRouter();
+  // Manually construct the URL
+  const queryParams = new URLSearchParams({ transid: item }).toString();
+  // const url = `/tabs/report/printing-report/transaction-report?${queryParams}`;
+
+  const url = `/pison/tabs/report/printing-report/transaction-report?${queryParams}`;
+
+  // Open the URL in a new tab
+  window.open(url, "_blank");
+};
+
+const getUniqueItems = (items, property) => {
+  const seen = new Set();
+  return items.filter((item) => {
+    const value = item[property];
+    if (seen.has(value)) {
+      return false;
+    }
+    seen.add(value);
+    return true;
+  });
 };
 
 onMounted(() => {});
 </script>
+
+<style scoped>
+.context-menu {
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.context-menu ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.context-menu li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.context-menu li:hover {
+  background-color: #f0f0f0;
+}
+</style>

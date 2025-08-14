@@ -8,7 +8,7 @@
             <div>
               <label
                 for="customer"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
                 >Customer <span class="text-red-500">*</span></label
               >
               <select
@@ -23,7 +23,7 @@
             <div>
               <label
                 for="trucker"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
                 >Trucker <span class="text-red-500">*</span></label
               >
               <select
@@ -39,7 +39,7 @@
             <div>
               <label
                 for="transactiontype"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
                 >Transaction Type <span class="text-red-500">*</span></label
               >
               <select
@@ -57,7 +57,7 @@
             <div>
               <label
                 for="reference1"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
                 >Reference 1 <span class="text-red-500">*</span></label
               >
               <input
@@ -72,7 +72,7 @@
             <div>
               <label
                 for="reference2"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
                 >Reference 2</label
               >
               <input
@@ -88,7 +88,7 @@
             <div>
               <label
                 for="reference3"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
               >
                 Reference 3
               </label>
@@ -96,7 +96,7 @@
                 id="reference3"
                 type="text"
                 v-model="trans.documentno"
-                class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder=""
                 required
               />
@@ -104,7 +104,7 @@
             <div>
               <label
                 for="reference4"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
               >
                 Reference 4
               </label>
@@ -112,7 +112,7 @@
                 id="reference4"
                 type="text"
                 v-model="trans.invoiceno"
-                class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder=""
                 required
               />
@@ -120,55 +120,76 @@
             <div>
               <label
                 for="refdate"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
                 >Ref Date <span class="text-red-500">*</span></label
               >
-              <input
+              <!-- <input
                 type="date"
                 id="refdate"
                 v-model="trans.referencedate"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5   "
                 placeholder="Flowbite"
                 required
-              />
+              /> -->
+              <VueDatePicker
+                v-model="trans.referencedate"
+                :auto-position="false"
+                :teleport="true"
+                :enable-time-picker="false"
+                auto-apply
+              ></VueDatePicker>
             </div>
 
             <div>
               <label
                 for="orderDate"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
               >
                 Order Date <span class="text-red-500">*</span>
               </label>
-              <input
+              <!-- <input
                 id="orderDate"
                 type="date"
                 v-model="trans.orderdate"
-                class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5   "
                 placeholder=""
                 required
-              />
+              /> -->
+              <VueDatePicker
+                v-model="trans.orderdate"
+                :auto-position="false"
+                :teleport="true"
+                :enable-time-picker="false"
+                auto-apply
+              ></VueDatePicker>
             </div>
             <div>
               <label
                 for="deliveryDate"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
               >
                 Delivery Date <span class="text-red-500">*</span>
               </label>
-              <input
+              <!--  <input
                 id="deliveryDate"
                 type="date"
                 v-model="trans.deliverydate"
-                class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5   "
                 placeholder=""
                 required
-              />
+              /> -->
+              <VueDatePicker
+                v-model="trans.deliverydate"
+                :auto-position="false"
+                :teleport="true"
+                :enable-time-picker="false"
+                auto-apply
+              ></VueDatePicker>
             </div>
             <div>
               <label
                 for="remarks"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900"
               >
                 Remarks
               </label>
@@ -176,7 +197,7 @@
                 id="renarks"
                 rows="4"
                 v-model="trans.remarks"
-                class="max-w-md block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Write your remarks here..."
               ></textarea>
             </div>
@@ -184,16 +205,16 @@
           <div class="mt-5 overflow-auto rounded-lg shadow">
             <label
               for="Pallet"
-              class="p-3 block mb-2 font-medium text-lg text-gray-900 dark:text-white"
+              class="p-3 block mb-2 font-medium text-lg text-gray-900"
             >
-              PALLET
+              ITEM
             </label>
 
             <div class="p-4">
               <button
                 type="button"
                 @click="onSearchItem()"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
               >
                 Add Pallet
               </button>
@@ -208,22 +229,18 @@
                   <!-- Background overlay -->
                   <div class="fixed inset-0 bg-gray-900 opacity-50"></div>
                   <!-- Modal content -->
-                  <div
-                    class="relative bg-white rounded-lg shadow dark:bg-gray-700"
-                  >
+                  <div class="relative bg-white rounded-lg shadow">
                     <!-- Modal header -->
                     <div
-                      class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600"
+                      class="flex items-start justify-between p-4 border-b rounded-t"
                     >
-                      <h3
-                        class="text-xl font-semibold text-gray-900 dark:text-white"
-                      >
-                        Choose Pallets
+                      <h3 class="text-xl font-semibold text-gray-900">
+                        Add Pallets
                       </h3>
                       <button
                         @click="hideModal()"
                         type="button"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
                       >
                         <svg
                           aria-hidden="true"
@@ -243,18 +260,21 @@
                     </div>
                     <!-- Modal body -->
                     <div class="p-6 space-y-6 overflow-y-auto">
-                      <div>
+                      <div class="flex items-center gap-10 mb-4">
                         <label
                           for="default-search"
-                          class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                          class="mb-2 text-gray-900 font-medium text-lg"
                           >Location</label
                         >
 
                         <select
                           v-model="scope.selectedlocation"
                           @change="onGetItembyLocation()"
-                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         >
+                          <option selected disabled value="">
+                            Select a location to view items.
+                          </option>
                           <option
                             v-for="t in scope.locationOptions"
                             :value="t.value"
@@ -263,64 +283,85 @@
                           </option>
                         </select>
                       </div>
+                      <span class="font-medium text-lg">Select Item: </span>
                       <div
-                        v-for="itm in scope.itemMasterList"
-                        :key="itm.PalletCode"
-                        @click="onItemSelect(itm)"
-                        v-show="!alreadyExist(itm.PalletCode)"
-                        class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
+                        v-if="
+                          scope.itemMasterList &&
+                          scope.itemMasterList.length > 0
+                        "
                       >
-                        <div class="flex items-center">
-                          <div class="mr-2">
-                            <!-- Checkbox -->
-                            <input
-                              id="default-checkbox"
-                              type="checkbox"
-                              :checked="itm.isSelected"
-                              v-model="itm.isSelected"
-                              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                            />
-                          </div>
-                          <div id="default-checkbox">
-                            <div>
-                              <label for="temp"
-                                >Pallet Code: {{ itm.PalletCode }}</label
-                              >
+                        <div
+                          v-for="itm in scope.itemMasterList"
+                          :key="itm.PalletCode"
+                          @click="onItemSelect(itm)"
+                          v-show="!alreadyExist(itm.PalletCode)"
+                          class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 mb-3"
+                        >
+                          <div class="flex items-center">
+                            <div class="mr-2">
+                              <!-- Checkbox -->
+                              <input
+                                id="default-checkbox"
+                                type="checkbox"
+                                :checked="itm.isSelected"
+                                v-model="itm.isSelected"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                              />
                             </div>
-                            <div>
-                              <label for="temp"
-                                >Description: {{ itm.PalletDescription }}</label
-                              >
-                            </div>
-                            <div>
-                              <label for="temp"
-                                >Available Qty: {{ itm.AvailableQty }}</label
-                              >
-                            </div>
-                            <div>
-                              <label for="temp"
-                                >UOM: {{ itm.UnitOfMeasure }}</label
-                              >
+                            <div id="default-checkbox">
+                              <div>
+                                <label for="temp"
+                                  >Pallet Code: {{ itm.PalletCode }}</label
+                                >
+                              </div>
+                              <div>
+                                <label for="temp"
+                                  >Description:
+                                  {{ itm.PalletDescription }}</label
+                                >
+                              </div>
+                              <div>
+                                <label for="temp"
+                                  >Available Qty: {{ itm.AvailableQty }}</label
+                                >
+                              </div>
+                              <div>
+                                <label for="temp"
+                                  >UOM: {{ itm.UnitOfMeasure }}</label
+                                >
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
+                      <div
+                        v-else-if="
+                          scope.itemMasterList === undefined ||
+                          (scope.itemMasterList &&
+                            scope.itemMasterList.length === 0)
+                        "
+                        class="flex justify-center items-center"
+                      >
+                        <span class="font-medium text-lg"
+                          >No available item.</span
+                        >
+                      </div>
                     </div>
                     <!-- Modal footer -->
                     <div
-                      class="flex justify-end items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
+                      class="flex justify-end items-center p-6 space-x-2 border-t border-gray-200 rounded-b"
                     >
                       <button
                         type="button"
                         @click="onAddSelectedPallet()"
-                        class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                        class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
                       >
                         Add
                       </button>
                       <button
                         @click="hideModal()"
                         type="button"
-                        class="text-gray-800 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-500 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                        class="text-gray-800 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-500 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
                       >
                         Close
                       </button>
@@ -332,12 +373,8 @@
 
             <!-- if the screen is wide or desktop view -->
             <div class="mt-3 overflow-auto rounded-lg shadow hidden md:block">
-              <table
-                class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg"
-              >
-                <thead
-                  class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-                >
+              <table class="w-full text-sm text-left rtl:text-right rounded-lg">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                   <tr>
                     <th scope="col" class="px-6 py-3">Action</th>
                     <th scope="col" class="px-6 py-3">Location</th>
@@ -356,9 +393,43 @@
                   >
                     <th
                       scope="row"
-                      class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                     >
-                      <button
+                      <!-- Delete Button and Tooltip -->
+                      <div class="relative inline-block">
+                        <button
+                          @mouseover="tooltips = true"
+                          @mouseleave="tooltips = false"
+                          class="bg-red-500 rounded-lg p-1 ml-3 text-white hover:bg-red-300"
+                          @click="onDelete(index)"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                            />
+                          </svg>
+                        </button>
+                        <div
+                          v-if="tooltips"
+                          class="absolute bottom-full mb-2 w-max px-2 py-1 text-sm text-white bg-gray-700 rounded shadow-lg"
+                          :style="{
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                          }"
+                        >
+                          Delete
+                        </div>
+                      </div>
+                      <!--   <button
                         @click="onDelete(index)"
                         class="bg-red-500 rounded-lg p-1 ml-3"
                       >
@@ -376,7 +447,7 @@
                             d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
                           />
                         </svg>
-                      </button>
+                      </button> -->
                     </th>
 
                     <td class="p-3 text-sm text-gray-700">
@@ -407,7 +478,7 @@
                     </td>
                     <td class="p-3 text-sm text-gray-700">
                       <input
-                        type="tel"
+                        type="text"
                         id="remarks"
                         v-model="pallet.remarks"
                         class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -433,7 +504,7 @@
                   >
                   <button @click="onDelete(index)">
                     <svg
-                      class="w-6 h-6 text-red-500 dark:text-red-500"
+                      class="w-6 h-6 text-red-500"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="currentColor"
@@ -469,7 +540,7 @@
                     id="QtyServed"
                     v-model="pallet.qtyserved"
                     @change="onCheckQtyTrans(pallet)"
-                    class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600"
+                    class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder=""
                     required
                   />
@@ -477,10 +548,10 @@
                 <div>
                   Remarks:
                   <input
-                    type="tel"
+                    type="text"
                     id="remarks"
                     v-model="pallet.remarks"
-                    class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600"
+                    class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder=""
                     required
                   />
@@ -495,23 +566,25 @@
               type="submit"
               v-if="scope.isEdit"
               @click="onBack"
-              class="text-white bg-gray-500 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              class="text-white bg-gray-500 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
             >
               Back
             </button>
             <button
               type="submit"
+              :disabled="isClick"
               @click="onSave('P')"
-              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
             >
-              Save And Post
+              {{ isClick ? "Please wait..." : "Save And Post" }}
             </button>
             <button
               type="submit"
+              :disabled="isClick"
               @click="onSave('O')"
-              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
             >
-              Save
+              {{ isClick ? "Please wait..." : "Save" }}
             </button>
           </div>
         </div>
@@ -523,9 +596,13 @@
 <script setup>
 import { serviceApi } from "../../../services/piso-serviceapi";
 import { format } from "date-fns";
+import { isClick } from "~/dashboard/store";
 import Swal from "sweetalert2";
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
 
 const scope = reactive({});
+scope.selectedlocation = "";
 
 const pltSearch = ref();
 const supplierOptions = []; // Your options data here
@@ -533,8 +610,11 @@ const trans = reactive({});
 const ionRouter = useIonRouter();
 const showModal = ref(false);
 
+trans.deliverydate = new Date();
+trans.orderdate = new Date();
+trans.referencedate = new Date();
 scope.trnscde = getCookie("transid");
-
+const tooltips = ref(false);
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -579,8 +659,11 @@ const onSave = async (p) => {
   }).then(async (result) => {
     if (result.isConfirmed) {
       try {
+        isClick.value = true;
         trans.warehouseId = JSON.parse(localStorage.getItem("_102")).sitecode;
-        trans.created_by = JSON.parse(localStorage.getItem("_214")).fullname;
+        trans.created_by = JSON.parse(
+          decrypt(localStorage.getItem("_214"))
+        ).fullname;
         trans.status = p;
         trans.transtype = "O";
 
@@ -591,18 +674,26 @@ const onSave = async (p) => {
           {
             headers: {
               "Content-Type": "application/json", // Specify the content type
-              Token: JSON.parse(localStorage.getItem("_214")).token,
+              Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
             },
           }
         );
 
         if (response.status == 200) {
           if (!response.hasError) {
-            Toast.fire({
-              title: "Success!",
-              text: "Inbound Transaction Save Complete.",
-              icon: "success",
-            });
+            if (p === "P") {
+              Toast.fire({
+                title: "Success!",
+                text: "Successfully saved and posted.",
+                icon: "success",
+              });
+            } else {
+              Toast.fire({
+                title: "Success!",
+                text: "Successfully saved.",
+                icon: "success",
+              });
+            }
           } else {
             Toast.fire({
               title: "Error:",
@@ -614,14 +705,21 @@ const onSave = async (p) => {
             ionRouter.replace("/tabs/transaction/issuance-batch-posting");
           }
           for (const key in trans) {
-            trans[key] = "";
+            trans[key] = null;
           }
+
+          trans.deliverydate = new Date();
+          trans.orderdate = new Date();
+          trans.referencedate = new Date();
+          isClick.value = false;
         } else {
           Swal.fire("Error Encounter!", `${response.data}`, "error");
           console.error(response.data);
+          isClick.value = false;
         }
       } catch (error) {
         console.error(error);
+        isClick.value = false;
       }
     }
   });
@@ -629,7 +727,7 @@ const onSave = async (p) => {
 
 //Add selected Pallet
 const onAddSelectedPallet = () => {
-  if (trans.invty_transdtl === undefined) {
+  if (trans.invty_transdtl === undefined || trans.invty_transdtl === null) {
     trans.invty_transdtl = [];
   }
 
@@ -663,7 +761,7 @@ const onGetItembyLocation = async () => {
       JSON.parse(localStorage.getItem("_102")).sitecode,
     {
       headers: {
-        Token: JSON.parse(localStorage.getItem("_214")).token,
+        Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
       },
     }
   );
@@ -733,7 +831,7 @@ async function getIncomingTransTyps() {
       `pallet/get-trans-type/?code=outgoing`,
       {
         headers: {
-          Token: JSON.parse(localStorage.getItem("_214")).token,
+          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
         },
       }
     );
@@ -748,7 +846,7 @@ async function getIncomingTransTyps() {
       `pallet/get-pallet-location/?sitecode=${sitecode}`,
       {
         headers: {
-          Token: JSON.parse(localStorage.getItem("_214")).token,
+          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
         },
       }
     );
@@ -764,7 +862,7 @@ async function getIncomingTransTyps() {
       `pallet/get-pallet-shipper-type/${sitecode},O`,
       {
         headers: {
-          Token: JSON.parse(localStorage.getItem("_214")).token,
+          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
         },
       }
     );
@@ -787,7 +885,7 @@ async function getIncomingTransTyps() {
       `wfms/get-active-trucker/?appname=PISO&brancode=${sitecode}`,
       {
         headers: {
-          Token: JSON.parse(localStorage.getItem("_214")).token,
+          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
         },
       }
     );
@@ -815,7 +913,7 @@ async function onGetItemUpdate(id) {
       `pallet/get-trans-details/?transId=${id}`,
       {
         headers: {
-          Token: JSON.parse(localStorage.getItem("_214")).token,
+          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
         },
       }
     );

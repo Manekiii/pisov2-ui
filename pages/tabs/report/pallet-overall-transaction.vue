@@ -8,7 +8,7 @@
         <div class="border-b-2 items-center justify-center flex p-2">
           <label
             for="title"
-            class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
+            class="font-semibold text-3xl block mb-2 text-gray-900"
           >
             Pallet Overall Transaction
           </label>
@@ -17,7 +17,7 @@
           <button
             type="submit"
             @click="showModal = true"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
           >
             Filter
           </button>
@@ -25,12 +25,64 @@
 
         <!-- WEB -->
         <div class="hidden md:block">
-          <table
-            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg"
+          <!-- The context menu that will appear when right-clicking -->
+          <div
+            v-if="showMenu"
+            :style="{
+              position: 'fixed',
+              top: `${menuPosition.y}px`,
+              left: `${menuPosition.x}px`,
+            }"
+            class="context-menu"
           >
-            <thead
-              class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-            >
+            <ul class="text-sm">
+              <li @click="exportToExcel" class="flex gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 48 48"
+                >
+                  <g
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-width="4"
+                  >
+                    <path
+                      stroke-linejoin="round"
+                      d="M8 15V6a2 2 0 0 1 2-2h28a2 2 0 0 1 2 2v36a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-9"
+                    />
+                    <path d="M31 15h3m-6 8h6m-6 8h6" />
+                    <path
+                      stroke-linejoin="round"
+                      d="M4 15h18v18H4zm6 6l6 6m0-6l-6 6"
+                    />
+                  </g>
+                </svg>
+                Export to Excel
+              </li>
+              <li @click="printSelection" class="flex gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M16 8V5H8v3H6V3h12v5zM4 10h16zm14 2.5q.425 0 .713-.288T19 11.5t-.288-.712T18 10.5t-.712.288T17 11.5t.288.713t.712.287M16 19v-4H8v4zm2 2H6v-4H2v-6q0-1.275.875-2.137T5 8h14q1.275 0 2.138.863T22 11v6h-4zm2-6v-4q0-.425-.288-.712T19 10H5q-.425 0-.712.288T4 11v4h2v-2h12v2z"
+                  />
+                </svg>
+                Print
+              </li>
+            </ul>
+          </div>
+          <table
+            class="w-full text-sm text-left rtl:text-right rounded-lg"
+            @contextmenu.prevent="handleRightClick"
+          >
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
                 <!-- <th scope="col" class="px-6 py-3">Action</th> -->
                 <th scope="col" class="px-6 py-3">Pallet Code</th>
@@ -45,12 +97,12 @@
             </thead>
             <tbody>
               <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                class="bg-white border-b"
                 v-for="trans in scope.transactionList"
               >
                 <!-- <th
                   scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                 >
                   <div>
                     <button
@@ -177,7 +229,7 @@
         >
           <div
             v-for="trans in scope.transactionList"
-            class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
+            class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 mb-3"
           >
             <div>
               <label for="transactionNumber"
@@ -235,18 +287,14 @@
         <!-- Background overlay -->
         <div class="fixed inset-0 bg-gray-900 opacity-50"></div>
         <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="relative bg-white rounded-lg shadow">
           <!-- Modal header -->
-          <div
-            class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600"
-          >
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-              Filter
-            </h3>
+          <div class="flex items-start justify-between p-4 border-b rounded-t">
+            <h3 class="text-xl font-semibold text-gray-900">Filter</h3>
             <button
               @click="hideModal()"
               type="button"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
             >
               <svg
                 aria-hidden="true"
@@ -270,7 +318,7 @@
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-gray-900"
                   >Data From</label
                 >
                 <div class="relative">
@@ -278,7 +326,7 @@
                     class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
                   >
                     <svg
-                      class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                      class="w-4 h-4 text-gray-500"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="currentColor"
@@ -289,19 +337,26 @@
                       />
                     </svg>
                   </div>
-                  <input
-                    name="start"
-                    type="date"
+                  <!--  <input
+                      name="start"
+                      type="date"
+                      v-model="scope.dtefrom"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+                      placeholder="Select date start"
+                    /> -->
+                  <VueDatePicker
                     v-model="scope.dtefrom"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Select date start"
-                  />
+                    :auto-position="false"
+                    :teleport="true"
+                    :enable-time-picker="false"
+                    auto-apply
+                  ></VueDatePicker>
                 </div>
               </div>
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-gray-900"
                   >Data To</label
                 >
                 <div class="relative">
@@ -309,7 +364,7 @@
                     class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
                   >
                     <svg
-                      class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                      class="w-4 h-4 text-gray-500"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="currentColor"
@@ -320,25 +375,33 @@
                       />
                     </svg>
                   </div>
-                  <input
+                  <!--  <input
                     name="end"
                     type="date"
                     v-model="scope.dteto"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                     placeholder="Select date end"
-                  />
+                  /> -->
+
+                  <VueDatePicker
+                    v-model="scope.dteto"
+                    :auto-position="false"
+                    :teleport="true"
+                    :enable-time-picker="false"
+                    auto-apply
+                  ></VueDatePicker>
                 </div>
               </div>
             </div>
           </div>
           <!-- Modal footer -->
           <div
-            class="flex justify-end items-center p-2 space-x-2 border-gray-200 rounded-b dark:border-gray-600"
+            class="flex justify-end items-center p-2 space-x-2 border-gray-200 rounded-b"
           >
             <button
               @click="onInit()"
               type="button"
-              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
             >
               Preview
             </button>
@@ -352,7 +415,11 @@
 <script setup>
 import { serviceApi } from "../../../services/piso-serviceapi";
 import { format } from "date-fns";
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
 import Swal from "sweetalert2";
+import { sidebarOpen } from "~/dashboard/store";
+import * as XLSX from "xlsx";
 
 var sitecode = JSON.parse(
   localStorage.getItem("_102")
@@ -361,9 +428,50 @@ const showModal = ref(true);
 const scope = reactive({});
 scope.itemsPerPage = 20;
 scope.currentPage = 0;
-scope.dtefrom = new Date(format(new Date(), "mm/dd/yyyy"));
-scope.dteto = new Date(format(new Date(), "mm/dd/yyyy"));
+scope.dtefrom = new Date();
+scope.dteto = new Date();
 
+const showMenu = ref(false);
+const menuPosition = ref({ x: 0, y: 0 });
+
+// Handle right-click event
+const handleRightClick = (event) => {
+  // Prevent the default right-click menu from showing up
+  event.preventDefault();
+
+  // Set the menu's position based on the mouse coordinates
+  const x = event.clientX;
+  const y = event.clientY;
+
+  // Offset the position slightly if you want some space around the context menu
+  const yoffset = -100;
+  const xoffset = !sidebarOpen.value ? -100 : -225;
+
+  menuPosition.value = { x: x + xoffset, y: y + yoffset };
+
+  // Show the custom context menu
+  showMenu.value = true;
+};
+
+// Export to Excel functionality
+const exportToExcel = () => {
+  console.log("Exporting to Excel...");
+  const ws = XLSX.utils.json_to_sheet(scope.transactionList);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+  XLSX.writeFile(wb, "tableData.xlsx");
+  showMenu.value = false; // Close the context menu after action
+};
+
+// Close the context menu if clicked outside
+window.addEventListener("click", () => {
+  showMenu.value = false;
+});
+
+const printSelection = () => {
+  showMenu.value = false; // Close the context menu after action
+  window.print();
+};
 const handleLoading = async () => {
   document.querySelector("#loadingindicator").classList.toggle("hidden");
 };
@@ -380,12 +488,12 @@ const onInit = async (ipage) => {
     "pallet/get-overall-transaction/?sitecode=" +
       sitecode +
       "&dtefrom=" +
-      scope.dtefrom +
+      format(scope.dtefrom, "yyyy/MM/dd") +
       "&dteto=" +
-      scope.dteto,
+      format(scope.dteto, "yyyy/MM/dd"),
     {
       headers: {
-        Token: JSON.parse(localStorage.getItem("_214")).token,
+        Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
       },
     }
   );
@@ -425,3 +533,27 @@ const onPreview = function () {
 };
 onMounted(() => {});
 </script>
+
+<style scoped>
+.context-menu {
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.context-menu ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.context-menu li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.context-menu li:hover {
+  background-color: #f0f0f0;
+}
+</style>

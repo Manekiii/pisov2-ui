@@ -8,6 +8,7 @@ import CompanyIcon from "./icons/CompanyIcon.vue";
 import { serviceApi } from "../../services/piso-serviceapi";
 import { sidebarOpen, showSwitchSiteModal } from "../store";
 import SettingsIcon from "./icons/SettingsIcon.vue";
+import SupportPanelIcon from "./icons/SupportPanelIcon.vue";
 
 // const menulist = ref([
 //   {
@@ -91,13 +92,13 @@ const closeOtherSubMenus = (currentSubMenu, currentMenu) => {
 
 const initUserMenu = async () => {
   try {
-    const userid = JSON.parse(localStorage.getItem("_214")).userid;
+    const userid = JSON.parse(decrypt(localStorage.getItem("_214"))).userid;
     const usersite = localStorage.getItem("_102");
     const response = await serviceApi().get(
       "account/get-app-menu-v2/?sysid=17&userid=" + userid,
       {
         headers: {
-          Token: JSON.parse(localStorage.getItem("_214")).token,
+          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
         },
       }
     );
@@ -137,6 +138,8 @@ function navigatePage(stage) {
     ionRouter.replace("/tabs/transaction/inventory-transfer");
   } else if (stage == "transaction-ledger") {
     ionRouter.replace("/tabs/report/transaction-ledger");
+  } else if (stage == "638882628182478786") {
+    ionRouter.replace("/tabs/report/transaction-ledger-new");
   } else if (stage == "transaction-report") {
   } else if (stage == "150500000011") {
   } else if (stage == "150500000013") {
@@ -168,7 +171,9 @@ function navigatePage(stage) {
     // useRouter().push('/transaction/issuance-batch-posting')
     ionRouter.replace("/tabs/transaction/issuance-batch-posting");
   } else if (stage == "636795990881664647") {
+    ionRouter.replace("/tabs/transaction/interplant-transfer");
   } else if (stage == "636809470736329205") {
+    ionRouter.replace("/tabs/transaction/interplant-transfer-posting");
   } else if (stage == "636823563179782717") {
     ionRouter.replace("/tabs/report/batch-receiving-report");
   } else if (stage == "636823563461797560") {
@@ -178,6 +183,12 @@ function navigatePage(stage) {
   } else if (stage == "receive-preview") {
   }
 }
+
+const OnHoverAtParent = (item, hoverState) => {
+  if (!sidebarOpen.value) {
+    item.isDropdownOpen = hoverState;
+  }
+};
 
 onMounted(() => {
   initUserMenu();
@@ -190,21 +201,24 @@ onMounted(() => {
     <li>
       <button
         @click="navigatePage('dashboard')"
-        class="my-2 flex w-full items-center text-blue-50 justify-start p-4 font-thin uppercase transition-colors duration-200 lg:hover:text-blue-500"
+        class="my-2 flex w-full items-center text-blue-50 justify-start p-4 font-thin transition-colors duration-200 lg:hover:text-blue-500"
       >
         <span><DashboardIcon /></span>
         <label v-if="sidebarOpen" class="ml-2">Dashboard</label>
       </button>
     </li>
     <!-- Parent Menu -->
-    <li v-for="(item, index) in menulist" :key="index" class="relative">
+    <li
+      v-for="(item, index) in menulist"
+      :key="index"
+      class="relative z-10"
+      @mouseenter="OnHoverAtParent(item, true)"
+      @mouseleave="OnHoverAtParent(item, false)"
+    >
       <button
         @click="toggleDropdown(item)"
-        class="my-2 flex w-full items-center text-blue-50 justify-between p-4 font-thin uppercase transition-colors duration-200 lg:hover:text-blue-500"
-        :class="
-          item.isopen &&
-          ''
-        "
+        class="my-2 flex w-full items-center text-blue-50 justify-between p-4 font-thin transition-colors duration-200 lg:hover:text-blue-500"
+        :class="item.isopen && ''"
       >
         <div class="flex justify-center items-center">
           <span v-if="item.name == 'Report'">
@@ -256,21 +270,29 @@ onMounted(() => {
         </span>
       </button>
       <ul
-        v-if="sidebarOpen"
+        v-if="item.isDropdownOpen"
         class="ml-8"
-        :class="{ hidden: !item.isDropdownOpen }, {'absolute w-52 -right-52 top-0 bg-blue-950': !sidebarOpen}"
+        :class="[
+          { hidden: !item.isDropdownOpen },
+          !sidebarOpen ? 'absolute w-52 -right-52 top-0 bg-gray-900' : '',
+        ]"
       >
         <!-- Sub Menu -->
         <li v-for="(sub, index) in item.pages" :key="index">
           <button
-            @click="SubOnClick(sub, item); toggleDropdown(item)"
-            class="my-2 flex w-full items-center justify-start px-4 py-2 font-thin uppercase transition-colors duration-200 lg:hover:text-blue-500"
-            :class="
-              sub.isclick &&
-              'border-4 border-[#d8f1f0] rounded-l-2xl bg-[#d8f1f0] text-black '
-            "
+            @click="SubOnClick(sub, item)"
+            class="my-2 flex w-full items-center justify-start px-4 py-2 font-thin transition-colors duration-200 lg:hover:text-blue-500"
+            :class="[
+              {
+                'border-4 border-[#d8f1f0] rounded-l-2xl bg-[#d8f1f0] text-black':
+                  sub.isclick && sidebarOpen,
+              },
+              {
+                'border-4 border-[#d8f1f0] rounded-r-2xl bg-[#d8f1f0] text-black':
+                  sub.isclick && !sidebarOpen,
+              },
+            ]"
           >
-            •
             <label class="ml-2 text-start text-xs sm:text-sm md:text-base">
               {{ sub.name }}
             </label>
@@ -278,21 +300,16 @@ onMounted(() => {
         </li>
       </ul>
     </li>
-
-    <!-- <SidebarItem title="Company" to="/main/maintenance/company">
-      <CompanyIcon />
-    </SidebarItem>
-
-    <SidebarItem title="Checklist" to="/main/maintenance/checklist">
-      <ChecklistIcon />
-    </SidebarItem>
-
-    <SidebarItem title="Facility" to="/main/maintenance/facility">
-      <FacilityIcon />
-    </SidebarItem>
-
-    <SidebarItem title="Ambassador" to="/main/maintenance/ambassador">
-      <AmbassadorIcon />
-    </SidebarItem> -->
+    <li>
+      <a
+        href="https://support.fastlogistics.com.ph/"
+        target="_blank"
+        class="my-2 flex w-full items-center text-blue-50 justify-start p-4 font-thin transition-colors duration-200 lg:hover:text-blue-500"
+      >
+        <span><SupportPanelIcon /></span>
+        <label v-if="sidebarOpen" class="ml-2">Support Center</label>
+      </a>
+    </li>
   </ul>
 </template>
+<!-- 'absolute w-52 -right-52 top-0 bg-blue-950': !sidebarOpen -->

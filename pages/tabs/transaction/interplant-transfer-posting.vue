@@ -11,7 +11,7 @@
             for="title"
             class="font-semibold text-3xl block mb-2 text-gray-900"
           >
-            Issuance Batch Posting
+            Inter Plant Transaction List
           </label>
         </div>
         <div
@@ -66,8 +66,6 @@
                 <th scope="col" class="px-6 py-3">Doc#</th>
                 <th scope="col" class="px-6 py-3">Order#</th>
                 <th scope="col" class="px-6 py-3">Ref#</th>
-                <th scope="col" class="px-6 py-3">Pallet Desc</th>
-                <th scope="col" class="px-6 py-3">Quantity</th>
                 <th scope="col" class="px-6 py-3">Delivery Date</th>
                 <th scope="col" class="px-6 py-3">Created By</th>
                 <th scope="col" class="px-6 py-3">Created Date</th>
@@ -121,7 +119,7 @@
                       <button
                         @mouseover="tooltips[index].showDelete = true"
                         @mouseleave="tooltips[index].showDelete = false"
-                        class="bg-red-500 rounded-lg p-1 ml-3 text-white hover:bg-green-800"
+                        class="bg-red-500 rounded-lg p-1 ml-3 text-white hover:bg-red-800"
                         v-show="scope.canDelete && posting.transcode !== 'IN03'"
                         @click="onDelete(posting.transhdrId)"
                       >
@@ -154,7 +152,7 @@
                       <button
                         @mouseover="tooltips[index].showPost = true"
                         @mouseleave="tooltips[index].showPost = false"
-                        class="bg-green-500 rounded-lg p-1 text-white hover:bg-red-300"
+                        class="bg-green-500 rounded-lg p-1 text-white hover:bg-green-800"
                         @click="onPost(posting.transhdrId)"
                       >
                         <svg
@@ -186,7 +184,7 @@
                 <td class="px-6 py-4">{{ posting.documentno }}</td>
                 <td class="px-6 py-4">{{ posting.orderno }}</td>
                 <td class="px-6 py-4">{{ posting.referenceno }}</td>
-                <td class="px-6 py-4">
+                <!-- <td class="px-6 py-4">
                   <Table>
                     <tr v-for="i in posting.transactionbatchdetails">
                       <td>
@@ -203,7 +201,7 @@
                       </td>
                     </tr>
                   </Table>
-                </td>
+                </td> -->
                 <td class="px-6 py-4">
                   {{ format(new Date(posting.deliverydate), "yyyy-MM-dd") }}
                 </td>
@@ -353,7 +351,7 @@ scope.currentPage = 0;
 scope.itemMasterList = [];
 scope.trans = {};
 scope.trans.invty_transdtl = [];
-scope.menuId = "636808272376317312";
+scope.menuId = "636809470736329205";
 
 const ionRouter = useIonRouter();
 
@@ -406,13 +404,13 @@ const handleLoading = async () => {
   document.querySelector("#loadingindicator").classList.toggle("hidden");
 };
 
-async function getTransHeaders() {
+async function getTransHeaders(ipage) {
   try {
-    scope.currentPage = 1;
+    scope.currentPage = ipage;
     const response = await serviceApi().get(
-      `pallet/get-all-transaction-batch/?warehouseId=${
+      `pallet/get-interplant-headers/?warehouseId=${
         JSON.parse(localStorage.getItem("_102")).sitecode
-      }&transtype=O`,
+      }&status=O&take=${scope.itemsPerPage}&page=${ipage}`,
       {
         headers: {
           Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
@@ -455,12 +453,12 @@ const onInitMenu = async () => {
 };
 
 const addNew = () => {
-  ionRouter.replace("/tabs/transaction/issuance-batch");
+  ionRouter.replace("/tabs/transaction/interplant-transfer");
 };
 
 const onEdit = (p) => {
   setCookie("transid", p);
-  ionRouter.replace("/tabs/transaction/issuance-batch");
+  ionRouter.replace("/tabs/transaction/interplant-transfer");
 };
 
 const onDelete = (p) => {
@@ -520,10 +518,10 @@ const onPost = async (transID) => {
     if (response.status === 200) {
       Toast.fire({
         title: "Success",
-        text: "Issuance Transaction: " + transID + " posted complete.",
+        text: "Interplant Transaction: " + transID + " posted complete.",
         icon: "success",
       });
-      await getTransHeaders();
+      await getTransHeaders(scope.currentPage);
     }
   } catch (error) {
     Toast.fire({
@@ -536,6 +534,6 @@ const onPost = async (transID) => {
 
 onMounted(() => {
   onInitMenu();
-  getTransHeaders();
+  getTransHeaders(1);
 });
 </script>

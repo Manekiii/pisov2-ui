@@ -4,194 +4,98 @@
       <div id="loadingindicator" class="hidden">
         <LoadingIndicator />
       </div>
-      <div>
-        <div class="border-b-2 items-center justify-center flex p-2">
+      <div class="p-4">
+        <div
+          id="print-title"
+          class="border-b-2 items-center justify-center flex p-2"
+        >
           <label
             for="title"
-            class="font-semibold text-3xl block mb-2 text-gray-900 dark:text-white"
+            class="font-semibold text-3xl block mb-2 text-gray-900"
           >
             Pallet Inventory with Location
           </label>
         </div>
-        <div class="flex justify-end">
+        <div id="filter-button" class="flex justify-end">
           <button
             type="submit"
             @click="showModal = true"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
           >
             Filter
+          </button>
+
+          <button
+            type="submit"
+            @click="printPage"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
+          >
+            Print
           </button>
         </div>
 
         <!-- WEB -->
-        <div class="hidden md:block">
-          <table
-            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg"
-          >
-            <thead
-              class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-            >
+        <div id="web-view" class="hidden md:block">
+          <table class="w-full text-sm text-left rtl:text-right rounded-lg">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
-                <!-- <th scope="col" class="px-6 py-3">Action</th> -->
-                <th scope="col" class="px-6 py-3">Trans ID</th>
-                <th scope="col" class="px-6 py-3">Pallet Code</th>
-                <th scope="col" class="px-6 py-3">Pallet Description</th>
-                <th scope="col" class="px-6 py-3">Loc ID</th>
-                <th scope="col" class="px-6 py-3">Location Desc</th>
-                <th scope="col" class="px-6 py-3">TType</th>
-                <th scope="col" class="px-6 py-3">In</th>
-                <th scope="col" class="px-6 py-3">Out</th>
-                <th scope="col" class="px-6 py-3">Running Bal</th>
-                <th scope="col" class="px-6 py-3">Ref #</th>
-                <th scope="col" class="px-6 py-3">Doc #</th>
-                <th scope="col" class="px-6 py-3">Specifics</th>
-                <th scope="col" class="px-6 py-3">Created Date</th>
-                <th scope="col" class="px-6 py-3">Created By</th>
+                <th id="theader" scope="col" class="py-2">Trans ID</th>
+                <th id="theader" scope="col" class="py-2">Pallet Code</th>
+                <th id="theader" scope="col" class="py-2">
+                  Pallet Description
+                </th>
+                <th id="theader" scope="col" class="py-2">Loc ID</th>
+                <th id="theader" scope="col" class="py-2">Location Desc</th>
+                <th id="theader" scope="col" class="py-2">TType</th>
+                <th id="theader" scope="col" class="py-2">In</th>
+                <th id="theader" scope="col" class="py-2">Out</th>
+                <th id="theader" scope="col" class="py-2">Running Bal</th>
+                <th id="theader" scope="col" class="py-2">Ref #</th>
+                <th id="theader" scope="col" class="py-2">Doc #</th>
+                <th id="theader" scope="col" class="py-2">Specifics</th>
+                <th id="theader" scope="col" class="py-2">Created Date</th>
+                <th id="theader" scope="col" class="py-2">Created By</th>
               </tr>
             </thead>
             <tbody>
               <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                class="bg-white border-b"
                 v-for="trans in scope.transactionList"
+                :key="trans.transId"
               >
-                <!-- <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  <div>
-                    <button
-                      class="bg-blue-500 rounded-lg p-1"
-                      v-show="scope.canEdit"
-                      @click="onEdit(posting.transhdrId)"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-6 h-6"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                        />
-                      </svg>
-                    </button>
-                    <button
-                      class="bg-red-500 rounded-lg p-1 ml-3"
-                      v-show="scope.canDelete && posting.transcode !== 'IN03'"
-                      @click="onDelete(posting.transhdrId)"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-6 h-6"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                        />
-                      </svg>
-                    </button>
-
-                    <button
-                      class="bg-green-500 rounded-lg p-1 ml-3"
-                      @click="onPost(posting.transhdrId)"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-6 h-6"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </th> -->
-                <td class="px-6 py-4">{{ trans.transId }}</td>
-                <td class="px-6 py-4">{{ trans.itemId }}</td>
-                <td class="px-6 py-4">{{ trans.itemdesc }}</td>
-                <td class="px-6 py-4">{{ trans.locationId }}</td>
-                <td class="px-6 py-4">{{ trans.locationdesc }}</td>
-                <td class="px-6 py-4">{{ trans.transtype }}</td>
-                <td class="px-6 py-4">{{ trans.In }}</td>
-                <td class="px-6 py-4">{{ trans.Out }}</td>
-                <td class="px-6 py-4">{{ trans.RunningBalance }}</td>
-                <td class="px-6 py-4">
-                  {{ trans.referenceno }}
+                <td id="tdetail" class="py-2">{{ trans.transId }}</td>
+                <td id="tdetail" class="py-2">{{ trans.itemId }}</td>
+                <td id="tdetail" class="py-2">{{ trans.itemdesc }}</td>
+                <td id="tdetail" class="py-2">{{ trans.locationId }}</td>
+                <td id="tdetail" class="py-2">{{ trans.locationdesc }}</td>
+                <td id="tdetail" class="py-2">{{ trans.transtype }}</td>
+                <td id="tdetail" class="py-2">{{ trans.In }}</td>
+                <td id="tdetail" class="py-2">{{ trans.Out }}</td>
+                <td id="tdetail" class="py-2">
+                  {{ trans.RunningBalance }}
                 </td>
-                <td class="px-6 py-4">
-                  {{ trans.documentno }}
-                </td>
-                <td class="px-6 py-4">
-                  {{ trans.Specifics }}
-                </td>
-                <td class="px-6 py-4">
+                <td id="tdetail" class="py-2">{{ trans.referenceno }}</td>
+                <td id="tdetail" class="py-2">{{ trans.documentno }}</td>
+                <td id="tdetail" class="py-2">{{ trans.Specifics }}</td>
+                <td id="tdetail" class="py-2">
                   {{
                     format(new Date(trans.create_date), "MM/dd/yyyy hh:mm:ss a")
                   }}
                 </td>
-                <td class="px-6 py-4">
-                  {{ trans.created_by }}
-                </td>
+                <td id="tdetail" class="py-2">{{ trans.created_by }}</td>
               </tr>
             </tbody>
           </table>
-          <!-- <div class="mt-4 flex justify-end">
-            <svg
-              class="w-6 h-6 text-gray-400"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m15 19-7-7 7-7"
-              />
-            </svg>
-            <label class="mx-2">3 out of 3</label>
-            <svg
-              class="w-6 h-6 text-gray-400"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m9 5 7 7-7 7"
-              />
-            </svg>
-          </div> -->
         </div>
 
         <!-- mobile -->
         <div
+          id="mobile-view"
           class="w-screen p-4 mt-3 grid grid-cols-1 gap-4 md:hidden bg-gray-100 overflow-y-auto max-h-[75vh]"
         >
           <div v-for="trans in filterPallet">
             <div
-              class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mb-3"
+              class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 mb-3"
               v-if="trans.locationId === scope.location"
             >
               <div>
@@ -265,18 +169,14 @@
         <!-- Background overlay -->
         <div class="fixed inset-0 bg-gray-900 opacity-50"></div>
         <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="relative bg-white rounded-lg shadow">
           <!-- Modal header -->
-          <div
-            class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600"
-          >
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-              Filter
-            </h3>
+          <div class="flex items-start justify-between p-4 border-b rounded-t">
+            <h3 class="text-xl font-semibold text-gray-900">Filter</h3>
             <button
               @click="hideModal()"
               type="button"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
             >
               <svg
                 aria-hidden="true"
@@ -300,13 +200,13 @@
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-gray-900"
                   >Pallet</label
                 >
                 <select
                   name="pallet"
                   v-model="scope.itemId"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 >
                   <option
                     v-for="item in scope.itemMasterList"
@@ -320,13 +220,13 @@
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-gray-900"
                   >Location</label
                 >
                 <select
                   name="location"
                   v-model="scope.location"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 >
                   <option
                     v-for="loc in scope.locationOptions"
@@ -341,7 +241,7 @@
                 <div>
                   <label
                     for="first_name"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900"
                     >Data From</label
                   >
                   <div class="relative">
@@ -349,7 +249,7 @@
                       class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
                     >
                       <svg
-                        class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                        class="w-4 h-4 text-gray-500"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
@@ -360,19 +260,26 @@
                         />
                       </svg>
                     </div>
-                    <input
+                    <!-- <input
                       name="start"
                       type="date"
                       v-model="scope.dtefrom"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5   "
                       placeholder="Select date start"
-                    />
+                    /> -->
+                    <VueDatePicker
+                      v-model="scope.dtefrom"
+                      :auto-position="false"
+                      :teleport="true"
+                      :enable-time-picker="false"
+                      auto-apply
+                    ></VueDatePicker>
                   </div>
                 </div>
                 <div>
                   <label
                     for="first_name"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900"
                     >Data To</label
                   >
                   <div class="relative">
@@ -380,7 +287,7 @@
                       class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
                     >
                       <svg
-                        class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                        class="w-4 h-4 text-gray-500"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
@@ -391,13 +298,21 @@
                         />
                       </svg>
                     </div>
-                    <input
+                    <!-- <input
                       name="end"
                       type="date"
                       v-model="scope.dteto"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5   "
                       placeholder="Select date end"
-                    />
+                    /> -->
+
+                    <VueDatePicker
+                      v-model="scope.dteto"
+                      :auto-position="false"
+                      :teleport="true"
+                      :enable-time-picker="false"
+                      auto-apply
+                    ></VueDatePicker>
                   </div>
                 </div>
               </div>
@@ -405,12 +320,12 @@
           </div>
           <!-- Modal footer -->
           <div
-            class="flex justify-end items-center p-2 space-x-2 border-gray-200 rounded-b dark:border-gray-600"
+            class="flex justify-end items-center p-2 space-x-2 border-gray-200 rounded-b"
           >
             <button
               @click="onInit()"
               type="button"
-              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
             >
               Preview
             </button>
@@ -425,6 +340,8 @@
 import { serviceApi } from "../../../services/piso-serviceapi";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
 
 var sitecode = JSON.parse(
   localStorage.getItem("_102")
@@ -436,8 +353,8 @@ const scope = reactive({});
 
 scope.itemsPerPage = 20;
 scope.currentPage = 0;
-scope.dtefrom = new Date(format(new Date(), "mm/dd/yyyy"));
-scope.dteto = new Date(format(new Date(), "mm/dd/yyyy"));
+scope.dtefrom = new Date();
+scope.dteto = new Date();
 
 const Toast = Swal.mixin({
   toast: true,
@@ -469,12 +386,12 @@ const onInit = async (ipage) => {
       "&itemId=" +
       scope.itemId +
       "&dtefrom=" +
-      scope.dtefrom +
+      format(scope.dtefrom, "MM/dd/yyyy") +
       "&dteto=" +
-      scope.dteto,
+      format(scope.dteto, "MM/dd/yyyy"),
     {
       headers: {
-        Token: JSON.parse(localStorage.getItem("_214")).token,
+        Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
       },
     }
   );
@@ -523,7 +440,7 @@ const preload = async () => {
         "&status=A&take=50&page=1",
       {
         headers: {
-          Token: JSON.parse(localStorage.getItem("_214")).token,
+          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
         },
       }
     );
@@ -553,7 +470,7 @@ const preload = async () => {
       "pallet/get-pallet-location/?sitecode=" + sitecode,
       {
         headers: {
-          Token: JSON.parse(localStorage.getItem("_214")).token,
+          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
         },
       }
     );
@@ -582,7 +499,40 @@ const filteredTransactions = computed(() =>
     trans.locationId.includes(scope.location)
   )
 );
+
+const printPage = () => {
+  window.print();
+};
+
 onMounted(() => {
   preload();
 });
 </script>
+
+<style scoped>
+#web-view {
+  overflow-x: auto;
+}
+
+@media screen and (max-width: 768px), print {
+  #mobile-view,
+  #filter-button {
+    display: none;
+  }
+
+  #web-view {
+    display: block;
+    width: 100%;
+    overflow: visible;
+    border: 0;
+    font-size: xx-small;
+  }
+
+  #theader,
+  #tdetail {
+    font-size: xx-small;
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+}
+</style>

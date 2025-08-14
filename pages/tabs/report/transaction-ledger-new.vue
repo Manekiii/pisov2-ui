@@ -4,16 +4,17 @@
       <!-- <div id="loadingindicator" class="hidden">
         <LoadingIndicator />
       </div> -->
-      <div>
+      <div class="p-4">
         <div class="border-b-2 items-center justify-center flex p-2">
           <label
             for="title"
             class="font-semibold text-3xl block mb-2 text-gray-900"
           >
-            Receiving Batch Report
+            Transaction Ledger (new)
           </label>
         </div>
-        <div class="flex justify-end">
+
+        <div class="flex justify-end m-4">
           <button
             type="submit"
             @click="showModal = true"
@@ -22,8 +23,9 @@
             Filter
           </button>
         </div>
+
         <!-- WEB -->
-        <div class="hidden md:block">
+        <div class="hidden md:block overflow-auto">
           <!-- The context menu that will appear when right-clicking -->
           <div
             v-if="showMenu"
@@ -78,23 +80,22 @@
             </ul>
           </div>
           <table
-            class="w-full text-sm text-left rtl:text-right rounded-lg"
+            class="w-full text-sm text-left rtl:text-right rounded-lg overflow-auto"
             @contextmenu.prevent="handleRightClick"
           >
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
                 <th scope="col" class="px-6 py-3">Action</th>
                 <th scope="col" class="px-6 py-3">Trans #</th>
+                <th scope="col" class="px-6 py-3">Reference</th>
+                <th scope="col" class="px-6 py-3">Document</th>
                 <th scope="col" class="px-6 py-3">Shipper</th>
-                <th scope="col" class="px-6 py-3">Document#</th>
-                <th scope="col" class="px-6 py-3">Ref#</th>
-                <th scope="col" class="px-6 py-3">Invoice#</th>
-                <th scope="col" class="px-6 py-3">Order</th>
-                <th scope="col" class="px-6 py-3">Order Date</th>
-                <th scope="col" class="px-6 py-3">Ref Date</th>
-                <th scope="col" class="px-6 py-3">Delivery Date</th>
-                <th scope="col" class="px-6 py-3">Remarks</th>
-                <th scope="col" class="px-6 py-3">Total Item</th>
+                <th scope="col" class="px-6 py-3">Pallet Description</th>
+                <th scope="col" class="px-6 py-3">Qty Transacted</th>
+                <th scope="col" class="px-6 py-3">From</th>
+                <th scope="col" class="px-6 py-3">To</th>
+                <th scope="col" class="px-6 py-3">Created By</th>
+                <th scope="col" class="px-6 py-3">Created Date</th>
               </tr>
             </thead>
             <tbody>
@@ -109,33 +110,70 @@
                   <div>
                     <button
                       class="bg-blue-500 rounded-lg p-2 text-white"
-                      @click="onViewReport(trans.transhdrId)"
+                      @click="OnPreview(trans.transhdrId)"
                     >
                       Preview
                     </button>
                   </div>
                 </th>
                 <td class="px-6 py-4">{{ trans.transhdrId }}</td>
-                <td class="px-6 py-4">{{ trans.shippername }}</td>
-                <td class="px-6 py-4">{{ trans.documentno }}</td>
                 <td class="px-6 py-4">{{ trans.referenceno }}</td>
-                <td class="px-6 py-4">{{ trans.invoiceno }}</td>
-                <td class="px-6 py-4">{{ trans.orderno }}</td>
-                <td class="px-6 py-4">{{ trans.orderdate }}</td>
-                <td class="px-6 py-4">{{ trans.referencedate }}</td>
-                <td class="px-6 py-4">{{ trans.deliverydate }}</td>
+                <td class="px-6 py-4">{{ trans.documentno }}</td>
                 <td class="px-6 py-4">
-                  {{ trans.remarks }}
+                  {{ trans.shippercode }} - {{ trans.shippername }}
                 </td>
                 <td class="px-6 py-4">
-                  {{ totalItemServe(trans.invty_transdtl) }}
+                  <div
+                    v-for="(item, index) in trans.transactionledgerdetails"
+                    :key="index"
+                  >
+                    <label>{{ item.itemdesc }}</label>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <div
+                    v-for="(item, index) in trans.transactionledgerdetails"
+                    :key="index"
+                  >
+                    <label>{{ item.qtyserved }}</label>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <div
+                    v-for="(item, index) in getUniqueItems(
+                      trans.transactionledgerdetails,
+                      'from'
+                    )"
+                    :key="index"
+                  >
+                    <label>{{ item.from }}</label>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <div
+                    v-for="(item, index) in getUniqueItems(
+                      trans.transactionledgerdetails,
+                      'destination'
+                    )"
+                    :key="index"
+                  >
+                    <label>{{ item.destination }}</label>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  {{ trans.created_by }}
+                </td>
+                <td class="px-6 py-4">
+                  {{
+                    format(new Date(trans.create_date), "yyyy-MM-dd hh:mm:ss")
+                  }}
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- mobile -->
+        <!-- MOBILE -->
         <div
           class="w-screen p-4 mt-3 grid grid-cols-1 gap-4 md:hidden bg-gray-100 overflow-y-auto max-h-[75vh]"
         >
@@ -149,47 +187,39 @@
               >
             </div>
             <div>
-              <label for="orderNumber">Shipper: {{ trans.shippername }}</label>
-            </div>
-            <div>
-              <label for="transactionNumber"
-                >Document#: {{ trans.documentno }}</label
+              <label for="orderNumber"
+                >Reference: {{ trans.referenceno }}</label
               >
             </div>
             <div>
-              <label for="orderNumber">Ref#: {{ trans.referenceno }}</label>
+              <label for="transactionNumber"
+                >Document: {{ trans.documentno }}</label
+              >
+            </div>
+            <div>
+              <label for="orderNumber"
+                >Shipper No.: {{ trans.shippercode }} -
+                {{ trans.shippername }}</label
+              >
             </div>
 
             <div>
               <label for="transactionNumber"
-                >Invoice#: {{ trans.invoiceno }}</label
-              >
-            </div>
-            <div>
-              <label for="orderNumber"> Order: {{ trans.orderno }}</label>
-            </div>
-            <div>
-              <label for="orderNumber">
-                Order Date: {{ trans.orderdate }}</label
+                >Created By: {{ trans.created_by }}</label
               >
             </div>
             <div>
               <label for="orderNumber">
-                Ref Date: {{ trans.referencedate }}</label
+                Created Date: {{ trans.create_date }}</label
               >
             </div>
-            <div>
-              <label for="orderNumber">
-                Delivery Date: {{ trans.deliverydate }}</label
+            <div class="flex justify-end">
+              <button
+                class="bg-blue-500 rounded-lg p-2 text-white"
+                @click="OnPreview(trans.transhdrId)"
               >
-            </div>
-            <div>
-              <label for="orderNumber"> Remarks: {{ trans.remarks }}</label>
-            </div>
-            <div>
-              <label for="orderNumber">
-                Total Item: {{ totalItemServe(trans.invty_transdtl) }}</label
-              >
+                Preview
+              </button>
             </div>
           </div>
         </div>
@@ -232,8 +262,8 @@
             </button>
           </div>
           <!-- Modal body -->
-          <div class="p-2 overflow-y-auto max-h-[60vh]">
-            <div class="grid gap-2 md:grid-cols-1">
+          <div class="p-2 overflow-y-auto w-full max-h-[60vh]">
+            <div date-rangepicker class="grid gap-2 grid-cols-1">
               <div>
                 <label
                   for="first_name"
@@ -256,11 +286,11 @@
                       />
                     </svg>
                   </div>
-                  <!-- <input
+                  <!--  <input
                     name="start"
                     type="date"
                     v-model="scope.dtefrom"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5   "
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                     placeholder="Select date start"
                   /> -->
                   <VueDatePicker
@@ -317,7 +347,7 @@
             class="flex justify-end items-center p-2 space-x-2 border-gray-200 rounded-b"
           >
             <button
-              @click="onPreview()"
+              @click="onInit()"
               type="button"
               class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
             >
@@ -333,9 +363,9 @@
 <script setup>
 import { serviceApi } from "../../../services/piso-serviceapi";
 import { format } from "date-fns";
-import Swal from "sweetalert2";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import Swal from "sweetalert2";
 import { sidebarOpen } from "~/dashboard/store";
 import * as XLSX from "xlsx";
 
@@ -343,23 +373,12 @@ var sitecode = JSON.parse(
   localStorage.getItem("_102")
 ).sitecode; /*set sidecode*/
 const showModal = ref(true);
+const ionRouter = useIonRouter();
 const scope = reactive({});
 scope.itemsPerPage = 20;
 scope.currentPage = 0;
 scope.dtefrom = new Date();
 scope.dteto = new Date();
-
-const Toast = Swal.mixin({
-  toast: true,
-  position: "top-end",
-  showConfirmButton: false,
-  timer: 3000,
-  timerProgressBar: true,
-  /* didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
-    }, */
-});
 
 const showMenu = ref(false);
 const menuPosition = ref({ x: 0, y: 0 });
@@ -386,6 +405,7 @@ const handleRightClick = (event) => {
 // Export to Excel functionality
 const exportToExcel = () => {
   console.log("Exporting to Excel...");
+  console.log("this is tranasction list: ", scope.transactionList);
   const ws = XLSX.utils.json_to_sheet(scope.transactionList);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
@@ -403,20 +423,24 @@ const printSelection = () => {
   window.print();
 };
 
+const handleLoading = async () => {
+  //document.querySelector("#loadingindicator").classList.toggle("hidden");
+};
+
 const hideModal = () => {
   showModal.value = false;
 };
 
-/*initialize first load*/
 const onInit = async (ipage) => {
+  handleLoading();
   scope.currentPage = ipage;
 
   const response = await serviceApi().get(
-    "pallet/get-transaction-header/?sitecode=" +
+    "TransactionLedgerperWarehouseNew/?warehouseId=" +
       sitecode +
-      "&transtype=I&dtefrom=" +
+      "&dateFrom=" +
       format(scope.dtefrom, "MM/dd/yyyy") +
-      "&dteto=" +
+      "&dateTo=" +
       format(scope.dteto, "MM/dd/yyyy"),
     {
       headers: {
@@ -427,53 +451,56 @@ const onInit = async (ipage) => {
 
   if (response.status === 200) {
     scope.transactionList = response.data;
-  }
-};
-
-const totalItemServe = (param) => {
-  var itotal = 0;
-  for (var i in param) {
-    itotal = itotal + param[i].qtyserved;
-  }
-
-  return itotal;
-};
-
-const onPreview = () => {
-  if (
-    scope.dtefrom == "" ||
-    scope.dtefrom == undefined ||
-    scope.dteto == "" ||
-    scope.dteto == undefined
-  ) {
-    scope.requiredPrompt = "Please fill up required fields.";
-    Toast.fire({
-      title: "Please fill up required fields",
-      icon: "warning",
-    });
-  } else {
-    onInit(1);
+    handleLoading();
     showModal.value = false;
   }
 };
 
-const onViewReport = (p) => {
+/* const onPreview = function () {
+  scope.dtefrom = $("#dtefrom").data().date;
+  scope.dteto = $("#dteto").data().date;
+  scope.requiredPrompt = "";
+
+  if (
+    dtefrom == "" ||
+    dtefrom == undefined ||
+    dteto == "" ||
+    dteto == undefined
+  ) {
+    scope.requiredPrompt = "Please fill up required fields.";
+  } else {
+    //GlobalHelper.StartSpin();
+    onInit(1);
+    //$rootScope.closeModalForm();
+  }
+}; */
+
+const OnPreview = (item) => {
   /*  ionRouter.push({
     name: "tabs-report-printing-report-transaction-report",
     query: { transid: 12345 },
   }); */
   const router = useRouter();
   // Manually construct the URL
-  const queryParams = new URLSearchParams({
-    transid: p,
-    title: "Receiving Batch Report",
-  }).toString();
-  // const url = `/tabs/report/printing-report/trans-preview?${queryParams}`;
+  const queryParams = new URLSearchParams({ transid: item }).toString();
+  // const url = `/tabs/report/printing-report/transaction-report?${queryParams}`;
 
-  const url = `/pison/tabs/report/printing-report/trans-preview?${queryParams}`;
+  const url = `/pison/tabs/report/printing-report/transaction-report?${queryParams}`;
 
   // Open the URL in a new tab
   window.open(url, "_blank");
+};
+
+const getUniqueItems = (items, property) => {
+  const seen = new Set();
+  return items.filter((item) => {
+    const value = item[property];
+    if (seen.has(value)) {
+      return false;
+    }
+    seen.add(value);
+    return true;
+  });
 };
 
 onMounted(() => {});

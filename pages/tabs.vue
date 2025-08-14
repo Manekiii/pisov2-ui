@@ -4,7 +4,7 @@
     ></nav> -->
     <!-- <ion-content>
       <nav
-        class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+        class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 "
       >
         <div class="mx-auto px-2 sm:px-6 lg:px-8">
           <div class="relative flex h-16 items-center justify-between">
@@ -40,14 +40,14 @@
                   'translate-x-0': isSidebarOpen,
                   '-translate-x-full': !isSidebarOpen,
                 }"
-                class="fixed top-0 left-0 z-40 w-80 h-screen p-4 transition-transform bg-gray-50 dark:bg-gray-800"
+                class="fixed top-0 left-0 z-40 w-80 h-screen p-4 transition-transform bg-gray-50 "
                 aria-label="Sidebar"
               >
                 <div>
                   <div>
                     <h5
                       id="drawer-navigation-label"
-                      class="text-base font-semibold text-gray-500 uppercase dark:text-gray-400"
+                      class="text-base font-semibold text-gray-500 uppercase "
                     >
                       MENU
                     </h5>
@@ -55,7 +55,7 @@
                       type="button"
                       @click="isSidebarOpen = false"
                       aria-controls="drawer-navigation"
-                      class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                      class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center "
                     >
                       <svg
                         aria-hidden="true"
@@ -78,10 +78,10 @@
                     <li>
                       <button
                         @click="navigatePage('dashboard')"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                        class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group"
                       >
                         <svg
-                          class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                          class="w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 "
                           aria-hidden="true"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="currentColor"
@@ -101,12 +101,12 @@
                       <button
                         type="button"
                         @click="toggleDropdown(menu)"
-                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100  "
                         aria-controls="dropdown-example"
                       >
                         <svg
                           aria-hidden="true"
-                          class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                          class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900  "
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +144,7 @@
                         <li v-for="subMenu in menu.pages" :key="subMenu.name">
                           <button
                             @click="navigatePage(subMenu.stage)"
-                            class="flex text-sm items-start justify-start w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                            class="flex text-sm items-start justify-start w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100  "
                           >
                             {{ subMenu.name }}
                           </button>
@@ -160,7 +160,7 @@
                 <div>
                   <button
                     type="button"
-                    class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                    class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 "
                     aria-expanded="false"
                     data-dropdown-toggle="dropdown-user"
                   >
@@ -173,18 +173,18 @@
                   </button>
                 </div>
                 <div
-                  class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
+                  class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow "
                   id="dropdown-user"
                 >
                   <div class="px-4 py-3" role="none">
                     <p
-                      class="text-sm text-gray-900 dark:text-white"
+                      class="text-sm text-gray-900 "
                       role="none"
                     >
                       {{ userInfo.fullname }}
                     </p>
                     <p
-                      class="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
+                      class="text-sm font-medium text-gray-900 truncate "
                       role="none"
                     >
                       {{ userInfo.email }}
@@ -193,7 +193,7 @@
                   <ul class="py-1" role="none">
                     <li>
                       <button
-                        class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                        class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  "
                         @click="showSwitchSiteModal = true"
                       >
                         Switch Site
@@ -202,7 +202,7 @@
                     <li>
                       <button
                         @click="logout"
-                        class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                        class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  "
                         role="menuitem"
                       >
                         Sign out
@@ -226,7 +226,7 @@
       </div>
     </ion-content> -->
 
-    <Layout>
+    <Layout id="layout">
       <ion-content>
         <ion-router-outlet />
       </ion-content>
@@ -240,10 +240,14 @@ import { initFlowbite } from "flowbite";
 import Swal from "sweetalert2";
 import { serviceApi } from "../services/piso-serviceapi";
 
+definePageMeta({
+  middleware: ["auth"],
+  // or middleware: 'auth'
+});
+
 // Sidebar state
 const isSidebarOpen = ref(false);
 const userInfo = reactive({});
-Object.assign(userInfo, JSON.parse(localStorage.getItem("_214")));
 // Dropdown state
 const isDropdownOpen = ref(false);
 const ionRouter = useIonRouter();
@@ -251,13 +255,13 @@ const showSwitchSiteModal = ref(false);
 const userMenu = ref();
 const initUserMenu = async () => {
   try {
-    const userid = JSON.parse(localStorage.getItem("_214")).userid;
+    const userid = JSON.parse(decrypt(localStorage.getItem("_214"))).userid;
     const usersite = localStorage.getItem("_102");
     const response = await serviceApi().get(
       "account/get-app-menu-v2/?sysid=17&userid=" + userid,
       {
         headers: {
-          Token: JSON.parse(localStorage.getItem("_214")).token,
+          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
         },
       }
     );
@@ -390,6 +394,7 @@ const logout = () => {
 onMounted(() => {
   initFlowbite();
   initUserMenu();
+  Object.assign(userInfo, JSON.parse(decrypt(localStorage.getItem("_214"))));
 });
 </script>
 

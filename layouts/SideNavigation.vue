@@ -1,8 +1,6 @@
 <template>
   <IonPage>
-    <nav
-      class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"
-    >
+    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
       <div class="px-3 py-3 lg:px-5 lg:pl-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center justify-start rtl:justify-end">
@@ -11,7 +9,7 @@
               data-drawer-toggle="logo-sidebar"
               aria-controls="logo-sidebar"
               type="button"
-              class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+              class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
             >
               <span class="sr-only">Open sidebar</span>
               <svg
@@ -35,7 +33,7 @@
                 alt="FlowBite Logo"
               />
               <span
-                class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white"
+                class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap "
                 >Flowbite</span
               >
             </a>
@@ -45,7 +43,7 @@
               <div>
                 <button
                   type="button"
-                  class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                  class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 "
                   aria-expanded="false"
                   data-dropdown-toggle="dropdown-user"
                 >
@@ -58,15 +56,15 @@
                 </button>
               </div>
               <div
-                class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
+                class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow "
                 id="dropdown-user"
               >
                 <div class="px-4 py-3" role="none">
-                  <p class="text-sm text-gray-900 dark:text-white" role="none">
+                  <p class="text-sm text-gray-900 " role="none">
                     Neil Sims
                   </p>
                   <p
-                    class="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
+                    class="text-sm font-medium text-gray-900 truncate "
                     role="none"
                   >
                     neil.sims@flowbite.com
@@ -76,7 +74,7 @@
                   <li>
                     <a
                       href="#"
-                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
                       role="menuitem"
                       >Dashboard</a
                     >
@@ -84,7 +82,7 @@
                   <li>
                     <a
                       href="#"
-                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
                       role="menuitem"
                       >Settings</a
                     >
@@ -92,7 +90,7 @@
                   <li>
                     <a
                       href="#"
-                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
                       role="menuitem"
                       >Earnings</a
                     >
@@ -100,7 +98,7 @@
                   <li>
                     <a
                       href="#"
-                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
                       role="menuitem"
                       >Sign out</a
                     >
@@ -115,18 +113,18 @@
 
     <aside
       id="logo-sidebar"
-      class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+      class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0"
       aria-label="Sidebar"
     >
-      <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+      <div class="h-full px-3 pb-4 overflow-y-auto bg-white ">
         <ul class="space-y-2 font-medium">
           <li>
             <a
               href="#"
-              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group"
             >
               <svg
-                class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                class="w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 "
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
@@ -145,10 +143,10 @@
           <li>
             <a
               href="#"
-              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group"
             >
               <svg
-                class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 "
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
@@ -160,7 +158,7 @@
               </svg>
               <span class="flex-1 ms-3 whitespace-nowrap">Kanban</span>
               <span
-                class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300"
+                class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full  "
                 >Pro</span
               >
             </a>
@@ -168,10 +166,10 @@
           <li>
             <a
               href="#"
-              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group"
             >
               <svg
-                class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 "
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
@@ -183,7 +181,7 @@
               </svg>
               <span class="flex-1 ms-3 whitespace-nowrap">Inbox</span>
               <span
-                class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300"
+                class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full "
                 >3</span
               >
             </a>
@@ -191,10 +189,10 @@
           <li>
             <a
               href="#"
-              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group"
             >
               <svg
-                class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 "
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
@@ -210,10 +208,10 @@
           <li>
             <a
               href="#"
-              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group"
             >
               <svg
-                class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 "
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
@@ -229,10 +227,10 @@
           <li>
             <a
               href="#"
-              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group"
             >
               <svg
-                class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 "
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -252,10 +250,10 @@
           <li>
             <a
               href="#"
-              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group"
             >
               <svg
-                class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 "
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
@@ -280,7 +278,7 @@
 
     <div class="p-4 sm:ml-64">
       <div
-        class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14"
+        class="p-4 border-2 border-gray-200 border-dashed rounded-lg  mt-14"
       >
         <div class="grid grid-cols-3 gap-4 mb-4">
           <slot />
