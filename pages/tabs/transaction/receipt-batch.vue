@@ -639,7 +639,6 @@ import { format } from "date-fns";
 import Swal from "sweetalert2";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import { tr } from "date-fns/locale";
 
 const scope = reactive({});
 const pltSearch = ref();
