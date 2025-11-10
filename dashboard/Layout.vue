@@ -45,11 +45,11 @@ watch(route, () => {
   </div> -->
   <!-- pang backup lang yung sa taas -->
 
-  <div class="relative h-screen overflow-hidden bg-[#d8f1f0]">
+  <div class="relative h-screen overflow-hidden bg-white">
     <div class="flex items-start">
       <Overlay />
       <Sidebar id="sidebar" mobile-orientation="start" />
-      <div class="flex h-screen w-full flex-col pl-0 lg:space-y-4">
+      <div class="flex h-screen w-full flex-col pl-0 lg:space-y-2">
         <TopBar id="topbar" />
         <main class="h-screen overflow-auto lg:px-4">
           <slot />

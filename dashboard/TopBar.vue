@@ -1,9 +1,41 @@
 <script setup>
 import { toggleSidebar, showSwitchSiteModal } from "./store";
+import { getKey, encryptData } from "../utils/encrypt";
 
 const userInfo = reactive({});
 if (localStorage.getItem("_214")) {
   Object.assign(userInfo, JSON.parse(decrypt(localStorage.getItem("_214"))));
+}
+
+console.log("this is userinfo: ", userInfo);
+
+const show = ref(false);
+const link = ref("");
+async function storeEncryptedDataInCookie(iframeUrl) {
+  const payload = {
+    systemid: 17,
+    userhashcode: userInfo.userHascode,
+    token: userInfo.token,
+    userid: userInfo.userid,
+    employeename: userInfo.fullname,
+    employeeid: userInfo.empId,
+    position: "",
+    emailadd: userInfo.email,
+    department: "",
+    sex: "",
+  };
+
+  const key = await getKey(); // You can share the password securely across systems
+  const encrypted = await encryptData(payload, key);
+
+  // Calculate expiration time (30 minutes from now)
+  const expirationDate = new Date();
+  expirationDate.setMinutes(expirationDate.getMinutes() + 30);
+
+  // Set cookie (secure, strict, and expires in 30 minutes)
+  document.cookie = `utility=${encrypted}; path=/; secure; samesite=strict; expires=${expirationDate.toUTCString()}`;
+  link.value = iframeUrl;
+  show.value = true;
 }
 
 const siteDetails = ref(JSON.parse(localStorage.getItem("_102")));
@@ -47,45 +79,6 @@ const closeDropdown = () => {
               }`
             }}</span>
           </div>
-          <!-- <div class="group relative flex h-full w-36 items-center lg:w-64">
-            <div
-              class="absolute flex h-10 w-auto cursor-pointer items-center justify-center p-3 pr-2 text-sm uppercase text-gray-500 sm:hidden"
-            >
-            
-              <svg
-                fill="none"
-                class="relative h-5 w-5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-            <svg
-              class="pointer-events-none absolute left-0 ml-4 hidden h-4 w-4 fill-current text-gray-500 group-hover:text-gray-400 sm:block"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-            >
-              <path
-                d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"
-              />
-            </svg>
-            <input
-              type="text"
-              class="block w-full rounded-2xl bg-gray-100 py-1.5 pl-10 pr-4 leading-normal text-gray-400 opacity-90 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Search"
-            />
-            <div
-              class="absolute right-0 mr-2 hidden h-auto rounded-2xl border border-gray-300 px-2 py-1 text-xs text-gray-400 md:block"
-            >
-              +
-            </div>
-          </div> -->
         </div>
         <div class="relative ml-3">
           <button
@@ -114,7 +107,6 @@ const closeDropdown = () => {
             @click.away="closeDropdown"
           >
             <div class="px-4 py-3" role="none" style="cursor: auto">
-              <!-- Replace the placeholder text with actual dropdown content -->
               <p class="text-sm text-gray-900 mb-2" role="none">
                 {{ userInfo.fullname }}
               </p>
@@ -123,25 +115,68 @@ const closeDropdown = () => {
               </p>
             </div>
             <ul class="py-1" role="none">
-              <li>
-                <button
-                  class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dropdown-item"
-                  role="menuitem"
-                  style="cursor: pointer"
-                  @click="showSwitchSiteModal = true"
+              <li
+                @click="
+                  storeEncryptedDataInCookie(
+                    'https://apps.fastlogistics.com.ph/utility/#/Setting/Account'
+                  )
+                "
+                class="py-2.5 px-5 flex items-center hover:bg-gray-100 text-[#333] text-sm cursor-pointer"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4 mr-3"
+                  viewBox="0 0 48 48"
                 >
-                  Switch Site
-                </button>
+                  <g
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="4"
+                  >
+                    <path d="M18 31h20V5" />
+                    <path d="M30 21H10v22m34-32l-6-6l-6 6" />
+                    <path d="m16 37l-6 6l-6-6" />
+                  </g>
+                </svg>
+                Account Settings
               </li>
-              <li>
-                <button
-                  class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dropdown-item"
-                  role="menuitem"
-                  style="cursor: pointer"
-                  @click="$router.push('/')"
+              <li
+                @click="showSwitchSiteModal = true"
+                class="py-2.5 px-5 flex items-center hover:bg-gray-100 text-[#333] text-sm cursor-pointer"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  class="w-4 h-4 mr-3"
                 >
-                  Sign out
-                </button>
+                  <path
+                    fill="currentColor"
+                    d="m12 5.15l-8 3.2V19h2v-6q0-.825.588-1.412T8 11h8q.825 0 1.413.588T18 13v6h2V8.35zM2 19V8.35q0-.625.338-1.125T3.25 6.5l8-3.2q.35-.15.75-.15t.75.15l8 3.2q.575.225.913.725T22 8.35V19q0 .825-.587 1.413T20 21h-4v-8H8v8H4q-.825 0-1.412-.587T2 19m7 2v-2h2v2zm2-3v-2h2v2zm2 3v-2h2v2zM8 11h8z"
+                  />
+                </svg>
+                Switch Site
+              </li>
+              <li
+                @click="$router.push('/')"
+                class="py-2.5 px-5 flex items-center hover:bg-gray-100 text-[#333] text-sm cursor-pointer"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  class="w-4 h-4 mr-3"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M4 12a1 1 0 0 0 1 1h7.59l-2.3 2.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l4-4a1 1 0 0 0 .21-.33a1 1 0 0 0 0-.76a1 1 0 0 0-.21-.33l-4-4a1 1 0 1 0-1.42 1.42l2.3 2.29H5a1 1 0 0 0-1 1M17 2H7a3 3 0 0 0-3 3v3a1 1 0 0 0 2 0V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-3a1 1 0 0 0-2 0v3a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3"
+                  />
+                </svg>
+                Sign out
               </li>
             </ul>
           </div>
@@ -149,6 +184,34 @@ const closeDropdown = () => {
       </div>
     </div>
   </header>
+
+  <div>
+    <!-- Modal -->
+    <div
+      v-if="show"
+      class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
+    >
+      <div class="bg-white rounded-xl shadow-lg max-w-4xl w-full p-4 relative">
+        <!-- Close Button -->
+        <button
+          @click="show = false"
+          class="absolute top-2 right-2 text-gray-500 hover:text-black text-xl"
+        >
+          &times;
+        </button>
+
+        <!-- Iframe -->
+        <div class="aspect-video">
+          <iframe
+            class="w-full h-full"
+            :src="link"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
   <!--   
 
   <div

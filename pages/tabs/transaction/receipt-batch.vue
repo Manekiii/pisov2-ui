@@ -1,491 +1,609 @@
 <template>
   <IonPage>
-    <ion-content>
-      <div class="p-4">
-        <ion-card-title>{{ scope.titleform }}</ion-card-title>
-        <div class="p-4 h-[80vh] overflow-y-auto">
-          <div class="grid gap-6 mb-6 md:grid-cols-2">
-            <div>
-              <label
-                for="supplier"
-                class="block mb-2 text-sm font-medium text-gray-900"
-                >Supplier <span class="text-red-500">*</span></label
-              >
-              <select
-                v-model="trans.shipperId"
-                @change="ChangeSupplier"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              >
-                <option v-for="s in scope.supplierOptions" :value="s.value">
-                  {{ s.text }}
-                </option>
-              </select>
-            </div>
-            <div>
-              <label
-                for="trucker"
-                class="block mb-2 text-sm font-medium text-gray-900"
-                >Trucker <span class="text-red-500">*</span></label
-              >
-              <select
-                v-model="trans.trucker"
-                @change="ChangeTrucker"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              >
-                <option v-for="t in scope.truckersOptions" :value="t.value">
-                  {{ t.text }}
-                </option>
-              </select>
-            </div>
-            <div>
-              <label
-                for="transactiontype"
-                class="block mb-2 text-sm font-medium text-gray-900"
-                >Transaction Type <span class="text-red-500">*</span></label
-              >
-              <select
-                v-model="trans.transcode"
-                @change="ChangeTransactionType"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              >
-                <option
-                  v-for="t in scope.transactiontypeOptions"
-                  :value="t.value"
-                >
-                  {{ t.text }}
-                </option>
-              </select>
-            </div>
-            <div>
-              <label
-                for="reference1"
-                class="block mb-2 text-sm font-medium text-gray-900"
-                >Reference 1 <span class="text-red-500">*</span></label
-              >
-              <input
-                type="text"
-                id="reference1"
-                v-model="trans.referenceno"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder=""
-                required
-              />
-            </div>
-            <div>
-              <label
-                for="reference2"
-                class="block mb-2 text-sm font-medium text-gray-900"
-                >Reference 2</label
-              >
-              <input
-                type="text"
-                id="reference2"
-                v-model="trans.orderno"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder=""
-                required
-              />
-            </div>
-            <div>
-              <label
-                for="reference3"
-                class="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Reference 3
-              </label>
-              <input
-                id="reference3"
-                type="text"
-                v-model="trans.documentno"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder=""
-                required
-              />
-            </div>
-            <div>
-              <label
-                for="reference4"
-                class="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Reference 4
-              </label>
-              <input
-                id="reference4"
-                type="text"
-                v-model="trans.invoiceno"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder=""
-                required
-              />
-            </div>
-            <div>
-              <label
-                for="refdate"
-                class="block mb-2 text-sm font-medium text-gray-900"
-                >Ref Date <span class="text-red-500">*</span></label
-              >
-              <!-- <input
-                type="date"
-                id="refdate"
-                v-model="trans.referencedate"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                placeholder=""
-                required
-              /> -->
-              <VueDatePicker
-                v-model="trans.referencedate"
-                :auto-position="false"
-                :teleport="true"
-                :enable-time-picker="false"
-                auto-apply
-              ></VueDatePicker>
-            </div>
-            <div>
-              <label
-                for="orderDate"
-                class="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Order Date <span class="text-red-500">*</span>
-              </label>
-              <!--  <input
-                id="orderDate"
-                type="date"
-                v-model="trans.orderdate"
-                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                placeholder=""
-                required
-              /> -->
-              <VueDatePicker
-                v-model="trans.orderdate"
-                :auto-position="false"
-                :teleport="true"
-                :enable-time-picker="false"
-                auto-apply
-              ></VueDatePicker>
-            </div>
-            <div>
-              <label
-                for="deliveryDate"
-                class="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Delivery Date <span class="text-red-500">*</span>
-              </label>
-              <!-- <input
-                id="deliveryDate"
-                type="date"
-                v-model="trans.deliverydate"
-                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                placeholder=""
-                required
-              /> -->
+    <ion-content class="bg-gray-50">
+      <div class="min-h-screen p-4 lg:p-8">
+        <!-- Header -->
+        <div class="mb-8">
+          <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
+            {{ scope.titleform }}
+          </h1>
+          <div
+            class="h-1 w-24 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"
+          ></div>
+        </div>
 
-              <VueDatePicker
-                v-model="trans.deliverydate"
-                :auto-position="false"
-                :teleport="true"
-                :enable-time-picker="false"
-                auto-apply
-              ></VueDatePicker>
-            </div>
-            <div>
-              <label
-                for="remarks"
-                class="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Remarks
-              </label>
-              <textarea
-                id="renarks"
-                rows="4"
-                v-model="trans.remarks"
-                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Write your remarks here..."
-              ></textarea>
-            </div>
-          </div>
-          <div class="mt-5 overflow-auto rounded-lg shadow">
-            <label
-              for="Pallet"
-              class="p-3 block mb-2 font-medium text-lg text-gray-900"
+        <div class="mx-auto space-y-8">
+          <!-- Transaction Details Card -->
+          <div
+            class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 overflow-hidden"
+          >
+            <div
+              class="bg-gradient-to-r from-blue-600 via-blue-600 to-blue-600 px-8 py-6"
             >
-              ITEM
-            </label>
+              <h2 class="text-xl font-bold text-white flex items-center">
+                <svg
+                  class="w-7 h-7 mr-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
+                </svg>
+                Transaction Details
+              </h2>
+            </div>
 
-            <div class="p-4">
-              <div class="flex gap-4">
-                <button
-                  type="button"
-                  @click="onSearchItem()"
-                  class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
-                >
-                  Add Pallet
-                </button>
-                <!-- <button
-                  type="button"
-                  @click="openModal = true"
-                  class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
-                >
-                  Scan QR/Barcode
-                </button> -->
+            <div class="p-8 flex flex-col gap-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-8">
+                <!-- Supplier -->
+                <div class="group space-y-2">
+                  <label
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                  >
+                    Supplier <span class="text-red-500 ml-1">*</span>
+                  </label>
+                  <select
+                    v-model="trans.shipperId"
+                    @change="ChangeSupplier"
+                    class="w-full px-4 py-4 bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg backdrop-blur-sm"
+                  >
+                    <option
+                      v-for="s in scope.supplierOptions"
+                      :key="s.value"
+                      :value="s.value"
+                    >
+                      {{ s.text }}
+                    </option>
+                  </select>
+                </div>
+
+                <!-- Trucker -->
+                <div class="group space-y-2">
+                  <label
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                  >
+                    Trucker <span class="text-red-500 ml-1">*</span>
+                  </label>
+                  <select
+                    v-model="trans.trucker"
+                    @change="ChangeTrucker"
+                    class="w-full px-4 py-4 bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg backdrop-blur-sm"
+                  >
+                    <option
+                      v-for="t in scope.truckersOptions"
+                      :key="t.value"
+                      :value="t.value"
+                    >
+                      {{ t.text }}
+                    </option>
+                  </select>
+                </div>
+
+                <!-- Asset Account -->
+                <div class="group space-y-2">
+                  <label
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                  >
+                    Asset (Pallet,Crate,Bins,CO2, etc.) Accountability
+                    <span class="text-red-500 ml-1">*</span>
+                  </label>
+                  <select
+                    v-model="trans.assetaccountability"
+                    class="w-full px-4 py-4 bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg backdrop-blur-sm"
+                  >
+                    <option
+                      v-for="s in scope.assetAccountOptions"
+                      :key="s.value"
+                      :value="s.value"
+                    >
+                      {{ s.text }}
+                    </option>
+                  </select>
+                </div>
+
+                <!-- Transaction Type -->
+                <div class="group space-y-2">
+                  <label
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                  >
+                    Transaction Type <span class="text-red-500 ml-1">*</span>
+                  </label>
+                  <select
+                    v-model="trans.transcode"
+                    @change="ChangeTransactionType"
+                    class="w-full px-4 py-4 bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg backdrop-blur-sm"
+                  >
+                    <option
+                      v-for="t in scope.transactiontypeOptions"
+                      :key="t.value"
+                      :value="t.value"
+                    >
+                      {{ t.text }}
+                    </option>
+                  </select>
+                </div>
+
+                <!-- Reference 1 -->
+                <div class="group space-y-2">
+                  <label
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                  >
+                    Reference 1 <span class="text-red-500 ml-1">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    v-model="trans.referenceno"
+                    class="w-full px-4 py-4 bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg placeholder-gray-400 backdrop-blur-sm"
+                    placeholder="Enter reference number"
+                    required
+                  />
+                </div>
+
+                <!-- Reference 2 -->
+                <div class="group space-y-2">
+                  <label
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                  >
+                    Reference 2
+                  </label>
+                  <input
+                    type="text"
+                    v-model="trans.orderno"
+                    class="w-full px-4 py-4 bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg placeholder-gray-400 backdrop-blur-sm"
+                    placeholder="Enter order number"
+                  />
+                </div>
+
+                <!-- Reference 3 -->
+                <div class="group space-y-2">
+                  <label
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                  >
+                    Reference 3
+                  </label>
+                  <input
+                    type="text"
+                    v-model="trans.documentno"
+                    class="w-full px-4 py-4 bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg placeholder-gray-400 backdrop-blur-sm"
+                    placeholder="Enter document number"
+                  />
+                </div>
+
+                <!-- Reference 4 -->
+                <div class="group space-y-2">
+                  <label
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                  >
+                    Reference 4
+                  </label>
+                  <input
+                    type="text"
+                    v-model="trans.invoiceno"
+                    class="w-full px-4 py-4 bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg placeholder-gray-400 backdrop-blur-sm"
+                    placeholder="Enter invoice number"
+                  />
+                </div>
               </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                <!-- Reference Date -->
+                <div class="group space-y-2">
+                  <label
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                  >
+                    Reference Date <span class="text-red-500 ml-1">*</span>
+                  </label>
+                  <div class="relative">
+                    <VueDatePicker
+                      v-model="trans.referencedate"
+                      :auto-position="false"
+                      :teleport="true"
+                      :enable-time-picker="false"
+                      auto-apply
+                      class="w-full date-picker-custom"
+                    />
+                  </div>
+                </div>
 
-              <!-- Main modal -->
-              <div
-                v-if="showModal"
-                tabindex="-1"
-                aria-hidden="true"
-                class="fixed top-0 left-0 right-0 z-50 w-full p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0"
-              >
-                <div class="relative w-full max-w-2xl">
-                  <!-- Background overlay -->
-                  <div class="fixed inset-0 bg-gray-900 opacity-50"></div>
-                  <!-- Modal content -->
-                  <div class="relative bg-white rounded-lg shadow">
-                    <!-- Modal header -->
-                    <div
-                      class="flex items-start justify-between p-4 border-b rounded-t"
-                    >
-                      <h3 class="text-xl font-semibold text-gray-900">
-                        Add Pallets
-                      </h3>
-                      <button
-                        @click="hideModal()"
-                        type="button"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-5 h-5"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
-                          ></path>
-                        </svg>
-                        <span class="sr-only">Close modal</span>
-                      </button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="p-6 space-y-6">
-                      <div>
-                        <label
-                          for="default-search"
-                          class="mb-2 text-sm font-medium text-gray-900 sr-only"
-                          >Search</label
-                        >
-                        <div class="relative">
-                          <div
-                            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
-                          >
-                            <svg
-                              class="w-4 h-4 text-gray-500"
-                              aria-hidden="true"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                              />
-                            </svg>
-                          </div>
-                          <input
-                            type="search"
-                            id="default-search"
-                            v-model="searchQuery"
-                            class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Search Code/Description"
-                            required
-                          />
-                          <!--  <button
-                            type="submit"
-                            class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 "
-                          >
-                            Search
-                          </button> -->
-                        </div>
-                      </div>
-                      <div class="overflow-y-auto max-h-96">
-                        <div
-                          v-for="itm in itemMasterList"
-                          :key="itm.PalletCode"
-                          @click="onItemSelect(itm)"
-                          v-show="!alreadyExist(itm.PalletCode)"
-                          class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 mb-3"
-                        >
-                          <div class="flex items-center">
-                            <div class="mr-2">
-                              <!-- Checkbox -->
-                              <input
-                                id="default-checkbox"
-                                type="checkbox"
-                                :checked="itm.isSelected"
-                                v-model="itm.isSelected"
-                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                              />
-                            </div>
-                            <div id="default-checkbox">
-                              <div>
-                                <label for="temp"
-                                  >Pallet Code: {{ itm.PalletCode }}</label
-                                >
-                              </div>
+                <!-- Order Date -->
+                <div class="group space-y-2">
+                  <label
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                  >
+                    Order Date <span class="text-red-500 ml-1">*</span>
+                  </label>
+                  <div class="relative">
+                    <VueDatePicker
+                      v-model="trans.orderdate"
+                      :auto-position="false"
+                      :teleport="true"
+                      :enable-time-picker="false"
+                      auto-apply
+                      class="w-full date-picker-custom"
+                    />
+                  </div>
+                </div>
 
-                              <div>
-                                <label for="temp"
-                                  >Description:
-                                  {{ itm.PalletDescription }}</label
-                                >
-                              </div>
-
-                              <div>
-                                <label for="temp"
-                                  >UOM: {{ itm.UnitOfMeasure }}</label
-                                >
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- Modal footer -->
-                    <div
-                      class="flex justify-end items-center p-6 space-x-2 border-t border-gray-200 rounded-b"
-                    >
-                      <button
-                        type="button"
-                        @click="onAddSelectedPallet"
-                        class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-                      >
-                        Add
-                      </button>
-                      <button
-                        @click="hideModal()"
-                        type="button"
-                        class="text-gray-800 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-500 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
-                      >
-                        Close
-                      </button>
-                    </div>
+                <!-- Delivery Date -->
+                <div class="group space-y-2">
+                  <label
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                  >
+                    Delivery Date <span class="text-red-500 ml-1">*</span>
+                  </label>
+                  <div class="relative">
+                    <VueDatePicker
+                      v-model="trans.deliverydate"
+                      :auto-position="false"
+                      :teleport="true"
+                      :enable-time-picker="false"
+                      auto-apply
+                      class="w-full date-picker-custom"
+                    />
                   </div>
                 </div>
               </div>
+
+              <!-- Remarks - Full Width -->
+              <div class="md:col-span-2 xl:col-span-3 space-y-2">
+                <label
+                  class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                >
+                  Remarks
+                </label>
+                <textarea
+                  v-model="trans.remarks"
+                  rows="4"
+                  class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 hover:border-gray-300 placeholder-gray-400 resize-none"
+                  placeholder="Write your remarks here..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Items Section -->
+          <div
+            class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden"
+          >
+            <div class="bg-gradient-to-r from-green-600 to-teal-600 px-8 py-6">
+              <h2 class="text-xl font-semibold text-white flex items-center">
+                <svg
+                  class="w-6 h-6 mr-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                  />
+                </svg>
+                Asset Management
+              </h2>
             </div>
 
-            <!-- if the screen is wide or desktop view -->
-            <div class="mt-3 overflow-auto rounded-lg shadow hidden md:block">
-              <table class="w-full text-sm text-left rtl:text-right rounded-lg">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                  <tr>
-                    <th scope="col" class="px-6 py-3">Action</th>
-                    <th scope="col" class="px-6 py-3">Pallet Code</th>
-                    <th scope="col" class="px-6 py-3">Pallet Description</th>
-                    <th scope="col" class="px-6 py-3">UOM</th>
-                    <th scope="col" class="px-6 py-3">Qty Served</th>
-                    <th scope="col" class="px-6 py-3">Location</th>
-                    <th scope="col" class="px-6 py-3">Remarks</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100">
-                  <tr
-                    class="bg-white"
-                    v-for="(pallet, index) in trans.invty_transdtl"
+            <div class="p-8">
+              <!-- Action Buttons -->
+              <div class="flex flex-wrap gap-4 mb-8">
+                <button
+                  type="button"
+                  @click="onSearchItem()"
+                  class="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 via-blue-600 to-blue-600 text-white font-bold rounded-2xl hover:from-blue-700 hover:via-blue-700 hover:to-blue-700 focus:ring-4 focus:ring-blue-200 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl"
+                >
+                  <svg
+                    class="w-6 h-6 mr-3 group-hover:rotate-180 transition-transform duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    <th
-                      scope="row"
-                      class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                    >
-                      <!-- Delete Button and Tooltip -->
-                      <div class="relative inline-block">
-                        <button
-                          @mouseover="tooltips = true"
-                          @mouseleave="tooltips = false"
-                          class="bg-red-500 rounded-lg p-1 ml-3 text-white hover:bg-red-300"
-                          @click="onDelete(index)"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="w-6 h-6"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                            />
-                          </svg>
-                        </button>
-                        <div
-                          v-if="tooltips"
-                          class="absolute bottom-full mb-2 w-max px-2 py-1 text-sm text-white bg-gray-700 rounded shadow-lg"
-                          :style="{
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                          }"
-                        >
-                          Delete
-                        </div>
-                      </div>
-                      <!-- <button
-                        @click="onDelete(index)"
-                        class="bg-red-500 rounded-lg p-1 ml-3"
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
+                  </svg>
+                  Add Asset
+                </button>
+              </div>
+
+              <!-- Modal -->
+              <div
+                v-if="showModal"
+                class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm"
+              >
+                <div
+                  class="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl max-h-[90vh] overflow-hidden"
+                >
+                  <!-- Modal Header -->
+                  <div
+                    class="bg-gradient-to-r from-blue-600 to-blue-600 px-8 py-6"
+                  >
+                    <div class="flex items-center justify-between">
+                      <h3 class="text-2xl font-bold text-white">Add Assets</h3>
+                      <button
+                        @click="hideModal()"
+                        class="text-white hover:bg-white hover:bg-opacity-20 rounded-full p-2 transition-all duration-200"
                       >
                         <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
                           class="w-6 h-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
                         >
                           <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"
                           />
                         </svg>
-                      </button> -->
-                    </th>
+                      </button>
+                    </div>
+                  </div>
 
-                    <td class="p-3 text-sm text-gray-700">
-                      {{ pallet.itemId }}
-                    </td>
-                    <td class="p-3 text-sm text-gray-700">
-                      {{ pallet.itemdesc }}
-                    </td>
-                    <td class="p-3 text-sm text-gray-700">{{ pallet.uom }}</td>
-                    <td class="p-3 text-sm text-gray-700">
+                  <!-- Modal Body -->
+                  <div class="p-8 overflow-y-auto max-h-[calc(90vh-200px)]">
+                    <!-- Search -->
+                    <div class="mb-6">
+                      <div class="relative">
+                        <div
+                          class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+                        >
+                          <svg
+                            class="w-5 h-5 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                            />
+                          </svg>
+                        </div>
+                        <input
+                          type="search"
+                          v-model="searchQuery"
+                          class="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 placeholder-gray-400"
+                          placeholder="Search Code/Description..."
+                        />
+                      </div>
+                    </div>
+
+                    <!-- Items List -->
+                    <div class="space-y-4">
+                      <div
+                        v-for="itm in itemMasterList"
+                        :key="itm.PalletCode"
+                        @click="onItemSelect(itm)"
+                        v-show="!alreadyExist(itm.PalletCode)"
+                        class="group bg-gray-50 hover:bg-blue-50 border-2 border-gray-200 hover:border-blue-300 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:shadow-lg"
+                      >
+                        <div class="flex items-center space-x-4">
+                          <input
+                            type="checkbox"
+                            :checked="itm.isSelected"
+                            v-model="itm.isSelected"
+                            class="w-5 h-5 text-blue-600 bg-white border-2 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                          />
+                          <div class="flex-1">
+                            <div class="font-semibold text-gray-900 mb-1">
+                              {{ itm.PalletCode }}
+                            </div>
+                            <div class="text-gray-600 mb-1">
+                              {{ itm.PalletDescription }}
+                            </div>
+                            <div class="text-sm text-gray-500">
+                              UOM: {{ itm.UnitOfMeasure }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Modal Footer -->
+                  <div class="bg-gray-50 px-8 py-6 flex justify-end space-x-4">
+                    <button
+                      type="button"
+                      @click="hideModal()"
+                      class="px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-300 focus:ring-4 focus:ring-gray-200 transition-all duration-200"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      @click="onAddSelectedPallet"
+                      class="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-xl hover:from-green-700 hover:to-green-800 focus:ring-4 focus:ring-green-200 transition-all duration-200 shadow-lg hover:shadow-xl"
+                    >
+                      Add Selected
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Desktop Table -->
+              <div
+                class="hidden lg:block overflow-hidden rounded-2xl border border-gray-200 shadow-lg"
+              >
+                <table class="w-full">
+                  <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                    <tr>
+                      <th
+                        class="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider"
+                      >
+                        Actions
+                      </th>
+                      <th
+                        class="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider"
+                      >
+                        Asset Code
+                      </th>
+                      <th
+                        class="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider"
+                      >
+                        Description
+                      </th>
+                      <th
+                        class="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider"
+                      >
+                        UOM
+                      </th>
+                      <th
+                        class="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider"
+                      >
+                        Qty Served
+                      </th>
+                      <th
+                        class="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider"
+                      >
+                        Location
+                      </th>
+                      <th
+                        class="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider"
+                      >
+                        Remarks
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr
+                      v-for="(pallet, index) in trans.invty_transdtl"
+                      :key="index"
+                      class="hover:bg-blue-50 transition-all duration-200"
+                    >
+                      <td class="px-6 py-4">
+                        <button
+                          @click="onDelete(index)"
+                          class="group p-3 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 focus:ring-4 focus:ring-red-100 transition-all duration-200 transform hover:scale-110"
+                        >
+                          <svg
+                            class="w-5 h-5 group-hover:scale-110 transition-transform"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                          </svg>
+                        </button>
+                      </td>
+                      <td class="px-6 py-4 font-bold text-gray-900">
+                        {{ pallet.itemId }}
+                      </td>
+                      <td class="px-6 py-4 text-gray-700">
+                        {{ pallet.itemdesc }}
+                      </td>
+                      <td class="px-6 py-4 text-gray-700">{{ pallet.uom }}</td>
+                      <td class="px-6 py-4">
+                        <input
+                          type="number"
+                          v-model="pallet.qtyserved"
+                          class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all duration-200"
+                          placeholder="0"
+                        />
+                      </td>
+                      <td class="px-6 py-4">
+                        <select
+                          v-model="pallet.destination"
+                          class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all duration-200"
+                        >
+                          <option value="" disabled>--Select Location--</option>
+                          <option
+                            v-for="loc in scope.locationOptions"
+                            :key="loc.value"
+                            :value="loc.value"
+                          >
+                            {{ loc.text }}
+                          </option>
+                        </select>
+                      </td>
+                      <td class="px-6 py-4">
+                        <input
+                          type="text"
+                          v-model="pallet.remarks"
+                          class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all duration-200"
+                          placeholder="Enter remarks"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Mobile Cards -->
+              <div class="lg:hidden space-y-4">
+                <div
+                  v-for="(pallet, index) in trans.invty_transdtl"
+                  :key="index"
+                  class="bg-gray-50 rounded-2xl border border-gray-200 p-6 space-y-4"
+                >
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <div class="font-semibold text-gray-900 mb-1">
+                        {{ pallet.itemId }}
+                      </div>
+                      <div class="text-gray-600 text-sm">
+                        {{ pallet.itemdesc }}
+                      </div>
+                    </div>
+                    <button
+                      @click="onDelete(index)"
+                      class="p-2 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 transition-all duration-200"
+                    >
+                      <svg
+                        class="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div class="space-y-3">
+                    <div>
+                      <label
+                        class="block text-sm font-semibold text-gray-700 mb-1"
+                      >
+                        Qty Served <span class="text-red-500">*</span>
+                      </label>
                       <input
                         type="number"
-                        id="QtyServed"
                         v-model="pallet.qtyserved"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        placeholder=""
-                        required
+                        class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200"
+                        placeholder="0"
                       />
-                    </td>
-                    <td class="p-3 text-sm text-gray-700">
-                      <select
-                        id="dropdown"
-                        v-model="pallet.destination"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        placeholder="--Select Supplier--"
-                        required="true"
+                    </div>
+
+                    <div>
+                      <label
+                        class="block text-sm font-semibold text-gray-700 mb-1"
                       >
-                        <option value="" disabled selected>
-                          --Select Location--
-                        </option>
+                        Location <span class="text-red-500">*</span>
+                      </label>
+                      <select
+                        v-model="pallet.destination"
+                        class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200"
+                      >
+                        <option value="" disabled>--Select Location--</option>
                         <option
                           v-for="loc in scope.locationOptions"
                           :key="loc.value"
@@ -494,123 +612,46 @@
                           {{ loc.text }}
                         </option>
                       </select>
-                    </td>
-                    <td class="p-3 text-sm text-gray-700">
+                    </div>
+
+                    <div>
+                      <label
+                        class="block text-sm font-semibold text-gray-700 mb-1"
+                        >Remarks</label
+                      >
                       <input
                         type="text"
-                        id="remarks"
                         v-model="pallet.remarks"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        placeholder=""
-                        required
+                        class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200"
+                        placeholder="Enter remarks"
                       />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- This when app is mobile view -->
-            <div class="p-4 mt-3 grid grid-cols-1 gap-4 md:hidden bg-gray-100">
-              <div
-                class="bg-white p-4 rounded-lg shadow"
-                v-for="(pallet, index) in trans.invty_transdtl"
-                :key="index"
-              >
-                <div class="flex justify-between">
-                  <div>Code: {{ pallet.itemId }}</div>
-                  <button @click="onDelete(index)">
-                    <svg
-                      class="w-6 h-6 text-red-500"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M8.6 2.6A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4c0-.5.2-1 .6-1.4ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
-                <div>
-                  <label for="description"
-                    >Description: {{ pallet.itemdesc }}</label
-                  >
-                </div>
-                <!-- Qty -->
-                <div>
-                  Qty Served: <span class="text-red-500">*</span>
-                  <input
-                    type="number"
-                    id="QtyServed"
-                    v-model="pallet.qtyserved"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    placeholder=""
-                    required
-                  />
-                </div>
-                <!-- Location is a dropdown with search -->
-                <div>
-                  Location: <span class="text-red-500">*</span>
-                  <select
-                    id="dropdown"
-                    v-model="pallet.destination"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    placeholder="--Select Supplier--"
-                    required="true"
-                  >
-                    <option value="" disabled selected>
-                      --Select Location--
-                    </option>
-                    <option
-                      v-for="loc in scope.locationOptions"
-                      :key="loc.value"
-                      :value="loc.value"
-                    >
-                      {{ loc.text }}
-                    </option>
-                  </select>
-                </div>
-                <div>
-                  Remarks:
-                  <input
-                    type="text"
-                    id="remarks"
-                    v-model="pallet.remarks"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    placeholder=""
-                    required
-                  />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="mt-3 flex justify-end">
+          <!-- Action Buttons -->
+          <div class="flex flex-wrap justify-end gap-4 mt-8">
             <button
-              type="submit"
               v-if="scope.isEdit"
               @click="onBack"
-              class="text-white bg-gray-500 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
+              class="px-8 py-4 bg-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-300 focus:ring-4 focus:ring-gray-200 transition-all duration-200 transform hover:scale-105"
             >
               Back
             </button>
             <button
-              type="submit"
               :disabled="isClick"
               @click="onSave('P')"
-              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
+              class="px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold rounded-xl hover:from-purple-700 hover:to-purple-800 focus:ring-4 focus:ring-purple-200 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               {{ isClick ? "Please wait..." : "Save And Post" }}
             </button>
             <button
-              type="submit"
               :disabled="isClick"
               @click="onSave('O')"
-              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
+              class="px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-xl hover:from-green-700 hover:to-green-800 focus:ring-4 focus:ring-green-200 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               {{ isClick ? "Please wait..." : "Save" }}
             </button>
@@ -618,9 +659,10 @@
         </div>
       </div>
 
+      <!-- QR Scanner Modal -->
       <div
         v-if="openModal"
-        class="fixed top-0 left-0 right-0 z-50 w-[50vh] h-[50vh] p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm"
       >
         <QRBarcodeScanner
           @close="openModal = false"
@@ -778,6 +820,22 @@ async function getIncomingTransTyps() {
       text: item.ownername,
     }));
 
+    //get assetaccount
+    const assetaccountResponse = await serviceApi().get(
+      `pallet/get-assetaccount?dropid=ASSETACCOUNT`,
+      {
+        headers: {
+          Token: JSON.parse(decrypt(localStorage.getItem("_214"))).token,
+        },
+      }
+    );
+    scope.assetaccounts = assetaccountResponse.data.data;
+    console.log("this is assets: ", assetaccountResponse.data);
+
+    scope.assetAccountOptions = scope.assetaccounts.map((item) => ({
+      value: item.drpdata,
+      text: item.drpdisplay,
+    }));
     // if (scope.trnscde !== "") {
     //   scope.trans.trucker = scope.trans.trucker;
     // }
@@ -911,6 +969,15 @@ const ChangeSupplier = () => {
   for (var i in scope.supplier) {
     if (scope.supplier[i].Id === trans.shipperId) {
       trans.shipperId = scope.supplier[i].Id;
+      break;
+    }
+  }
+};
+
+const ChangeAssetAccount = () => {
+  for (var i in scope.assetaccounts) {
+    if (scope.assetaccounts[i].Id === trans.assetaccounts) {
+      trans.assetaccountid = scope.assetaccounts[i].drpdata;
       break;
     }
   }
@@ -1168,3 +1235,52 @@ onMounted(() => {
   getIncomingTransTyps();
 });
 </script>
+
+<style scoped>
+/* Custom date picker styling */
+.date-picker-custom :deep(.dp__input) {
+  @apply w-full px-4 py-4 pl-10 bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg backdrop-blur-sm;
+}
+
+/* Enhanced scrollbar for modal */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 8px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  @apply bg-gray-100 rounded-full;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  @apply bg-gradient-to-b from-blue-400 to-purple-500 rounded-full;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  @apply from-blue-500 to-purple-600;
+}
+
+/* Glassmorphism effect for cards */
+.backdrop-blur-sm {
+  backdrop-filter: blur(8px);
+}
+
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+}
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out;
+}
+</style>

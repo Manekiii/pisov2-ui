@@ -1,141 +1,177 @@
 <template>
   <IonPage>
-    <ion-content>
-      <ion-card>
-        <ion-card-title>{{ scope.titleform }}</ion-card-title>
+    <ion-content class="bg-gray-50">
+      <div class="min-h-screen p-4 lg:p-8">
+        <!-- Header -->
+        <div class="mb-8">
+          <h1
+            class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3"
+          >
+            {{ scope.titleform }}
+          </h1>
+          <div
+            class="h-1 w-24 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"
+          ></div>
+        </div>
 
-        <div class="p-4 h-[90vh] overflow-y-auto">
-          <div class="grid gap-6 mb-6 md:grid-cols-2">
-            <div>
-              <label
-                for="default-search"
-                class="block mb-2 text-sm font-medium text-gray-900"
-                >Location <span class="text-red-500">*</span></label
-              >
-
-              <select
-                v-model="setup.source"
-                @change="onChangeLocSource(scope.locationOptions)"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              >
-                <option v-for="t in scope.locationOptions" :value="t.value">
-                  {{ t.text }}
-                </option>
-              </select>
-            </div>
-            <div>
-              <label
-                for="de"
-                class="block mb-2 text-sm font-medium text-gray-900"
-                >Item Description <span class="text-red-500">*</span></label
-              >
-              <div class="flex">
-                <input
-                  type="search"
-                  id="de"
-                  v-model="setup.itemdesc"
-                  readonly
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder=""
-                  required
-                />
-                <button
-                  type="submit"
-                  @click="onSearchItem"
-                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
+        <div class="mx-auto space-y-8">
+          <div
+            class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 overflow-hidden"
+          >
+            <div
+              class="bg-gradient-to-r from-blue-600 via-blue-600 to-blue-600 px-8 py-6"
+            >
+              <h2 class="text-xl font-bold text-white flex items-center">
+                <svg
+                  class="w-7 h-7 mr-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  Search
-                </button>
-              </div>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
+                </svg>
+                Transaction Details
+              </h2>
             </div>
-            <div>
-              <label
-                for="visitors"
-                class="block mb-2 text-sm font-medium text-gray-900"
-                >Quantity <span class="text-red-500">*</span></label
-              >
-              <input
-                type="number"
-                id="visitors"
-                v-model="setup.quantity"
-                @change="onChangeQty"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder=""
-                required
-              />
-              <small>Available: {{ scope.qtyAvailable }}</small>
-            </div>
-            <div>
-              <label
-                for="reference1"
-                class="block mb-2 text-sm font-medium text-gray-900"
-                >Reference No. <span class="text-red-500">*</span></label
-              >
-              <input
-                type="text"
-                id="reference1"
-                v-model="setup.referenceno"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder=""
-                required
-              />
-            </div>
-            <div>
-              <label
-                for="reference2"
-                class="block mb-2 text-sm font-medium text-gray-900"
-                >Document No <span class="text-red-500">*</span></label
-              >
-              <input
-                type="text"
-                id="reference2"
-                v-model="setup.documentno"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder=""
-                required
-              />
-            </div>
-            <div>
-              <label
-                for="default-search"
-                class="block mb-2 text-sm font-medium text-gray-900"
-                >Transfer To <span class="text-red-500">*</span></label
-              >
+            <div class="p-8 flex flex-col gap-4">
+              <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <div class="group space-y-2">
+                  <label
+                    for="default-search"
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                    >Location <span class="text-red-500">*</span></label
+                  >
 
-              <select
-                v-model="setup.destination"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              >
-                <option v-for="t in scope.storageOptions" :value="t.value">
-                  {{ t.text }}
-                </option>
-              </select>
-            </div>
-            <div>
-              <label
-                for="remarks"
-                class="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Remarks
-              </label>
-              <textarea
-                id="renarks"
-                rows="4"
-                v-model="setup.remarks"
-                class="max-w-md block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Write your remarks here..."
-              ></textarea>
+                  <select
+                    v-model="setup.source"
+                    @change="onChangeLocSource(scope.locationOptions)"
+                    class="w-full px-4 py-[18px] bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg backdrop-blur-sm"
+                  >
+                    <option v-for="t in scope.locationOptions" :value="t.value">
+                      {{ t.text }}
+                    </option>
+                  </select>
+                </div>
+                <div class="group space-y-2">
+                  <label
+                    for="de"
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                    >Item Description <span class="text-red-500">*</span></label
+                  >
+                  <div class="flex">
+                    <input
+                      type="search"
+                      id="de"
+                      v-model="setup.itemdesc"
+                      readonly
+                      class="w-full rounded-r-none px-4 py-4 bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg backdrop-blur-sm"
+                      placeholder=""
+                      required
+                    />
+                    <button
+                      type="submit"
+                      @click="onSearchItem"
+                      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg rounded-l-none text-sm px-4 py-2"
+                    >
+                      Search
+                    </button>
+                  </div>
+                </div>
+                <div class="group space-y-2">
+                  <label
+                    for="visitors"
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                    >Quantity <span class="text-red-500">*</span></label
+                  >
+                  <input
+                    type="number"
+                    id="visitors"
+                    v-model="setup.quantity"
+                    @change="onChangeQty"
+                    class="w-full px-4 py-4 bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg backdrop-blur-sm"
+                    placeholder=""
+                    required
+                  />
+                  <small>Available: {{ scope.qtyAvailable }}</small>
+                </div>
+                <div class="group space-y-2">
+                  <label
+                    for="reference1"
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                    >Reference No. <span class="text-red-500">*</span></label
+                  >
+                  <input
+                    type="text"
+                    id="reference1"
+                    v-model="setup.referenceno"
+                    class="w-full px-4 py-4 bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg backdrop-blur-sm"
+                    placeholder=""
+                    required
+                  />
+                </div>
+                <div class="group space-y-2">
+                  <label
+                    for="reference2"
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                    >Document No <span class="text-red-500">*</span></label
+                  >
+                  <input
+                    type="text"
+                    id="reference2"
+                    v-model="setup.documentno"
+                    class="w-full px-4 py-4 bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg backdrop-blur-sm"
+                    placeholder=""
+                    required
+                  />
+                </div>
+                <div class="group space-y-2">
+                  <label
+                    for="default-search"
+                    class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                    >Transfer To <span class="text-red-500">*</span></label
+                  >
+
+                  <select
+                    v-model="setup.destination"
+                    class="w-full px-4 py-[18px] bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg backdrop-blur-sm"
+                  >
+                    <option v-for="t in scope.storageOptions" :value="t.value">
+                      {{ t.text }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="group space-y-2">
+                <label
+                  for="remarks"
+                  class="block text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors"
+                >
+                  Remarks
+                </label>
+                <textarea
+                  id="renarks"
+                  rows="4"
+                  v-model="setup.remarks"
+                  class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 hover:border-gray-300 placeholder-gray-400 resize-none"
+                  placeholder="Write your remarks here..."
+                ></textarea>
+              </div>
             </div>
           </div>
 
-          <div class="mt-3 flex justify-end">
+          <div class="flex flex-wrap justify-end gap-4 mt-8">
             <button
               type="submit"
               :disabled="isClick"
               @click="onSave()"
-              class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
+              class="px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-xl hover:from-green-700 hover:to-green-800 focus:ring-4 focus:ring-green-200 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
-              {{isClick ? "Saving..." : "Save"}}
+              {{ isClick ? "Saving..." : "Save" }}
             </button>
           </div>
         </div>
@@ -143,78 +179,67 @@
         <!-- Main modal -->
         <div
           v-if="showModal"
-          tabindex="-1"
-          aria-hidden="true"
-          class="fixed top-0 left-0 right-0 z-50 w-full h-full p-4 flex items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full"
+          class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm"
         >
-          <div class="relative w-full max-w-2xl max-h-full">
-            <!-- Background overlay -->
-            <div class="fixed inset-0 bg-gray-900 opacity-50"></div>
+          <div
+            class="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl max-h-[90vh] overflow-hidden"
+          >
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow">
               <!-- Modal header -->
-              <div
-                class="flex items-start justify-between p-4 border-b rounded-t"
-              >
-                <h3 class="text-xl font-semibold text-gray-900">
-                  Choose Pallets
-                </h3>
-                <button
-                  @click="hideModal()"
-                  type="button"
-                  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                >
-                  <svg
-                    aria-hidden="true"
-                    class="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
+              <div class="bg-gradient-to-r from-blue-600 to-blue-600 px-8 py-6">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-2xl font-bold text-white">Choose Assets</h3>
+                  <button
+                    @click="hideModal()"
+                    class="text-white hover:bg-white/20 rounded-full p-3 transition-all duration-200 hover:rotate-90"
                   >
-                    <path
-                      fill-rule="evenodd"
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                  <span class="sr-only">Close modal</span>
-                </button>
+                    <svg
+                      class="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
               <!-- Modal body -->
-              <div class="p-6 space-y-6 overflow-y-auto">
+              <div class="p-8 overflow-y-auto max-h-[calc(90vh-200px)]">
                 <div
                   v-for="itm in scope.itemlist"
                   :key="itm.PalletCode"
                   @click="onItemSelect(itm)"
-                  class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 mb-3"
+                  class="group bg-gray-50 hover:bg-blue-50 border-2 border-gray-200 hover:border-blue-300 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:shadow-lg"
                 >
-                  <div class="flex items-center">
-                    <div id="default-checkbox">
-                      <div>
-                        <label for="temp"
-                          >Pallet Code: {{ itm.PalletCode }}</label
-                        >
+                  <div class="flex items-center space-x-4">
+                    <div class="flex-1">
+                      <div class="font-semibold text-gray-900 mb-1">
+                        {{ itm.PalletCode }}
                       </div>
-                      <div>
-                        <label for="temp"
-                          >Description: {{ itm.PalletDescription }}</label
-                        >
+                      <div class="text-gray-600 mb-1">
+                        {{ itm.PalletDescription }}
                       </div>
-                      <div>
-                        <label for="temp">UOM: {{ itm.UnitOfMeasure }}</label>
+                      <div class="text-sm text-gray-500">
+                        UOM: {{ itm.UnitOfMeasure }}
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               <!-- Modal footer -->
-              <div
-                class="flex justify-end items-center p-6 space-x-2 border-t border-gray-200 rounded-b"
-              >
+
+              <div class="bg-gray-50 px-8 py-6 flex justify-end space-x-4">
                 <button
-                  @click="hideModal()"
                   type="button"
-                  class="text-gray-800 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-500 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
+                  @click="hideModal()"
+                  class="px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-300 focus:ring-4 focus:ring-gray-200 transition-all duration-200"
                 >
                   Close
                 </button>
@@ -222,7 +247,7 @@
             </div>
           </div>
         </div>
-      </ion-card>
+      </div>
     </ion-content>
   </IonPage>
 </template>
@@ -272,6 +297,7 @@ async function onInit() {
   var crudType;
   if (scope.trnscde === 0) {
     scope.iconform = "glyphicons glyphicons-circle_plus";
+    scope.titleform = "Inventory Transfer";
     crudType = "New";
   } else {
     scope.iconform = "glyphicon glyphicon-edit";
@@ -533,3 +559,52 @@ onMounted(() => {
   onInit();
 });
 </script>
+
+<style scoped>
+/* Custom date picker styling */
+.date-picker-custom :deep(.dp__input) {
+  @apply w-full px-4 py-4 pl-10 bg-white/70 border-2 border-gray-200 rounded-2xl text-gray-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 hover:border-blue-300 hover:shadow-lg backdrop-blur-sm;
+}
+
+/* Enhanced scrollbar for modal */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 8px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  @apply bg-gray-100 rounded-full;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  @apply bg-gradient-to-b from-blue-400 to-purple-500 rounded-full;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  @apply from-blue-500 to-purple-600;
+}
+
+/* Glassmorphism effect for cards */
+.backdrop-blur-sm {
+  backdrop-filter: blur(8px);
+}
+
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+}
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out;
+}
+</style>

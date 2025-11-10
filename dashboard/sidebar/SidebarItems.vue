@@ -284,11 +284,11 @@ onMounted(() => {
             class="my-2 flex w-full items-center justify-start px-4 py-2 font-thin transition-colors duration-200 lg:hover:text-blue-500"
             :class="[
               {
-                'border-4 border-[#d8f1f0] rounded-l-2xl bg-[#d8f1f0] text-black':
+                'border-4 border-[#d8f1f0] rounded-l-2xl bg-white text-black':
                   sub.isclick && sidebarOpen,
               },
               {
-                'border-4 border-[#d8f1f0] rounded-r-2xl bg-[#d8f1f0] text-black':
+                'border-4 border-[#d8f1f0] rounded-r-2xl bg-white text-black':
                   sub.isclick && !sidebarOpen,
               },
             ]"

@@ -1,283 +1,294 @@
 <template>
   <IonPage>
-    <ion-content>
+     <ion-content>
       <!-- <div id="loadingindicator" class="hidden">
         <LoadingIndicator />
       </div> -->
-      <div>
-        <div class="border-b-2 items-center justify-center flex p-2">
-          <label
-            for="title"
-            class="font-semibold text-3xl block mb-2 text-gray-900"
-          >
-            Pallet Overall Transaction
-          </label>
-        </div>
-        <div class="flex justify-end m-4">
-          <button
-            type="submit"
-            @click="showModal = true"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
-          >
-            Filter
-          </button>
-        </div>
-
-        <!-- WEB -->
-        <div class="hidden md:block">
-          <!-- The context menu that will appear when right-clicking -->
-          <div
-            v-if="showMenu"
-            :style="{
-              position: 'fixed',
-              top: `${menuPosition.y}px`,
-              left: `${menuPosition.x}px`,
-            }"
-            class="context-menu"
-          >
-            <ul class="text-sm">
-              <li @click="exportToExcel" class="flex gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 48 48"
-                >
-                  <g
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-width="4"
-                  >
-                    <path
-                      stroke-linejoin="round"
-                      d="M8 15V6a2 2 0 0 1 2-2h28a2 2 0 0 1 2 2v36a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-9"
-                    />
-                    <path d="M31 15h3m-6 8h6m-6 8h6" />
-                    <path
-                      stroke-linejoin="round"
-                      d="M4 15h18v18H4zm6 6l6 6m0-6l-6 6"
-                    />
-                  </g>
+      <div class="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-indigo-50">
+        <!-- Header Section -->
+        <div class="bg-white/80 backdrop-blur-xl border-b border-gray-200/50 shadow-sm sticky top-0 z-40">
+          <div class="max-w-7xl mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h1 class="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                    Pallet Overall Transaction
+                  </h1>
+                  <p class="text-sm text-gray-500 mt-1">Comprehensive transaction overview and analytics</p>
+                </div>
+              </div>
+              
+              <button
+                type="button"
+                @click="showModal = true"
+                class="group relative inline-flex items-center px-6 py-3 overflow-hidden text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl hover:from-purple-600 hover:to-indigo-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                <svg class="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"></path>
                 </svg>
-                Export to Excel
-              </li>
-              <li @click="printSelection" class="flex gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M16 8V5H8v3H6V3h12v5zM4 10h16zm14 2.5q.425 0 .713-.288T19 11.5t-.288-.712T18 10.5t-.712.288T17 11.5t.288.713t.712.287M16 19v-4H8v4zm2 2H6v-4H2v-6q0-1.275.875-2.137T5 8h14q1.275 0 2.138.863T22 11v6h-4zm2-6v-4q0-.425-.288-.712T19 10H5q-.425 0-.712.288T4 11v4h2v-2h12v2z"
-                  />
-                </svg>
-                Print
-              </li>
-            </ul>
+                Filter
+              </button>
+            </div>
           </div>
-          <table
-            class="w-full text-sm text-left rtl:text-right rounded-lg"
-            @contextmenu.prevent="handleRightClick"
-          >
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-              <tr>
-                <!-- <th scope="col" class="px-6 py-3">Action</th> -->
-                <th scope="col" class="px-6 py-3">Pallet Code</th>
-                <th scope="col" class="px-6 py-3">Description</th>
-                <th scope="col" class="px-6 py-3">Location</th>
-                <th scope="col" class="px-6 py-3">Trucker</th>
-                <th scope="col" class="px-6 py-3">Shipper</th>
-                <th scope="col" class="px-6 py-3">Ref 1</th>
-                <th scope="col" class="px-6 py-3">Ref 2</th>
-                <th scope="col" class="px-6 py-3">Available Qty</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                class="bg-white border-b"
-                v-for="trans in scope.transactionList"
-              >
-                <!-- <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
-                >
-                  <div>
-                    <button
-                      class="bg-blue-500 rounded-lg p-1"
-                      v-show="scope.canEdit"
-                      @click="onEdit(posting.transhdrId)"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-6 h-6"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                        />
-                      </svg>
-                    </button>
-                    <button
-                      class="bg-red-500 rounded-lg p-1 ml-3"
-                      v-show="scope.canDelete && posting.transcode !== 'IN03'"
-                      @click="onDelete(posting.transhdrId)"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-6 h-6"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                        />
-                      </svg>
-                    </button>
-
-                    <button
-                      class="bg-green-500 rounded-lg p-1 ml-3"
-                      @click="onPost(posting.transhdrId)"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-6 h-6"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </th> -->
-                <td class="px-6 py-4">{{ trans.ItemCode }}</td>
-                <td class="px-6 py-4">{{ trans.ItemDesc }}</td>
-                <td class="px-6 py-4">{{ trans.LocationDesc }}</td>
-                <td class="px-6 py-4">
-                  {{ trans.TruckerDesc }}
-                </td>
-                <td class="px-6 py-4">
-                  {{ trans.ShipperDesc }}
-                </td>
-                <td class="px-6 py-4">
-                  {{ trans.OtherReference1 }}
-                </td>
-                <td class="px-6 py-4">
-                  {{ trans.OtherReference2 }}
-                </td>
-                <td class="px-6 py-4">
-                  {{ trans.ActualQty }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <!-- <div class="mt-4 flex justify-end">
-            <svg
-              class="w-6 h-6 text-gray-400"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m15 19-7-7 7-7"
-              />
-            </svg>
-            <label class="mx-2">3 out of 3</label>
-            <svg
-              class="w-6 h-6 text-gray-400"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m9 5 7 7-7 7"
-              />
-            </svg>
-          </div> -->
         </div>
 
-        <!-- MOBILE -->
-        <div
-          class="w-screen p-4 mt-3 grid grid-cols-1 gap-4 md:hidden bg-gray-100 overflow-y-auto max-h-[75vh]"
-        >
-          <div
-            v-for="trans in scope.transactionList"
-            class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 mb-3"
-          >
-            <div>
-              <label for="transactionNumber"
-                >Pallet Code: {{ trans.ItemCode }}</label
-              >
-            </div>
-            <div>
-              <label for="orderNumber">Description: {{ trans.ItemDesc }}</label>
-            </div>
-            <div>
-              <label for="transactionNumber"
-                >Location: {{ trans.LocationDesc }}</label
-              >
-            </div>
-            <div>
-              <label for="orderNumber"
-                >Trucker: {{ trans.TruckerDesc }} -
-                {{ trans.shippername }}</label
-              >
-            </div>
-
-            <div>
-              <label for="transactionNumber"
-                >Shipper: {{ trans.ShipperDesc }}</label
-              >
-            </div>
-            <div>
-              <label for="orderNumber">
-                Ref 1: {{ trans.OtherReference1 }}</label
-              >
+        <div class="max-w-7xl mx-auto px-4 py-8">
+          <!-- WEB VIEW -->
+          <div class="hidden md:block">
+            <!-- Enhanced Context Menu -->
+            <div
+              v-if="showMenu"
+              :style="{
+                position: 'fixed',
+                top: `${menuPosition.y}px`,
+                left: `${menuPosition.x}px`,
+              }"
+              class="bg-white rounded-xl shadow-2xl border border-gray-200/50 backdrop-blur-sm z-50 overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200 context-menu"
+            >
+              <ul class="py-2">
+                <li @click="exportToExcel" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 cursor-pointer transition-all duration-150 group">
+                  <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center group-hover:bg-green-200 transition-colors duration-150">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48" class="text-green-600">
+                      <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2">
+                        <path stroke-linejoin="round" d="M8 15V6a2 2 0 0 1 2-2h28a2 2 0 0 1 2 2v36a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-9"/>
+                        <path d="M31 15h3m-6 8h6m-6 8h6"/>
+                        <path stroke-linejoin="round" d="M4 15h18v18H4zm6 6l6 6m0-6l-6 6"/>
+                      </g>
+                    </svg>
+                  </div>
+                  <span class="font-medium">Export to Excel</span>
+                </li>
+                <li @click="printSelection" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 cursor-pointer transition-all duration-150 group">
+                  <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors duration-150">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="text-blue-600">
+                      <path fill="currentColor" d="M16 8V5H8v3H6V3h12v5zM4 10h16zm14 2.5q.425 0 .713-.288T19 11.5t-.288-.712T18 10.5t-.712.288T17 11.5t.288.713t.712.287M16 19v-4H8v4zm2 2H6v-4H2v-6q0-1.275.875-2.137T5 8h14q1.275 0 2.138.863T22 11v6h-4zm2-6v-4q0-.425-.288-.712T19 10H5q-.425 0-.712.288T4 11v4h2v-2h12v2z"/>
+                    </svg>
+                  </div>
+                  <span class="font-medium">Print</span>
+                </li>
+              </ul>
             </div>
 
-            <div>
-              <label for="transactionNumber"
-                >Ref 2: {{ trans.OtherReference2 }}</label
+            <!-- Enhanced Table -->
+            <div class="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden">
+              <table
+                class="w-full text-sm"
+                @contextmenu.prevent="handleRightClick"
               >
+                <thead class="bg-gradient-to-r from-gray-50/80 to-gray-100/80 backdrop-blur-sm">
+                  <tr class="border-b border-gray-200/50">
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+                        </svg>
+                        Pallet Code
+                      </div>
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                        </svg>
+                        Description
+                      </div>
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Location
+                      </div>
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Trucker
+                      </div>
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                        Shipper
+                      </div>
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Ref 1
+                      </div>
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Ref 2
+                      </div>
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        Available Qty
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200/50">
+                  <tr
+                    class="hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition-all duration-200 group"
+                    v-for="trans in scope.transactionList"
+                    :key="trans.ItemCode"
+                  >
+                    <td class="px-6 py-4 font-mono text-sm text-gray-900 font-semibold">
+                      <div class="flex items-center gap-2">
+                        <div class="w-2 h-8 bg-gradient-to-b from-purple-400 to-indigo-500 rounded-full"></div>
+                        <span>{{ trans.ItemCode }}</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-gray-900 font-medium">{{ trans.ItemDesc }}</td>
+                    <td class="px-6 py-4 text-gray-900">
+                      <div class="flex items-center gap-2">
+                        <!-- <div class="w-3 h-3 bg-orange-500 rounded-full"></div> -->
+                        <span>{{ trans.LocationDesc }}</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-gray-900">
+                      <div class="flex items-center gap-2">
+                        <!-- <div class="w-3 h-3 bg-yellow-500 rounded-full"></div> -->
+                        <span>{{ trans.TruckerDesc }}</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-gray-900">
+                      <div class="flex items-center gap-2">
+                        <!-- <div class="w-3 h-3 bg-teal-500 rounded-full"></div> -->
+                        <span>{{ trans.ShipperDesc }}</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-gray-900">
+                      <div class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        {{ trans.OtherReference1 }}
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-gray-900">
+                      <div class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        {{ trans.OtherReference2 }}
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-gray-900">
+                      <div class="flex items-center gap-2">
+                        <!-- <div class="w-3 h-3 bg-red-500 rounded-full"></div> -->
+                        <span class="font-bold text-lg">{{ trans.ActualQty }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div>
-              <label for="orderNumber">
-                Available Qty: {{ trans.ActualQty }}</label
-              >
+          </div>
+
+          <!-- MOBILE VIEW -->
+          <div class="block md:hidden space-y-4">
+            <div
+              v-for="trans in scope.transactionList"
+              :key="trans.ItemCode"
+              class="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-gray-200/50 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
+            >
+              <div class="p-6">
+                <!-- Header -->
+                <div class="flex items-center justify-between mb-6">
+                  <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="font-bold text-gray-900 font-mono">{{ trans.ItemCode }}</p>
+                      <p class="text-sm text-gray-600">{{ trans.ItemDesc }}</p>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-xs text-gray-500 uppercase tracking-wide">Available Qty</p>
+                    <p class="text-2xl font-bold text-purple-600">{{ trans.ActualQty }}</p>
+                  </div>
+                </div>
+
+                <!-- Details Grid -->
+                <div class="space-y-4">
+                  <!-- Location & Logistics -->
+                  <div class="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl p-4">
+                    <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                      <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      </svg>
+                      Location & Logistics
+                    </h4>
+                    <div class="grid grid-cols-2 gap-3">
+                      <div>
+                        <p class="text-xs font-medium text-gray-600 mb-1">Location</p>
+                        <p class="text-sm font-semibold text-gray-900">{{ trans.LocationDesc }}</p>
+                      </div>
+                      <div>
+                        <p class="text-xs font-medium text-gray-600 mb-1">Trucker</p>
+                        <p class="text-sm font-semibold text-gray-900">{{ trans.TruckerDesc }}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Shipper Info -->
+                  <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-4">
+                    <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                      <svg class="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                      </svg>
+                      Shipper Information
+                    </h4>
+                    <p class="text-sm font-semibold text-gray-900">{{ trans.ShipperDesc }}</p>
+                  </div>
+
+                  <!-- References -->
+                  <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4">
+                    <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                      <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                      </svg>
+                      References
+                    </h4>
+                    <div class="flex gap-2 flex-wrap">
+                      <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        Ref 1: {{ trans.OtherReference1 }}
+                      </div>
+                      <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        Ref 2: {{ trans.OtherReference2 }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </ion-content>
     <!-- Main modal DateFilter-->
-    <div
+       <div
       v-if="showModal"
       tabindex="-1"
       aria-hidden="true"
